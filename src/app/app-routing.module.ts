@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {FleenHeatlhComponent} from "./base/component/fleen-heatlh/fleen-heatlh.component";
 
 const routes: Routes = [
-  { path: "auth", loadChildren: () => {} }
   { path: "", redirectTo: "/sign-up", pathMatch: "full" },
   { path: "**", component: FleenHeatlhComponent }
 ];
