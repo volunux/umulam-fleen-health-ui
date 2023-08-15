@@ -1,6 +1,6 @@
 <div class="component-wrapper">
   <ng-content></ng-content>
-  <div *ngIf="errorMessage" class="invalid-feedback">
+  <small *ngIf="errorMessage" class="invalid-feedback">
     {{ errorMessage }}
-  </div>
+  </small>
 </div>

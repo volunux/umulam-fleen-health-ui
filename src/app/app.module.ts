@@ -8,27 +8,26 @@ import {FleenHeatlhComponent} from './base/component/fleen-heatlh/fleen-heatlh.c
 import {TemplatePageTitleStrategy} from "./base/strategy/template-page-title.strategy";
 import {TitleStrategy} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
-import { ShowErrorDirective } from './base/directive/show-error.directive';
-import { FormFieldComponent } from './base/component/form-field/form-field.component';
+import {FormFieldComponent} from './shared/component/form-field/form-field.component';
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     FleenHeatlhComponent,
-    ShowErrorDirective,
-    FormFieldComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AuthenticationModule,
     AppRoutingModule,
+    SharedModule
   ],
   providers: [
     {provide: TitleStrategy, useClass: TemplatePageTitleStrategy}
   ],
   exports: [
-    ShowErrorDirective
+    FormFieldComponent
   ],
   bootstrap: [AppComponent]
 })
