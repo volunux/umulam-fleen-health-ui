@@ -12,42 +12,42 @@ export class HttpClientService extends BaseHttpService {
     super(logger);
   }
 
-  public request(req: BaseRequest): Observable<Object> {
+  public request(req: BaseRequest): Observable<any> {
     const { body } = req;
-    const request: Observable<Object> = this.httpClient.request(req.method, this.buildUri(req), { body });
+    const request: Observable<Object> = this.httpClient.request(req.method as string, this.buildUri(req), { body });
     return this.pipeline(request);
   }
 
 
-  public get(req: BaseRequest): Observable<Object> {
+  public get(req: BaseRequest): Observable<any> {
     const request: Observable<Object> = this.httpClient.get(this.buildUri(req));
     return this.pipeline(request);
   }
 
-  public getOne(req: BaseRequest): Observable<Object> {
+  public getOne(req: BaseRequest): Observable<any> {
     return this.get(req);
   }
 
-  public save(req: BaseRequest): Observable<Object> {
+  public save(req: BaseRequest): Observable<any> {
     const request: Observable<Object> = this.httpClient.post(this.buildUri(req), req.body);
     return this.pipeline(request);
   }
 
-  public saveMany(req: BaseRequest): Observable<Object> {
+  public saveMany(req: BaseRequest): Observable<any> {
     return this.save(req);
   }
 
-  public update(req: BaseRequest): Observable<Object> {
+  public update(req: BaseRequest): Observable<any> {
     const request: Observable<Object> = this.httpClient.put(this.buildUri(req), req.body);
     return this.pipeline(request);
   }
 
-  public delete(req: BaseRequest): Observable<Object> {
+  public delete(req: BaseRequest): Observable<any> {
     const request: Observable<Object> = this.httpClient.delete(this.buildUri(req));
     return this.pipeline(request);
   }
 
-  public deleteMany(req: BaseRequest): Observable<Object> {
+  public deleteMany(req: BaseRequest): Observable<any> {
     return this.request(req);
   }
 

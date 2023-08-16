@@ -6,6 +6,7 @@ import {AuthenticationRoutingModule} from "./routing/authentication-routing.modu
 import {AuthenticationBaseComponent} from './component/authentication-base/authentication-base.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
+import {AuthenticationService} from "./service/authentication.service";
 
 
 @NgModule({
@@ -24,6 +25,9 @@ import {SharedModule} from "../shared/shared.module";
     SignUpComponent,
     SignInComponent,
     AuthenticationRoutingModule
+  ],
+  providers: [
+    AuthenticationService
   ]
 })
 export class AuthenticationModule { }

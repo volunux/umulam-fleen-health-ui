@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {LoggerService} from "./logger.service";
 import {API_BASE_PATH, API_HOST_URL, HTTP_REQUEST_RETRY_TIMES} from "../constant/base-config";
 import {isObject, isTruthy} from "../util/helpers";
-import {AnyProp} from "../type/base";
-import {BaseRequest} from "../type/http";
+import {AnyArray, AnyProp} from "../type/base";
+import {BaseRequest, RequestMethod} from "../type/http";
 import {catchError, map, Observable, ObservableInput, retry, tap, throwError} from "rxjs";
 
 @Injectable()
@@ -15,13 +15,13 @@ export class BaseHttpService {
 
   constructor(protected logger: LoggerService) { }
 
-  protected getPath(parameters: [string, any][]): string {
+  protected getPath(parameters?: AnyArray): string {
     return isTruthy(parameters) && Array.isArray(parameters)
       ? parameters.join('/')
       : "";
   }
 
-  protected getQueryString(params: AnyProp) {
+  protected getQueryString(params?: AnyProp) {
     return isObject(params)
       ? `?`.concat((new URLSearchParams(params)).toString())
       : "?";
@@ -48,5 +48,13 @@ export class BaseHttpService {
       map(res => res.json()),
       catchError(this.handle)
     );
+  }
+
+  public toRequest(pathParams: AnyArray, queryParams?: AnyProp, method?: RequestMethod): BaseRequest {
+    return {
+      pathParams,
+      queryParams,
+      method: isTruthy(method) ? method : 'GET'
+    };
   }
 }

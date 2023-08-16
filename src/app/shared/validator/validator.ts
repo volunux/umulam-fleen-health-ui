@@ -1,6 +1,7 @@
 import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {isFalsy, isTruthy} from "../util/shared-util";
+import {isFalsy, isTruthy} from "../util/helpers";
 import {catchError, debounceTime, map, Observable, of, switchMap} from "rxjs";
+import {AuthenticationService} from "../../authentication/service/authentication.service";
 
 export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
@@ -72,7 +73,7 @@ export function futureDateValidator(control: FormControl): ValidationErrors | nu
   return null;
 }
 
-export function emailExistsValidator(apiService: YourApiService): any {
+export function emailExistsValidator(service: AuthenticationService): any {
   return (control: FormControl): Observable<any> => {
     const email = control.value;
 
@@ -84,9 +85,9 @@ export function emailExistsValidator(apiService: YourApiService): any {
         if (isFalsy(value)) {
           return of(null);
         }
-        return apiService.checkEmailExists(emailValue).pipe(
+        return service.isEmailExists(email).pipe(
           map(response => (response.exists ? { emailExists: true } : null)),
-          catchError(() => of(null)) // Handle errors gracefully
+          catchError(() => of(null))
         );
       })
     );
