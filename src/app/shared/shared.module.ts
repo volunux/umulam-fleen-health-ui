@@ -3,7 +3,10 @@ import {CommonModule} from '@angular/common';
 import {FormGroupComponent} from "./component/form-field/form-group.component";
 import {FormErrorService} from "./service/form-error.service";
 import {ShowErrorDirective} from "./directive/show-error.directive";
-import { ValidationErrorComponent } from './component/validation-error/validation-error.component';
+import {ValidationErrorComponent} from './component/validation-error/validation-error.component';
+import {HttpClientModule} from "@angular/common/http";
+import {HttpClientService} from "./service/http-client.service";
+import {LoggerService} from "./service/logger.service";
 
 
 @NgModule({
@@ -13,10 +16,13 @@ import { ValidationErrorComponent } from './component/validation-error/validatio
     ValidationErrorComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   providers: [
-    FormErrorService
+    FormErrorService,
+    HttpClientService,
+    LoggerService
   ],
   exports: [
     FormGroupComponent,

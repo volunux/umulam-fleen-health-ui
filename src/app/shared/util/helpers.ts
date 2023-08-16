@@ -1,4 +1,3 @@
-import {isTruthy} from "./shared-util";
 
 export function capitalize(inputArray: string[]): string[] {
   if (isTruthy(inputArray) && Array.isArray(inputArray) && inputArray.length > 0) {
@@ -14,4 +13,17 @@ export function joining(inputArray: string[], separator: string = ", "): string 
   }
 
   return '';
+}
+
+
+export function isFalsy(value: any): boolean {
+  return !value;
+}
+
+export function isTruthy(value: any): boolean {
+  return !!value;
+}
+
+export function isObject(value: any): boolean {
+  return isTruthy(value) && typeof value === 'object';;
 }
