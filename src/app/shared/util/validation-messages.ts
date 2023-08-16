@@ -13,4 +13,5 @@ export const validationErrorMessages: { [key: string]: Function } = {
   invalidDateFormat: (control: AbstractControl | any, label: string) => `${label} is not a valid date. Use ${DATE_FORMAT}`,
   pastDate: (control: AbstractControl | any, label: string) => `${label} ${control.value} should be in the past`,
   futureDate: (control: AbstractControl | any, label: string) => `${label} ${control.value} should be in the future`,
+  invalidPhoneNumber: (control: AbstractControl | any, label: string) => `${label} ${control.value} is not a valid phone number. Use e.g. +2347012345678`
 };

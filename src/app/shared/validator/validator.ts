@@ -73,6 +73,19 @@ export function futureDateValidator(control: FormControl): ValidationErrors | nu
   return null;
 }
 
+export function phoneNumberValidator(pattern: RegExp): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (isTruthy(pattern) && isTruthy(control) && isTruthy(control.value)) {
+      const phoneNumber = control.value;
+
+      if (!pattern.test(phoneNumber)) {
+        return { invalidPhoneNumber: true };
+      }
+    }
+    return null;
+  };
+}
+
 export function emailExistsValidator(service: AuthenticationService): any {
   return (control: FormControl): Observable<any> => {
     const email = control.value;

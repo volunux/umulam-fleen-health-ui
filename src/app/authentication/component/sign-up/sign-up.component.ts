@@ -1,116 +1,29 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {SignUpDto} from "../../dto/sign-up-dto";
-import {
-  dateOfBirthValidator, emailExistsValidator,
-  enumTypeValidator,
-  fieldsMatchValidator,
-  pastDateValidator
-} from "../../../shared/validator/validator";
-import {DATE} from "../../../shared/util/format-pattern";
-import {GENDER, PROFESSIONAL_TYPES} from "../../../shared/constant/enum-constant";
+import {FormBuilder} from "@angular/forms";
+import {AuthenticationService} from "../../service/authentication.service";
+import {SignUpBaseComponent} from "./sign-up-base";
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent extends SignUpBaseComponent implements OnInit {
 
-  public signUpForm: FormGroup = new FormGroup<any>({});
-  private signUpDto: SignUpDto | undefined = new SignUpDto();
-
-  constructor(private formBuilder: FormBuilder) {
-
-  }
-
-  public getThat(formControl: FormControl | any) {
-    const failedValidation: string[] = Object.keys(formControl.errors);
-    console.log(formControl.errors);
-  }
-
-  initForm(): void {
-    this.signUpForm = this.formBuilder.group({
-      profile_type: [this.signUpDto?.profile_type,
-        [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
-      ],
-      first_name: [this.signUpDto?.first_name,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
-      ],
-      last_name: [this.signUpDto?.last_name,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
-      ],
-      date_of_birth: [this.signUpDto?.date_of_birth,
-        [Validators.required, dateOfBirthValidator(DATE), pastDateValidator]
-      ],
-      email_address: [this.signUpDto?.email_address,
-        { validators: [Validators.email, Validators.required, Validators.minLength(4), Validators.maxLength(150)],
-          asyncValidators: [emailExistsValidator(null)],
-          updateOn: blur
-        }
-      ],
-      phone_number: [this.signUpDto?.phone_number,
-        [Validators.required, Validators.minLength(4), Validators.maxLength(15)]
-      ],
-      gender: [this.signUpDto?.gender,
-        [Validators.required, enumTypeValidator(GENDER)]
-      ],
-      password: [this.signUpDto?.password,
-        [Validators.required, Validators.minLength(8), Validators.maxLength(24)]
-      ],
-      confirm_password: [this.signUpDto?.confirm_password,
-        [Validators.required, Validators.minLength(8), Validators.maxLength(24)]
-      ],
-      verification_type: [this.signUpDto?.verification_type,
-        [Validators.required]
-      ]
-    }, {
-      validators: [fieldsMatchValidator('password', 'confirm_password')]
-    });
+  constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+    super();
   }
 
   ngOnInit() {
     this.initForm();
   }
 
-  get profileType(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('profile_type');
+  override getAuthenticationService(): AuthenticationService {
+    return this.authenticationService;
   }
 
-  get firstName(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('first_name');
-  }
-
-  get lastName(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('last_name');
-  }
-
-  get dateOfBirth(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('date_of_birth');
-  }
-
-  get emailAddress(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('email_address');
-  }
-
-  get phoneNumber(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('phone_number');
-  }
-
-  get gender(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('gender');
-  }
-
-  get password(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('password');
-  }
-
-  get confirmPassword(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('confirm_password');
-  }
-
-  get verificationType(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('verification_type');
+  override getFormBuilder(): FormBuilder {
+    return this.formBuilder;
   }
 
 }
