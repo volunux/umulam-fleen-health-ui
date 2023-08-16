@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
       first_name: [this.signUpDto?.first_name,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.max(10), Validators.min(2), ]
+        [Validators.required, Validators.max(50), Validators.min(20), ]
       ],
       last_name: [this.signUpDto?.last_name,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
