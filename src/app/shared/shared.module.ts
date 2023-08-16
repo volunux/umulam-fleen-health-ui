@@ -1,14 +1,16 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormFieldComponent} from "./component/form-field/form-field.component";
+import {FormGroupComponent} from "./component/form-field/form-group.component";
 import {FormErrorService} from "./service/form-error.service";
 import {ShowErrorDirective} from "./directive/show-error.directive";
+import { ValidationErrorComponent } from './component/validation-error/validation-error.component';
 
 
 @NgModule({
   declarations: [
-    FormFieldComponent,
-    ShowErrorDirective
+    FormGroupComponent,
+    ShowErrorDirective,
+    ValidationErrorComponent
   ],
   imports: [
     CommonModule
@@ -17,7 +19,9 @@ import {ShowErrorDirective} from "./directive/show-error.directive";
     FormErrorService
   ],
   exports: [
-    FormFieldComponent
+    FormGroupComponent,
+    ShowErrorDirective,
+    ValidationErrorComponent
   ]
 })
 export class SharedModule { }

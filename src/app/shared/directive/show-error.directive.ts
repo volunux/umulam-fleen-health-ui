@@ -6,7 +6,7 @@ import {NgControl} from "@angular/forms";
 })
 export class ShowErrorDirective {
 
-  @Input() controlName?: string;
+  @Input() controlLabel?: string;
 
   constructor(@Optional() @Self() public ngControl: NgControl) { }
 

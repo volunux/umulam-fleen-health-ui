@@ -3,45 +3,41 @@
 
 <form [formGroup]="signUpForm" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <input type ="radio" formControlName="profile_type" value="PROFESSIONAL" id="user_type_professional"/>
     <label for="user_type_professional">Professional</label>
 
     <input type ="radio" formControlName="profile_type" value="USER" id="user_type_user"/>
     <label for="user_type_user">User</label><br/>
-  </fieldset>
+  </div>
 
   <div class="form-group">
-   </div>
+    <label for="first_name">First Name</label>
+    <input type="text" formControlName="first_name" id="first_name"/>
+    <app-validation-error [control]="firstName" [control-label]="'First Name'"></app-validation-error>
+  </div>
 
-  <app-form-field>
-    <fieldset class="form-group">
-      <label for="first_name">First Name</label>
-      <input type="text" formControlName="first_name" id="first_name" showError controlName="first_name" autocomplete="off"/>
-    </fieldset>
-  </app-form-field>
-
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="last_name">Last Name</label>
     <input type="text" formControlName="last_name" id="last_name"/>
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="date_of_birth">Date of Birth</label>
     <input type="text" formControlName="date_of_birth" id="date_of_birth"/>
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="email_address">Email Address</label>
     <input type="email" formControlName="email_address" id="email_address"/>
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="phone_number">Phone Number</label>
     <input type="number" formControlName="phone_number" id="phone_number"/>
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="gender">Gender</label>
     <select formControlName="gender" id="gender">
       <option value=""></option>
@@ -49,17 +45,17 @@
       <option value="FEMALE">Female</option>
       <option value="OTHER">Other</option>
     </select>
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="password">Password</label>
     <input type="password" formControlName="password" id="password"/>
-  </fieldset>
+  </div>
 
-  <fieldset class="form-group">
+  <div class="form-group">
     <label for="confirm_password">Confirm Password</label>
     <input type="password" formControlName="confirm_password" id="confirm_password"/>
-  </fieldset>
+  </div>
 
   <input type="hidden" formControlName="verification_type" value="EMAIL"/>
 

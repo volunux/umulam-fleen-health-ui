@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ERROR_MESSAGES, ErrorTypes} from "../../base/util/error-messages";
 
 @Injectable({
@@ -8,15 +8,15 @@ export class FormErrorService {
 
   constructor() { }
 
-  getErrorValidationMessage(
-    formControlName: string,
-    errors: [string, any][]
-  ): string {
+  getErrorValidationMessage(formControlName: string, errors: [string, any][]): string {
+
     switch (true) {
       case this.checkErrorType(errors, 'required'):
         return ERROR_MESSAGES['required'](formControlName);
+
       case this.checkErrorType(errors, 'invalidYear'):
         return ERROR_MESSAGES['invalidYear']();
+
       case this.checkErrorType(errors, 'invalidDate'):
         return ERROR_MESSAGES['invalidDate']();
 
@@ -24,10 +24,7 @@ export class FormErrorService {
         return ERROR_MESSAGES['email']();
 
       case this.checkErrorType(errors, 'minlength'):
-        const minRequirement = this.getErrorMessage(
-          errors,
-          'minlength'
-        )?.requiredLength;
+        const minRequirement = this.getErrorMessage(errors,'minlength')?.requiredLength;
         return ERROR_MESSAGES['minlength'](formControlName, minRequirement);
 
       default:
@@ -35,11 +32,12 @@ export class FormErrorService {
     }
   }
 
-  checkErrorType(errors: [string, any][], key: ErrorTypes) {
+  checkErrorType(errors: [string, any][], key: ErrorTypes): boolean {
     return errors.some(([errorKey, value]) => errorKey === key);
   }
 
-  getErrorMessage(errors: [string, any][], key: ErrorTypes) {
+  getErrorMessage(errors: [string, any][], key: ErrorTypes): any {
+    console.log(errors);
     return errors.find(([k, v]) => k === key)?.[1];
   }
 

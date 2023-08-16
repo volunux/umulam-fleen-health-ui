@@ -6,10 +6,20 @@ export type ErrorTypes =
   | 'invalidYear';
 
 export const ERROR_MESSAGES: { [key: string]: (...args: any) => string } = {
-  required: (formControlName: string) => `${formControlName} is required.`,
-  email: () => `This is not a valid email address.`,
-  minlength: (formControlName, requirement) =>
-    `${formControlName} should be at least ${requirement} characters.`,
-  invalidDate: () => `This is not a valid date.`,
-  invalidYear: () => `Date of Birth should be after year 1900.`,
+
+  required: (formControlName: string): string => {
+    return `${formControlName} is required.`;
+  },
+  email: (): string => {
+    return `This is not a valid email address.`;
+  },
+  minlength: (formControlName, requirement): string => {
+    return `${formControlName} should be at least ${requirement} characters.`;
+  },
+  invalidDate: (): string => {
+    return `This is not a valid date.`
+  },
+  invalidYear: (): string => {
+    return `Date of Birth should be after year 1900.`;
+  }
 };

@@ -1,7 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {SignUpDto} from "../../dto/sign-up-dto";
-import {profileTypeValidator} from "../../validator/sign-up-validator";
+import {
+  dateOfBirthValidator,
+  enumTypeValidator,
+  fieldsMatchValidator,
+  pastDateValidator
+} from "../../../shared/validator/validator";
+import {DATE} from "../../../shared/util/format-pattern";
+import {GENDER, PROFESSIONAL_TYPES} from "../../../shared/util/constant";
 
 @Component({
   selector: 'app-sign-up',
@@ -17,19 +24,24 @@ export class SignUpComponent implements OnInit {
 
   }
 
+  public getThat(formControl: FormControl | any) {
+    const failedValidation: string[] = Object.keys(formControl.errors);
+    console.log(formControl.errors);
+  }
+
   initForm(): void {
     this.signUpForm = this.formBuilder.group({
       profile_type: [this.signUpDto?.profile_type,
-        [Validators.required, profileTypeValidator(['PROFESSIONAL', 'USER'])]
+        [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
       first_name: [this.signUpDto?.first_name,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
+        [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.max(10), Validators.min(2), ]
       ],
       last_name: [this.signUpDto?.last_name,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
       date_of_birth: [this.signUpDto?.date_of_birth,
-        [Validators.required]
+        [Validators.required, dateOfBirthValidator(DATE), pastDateValidator]
       ],
       email_address: [this.signUpDto?.email_address,
         [Validators.email, Validators.required, Validators.minLength(4), Validators.maxLength(150)]
@@ -38,7 +50,7 @@ export class SignUpComponent implements OnInit {
         [Validators.required, Validators.minLength(4), Validators.maxLength(15)]
       ],
       gender: [this.signUpDto?.gender,
-        [Validators.required]
+        [Validators.required, enumTypeValidator(GENDER)]
       ],
       password: [this.signUpDto?.password,
         [Validators.required, Validators.minLength(8), Validators.maxLength(24)]
@@ -49,6 +61,8 @@ export class SignUpComponent implements OnInit {
       verification_type: [this.signUpDto?.verification_type,
         [Validators.required]
       ]
+    }, {
+      validator: fieldsMatchValidator('password', 'confirm_password')
     });
   }
 
