@@ -100,8 +100,16 @@ export function emailExistsValidator(service: AuthenticationService): any {
           if (isFalsy(value)) {
             return of(null);
           }
+          console.log("First time!!!!!!!!!!");
+          service.isEmailExists(email).subscribe((value) => {
+            console.log("Some values retrieved is " + value);
+          })
           return service.isEmailExists(email).pipe(
-            map(response => (response.exists ? { alreadyExists: true } : null)),
+            map(response => {
+              console.log("This is the response");
+              console.log(response);
+              return (response.exists ? { alreadyExists: true } : null)
+            }),
             catchError(() => of(null))
           );
         })

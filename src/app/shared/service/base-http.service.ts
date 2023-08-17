@@ -45,7 +45,7 @@ export class BaseHttpService {
     return source.pipe(
       retry(this.RETRY_TIMES),
       tap(this.logger.log),
-      map(res => res.json()),
+      map(res => res),
       catchError(this.handle)
     );
   }
