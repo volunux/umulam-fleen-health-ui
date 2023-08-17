@@ -101,7 +101,7 @@ export function emailExistsValidator(service: AuthenticationService): any {
             return of(null);
           }
           return service.isEmailExists(email).pipe(
-            map(response => (response.exists ? { emailExists: true } : null)),
+            map(response => (response.exists ? { alreadyExists: true } : null)),
             catchError(() => of(null))
           );
         })
