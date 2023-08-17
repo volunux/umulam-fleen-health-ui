@@ -116,8 +116,6 @@ export function passwordValidator(patterns: AnyRegEx, minLength: number = 8, max
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (isTruthy(control) && isTruthy(control.value)) {
       const value = control.value;
-      console.log(value);
-
       const { lowerCase: lowercaseRegex, upperCase: uppercaseRegex, digit: digitRegex, specialChar: specialCharRegex} = patterns;
 
       if (value.length < minLength || value.length > maxLength) {
