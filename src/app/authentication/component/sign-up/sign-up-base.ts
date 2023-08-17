@@ -30,9 +30,9 @@ export abstract class SignUpBaseComponent {
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator]
       ],
       email_address: [this.signUpDto?.email_address,
-        { validators: [Validators.email, Validators.required, Validators.minLength(4), Validators.maxLength(150)],
+        { validators: [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)],
           asyncValidators: [emailExistsValidator(this.getAuthenticationService())],
-          updateOn: blur
+          updateOn: 'blur'
         }
       ],
       phone_number: [this.signUpDto?.phone_number,
@@ -51,7 +51,7 @@ export abstract class SignUpBaseComponent {
         [Validators.required]
       ]
     }, {
-      validators: [fieldsMatchValidator('password', 'confirm_password')]
+      validators: [fieldsMatchValidator('password', 'confirm_password', 'Password', 'Confirm Password')]
     });
   }
 

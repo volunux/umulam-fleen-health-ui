@@ -2,6 +2,7 @@ import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angu
 import {isFalsy, isTruthy} from "../util/helpers";
 import {catchError, debounceTime, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
+import {AnyProp, AnyRegEx} from "../type/base";
 
 export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
@@ -17,7 +18,7 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
 }
 
 
-export function fieldsMatchValidator(fieldName1: string, fieldName2: string): ValidatorFn {
+export function fieldsMatchValidator(fieldName1: string, fieldName2: string, label1: string, label2: string): ValidatorFn {
   return (formGroup: AbstractControl): {[key: string]: any} | null => {
     const field1: AbstractControl | any = formGroup.get(fieldName1);
     const field2: AbstractControl | any = formGroup.get(fieldName2);
@@ -27,8 +28,9 @@ export function fieldsMatchValidator(fieldName1: string, fieldName2: string): Va
     }
 
     if (field1.value !== field2.value) {
-      field2.setErrors({ 'mismatch': true });
-      return { 'mismatch': true };
+      const value: AnyProp = { 'mismatch': true, label1, label2 };
+      field2.setErrors(value);
+      return value;
     } else {
       field2.setErrors(null);
       return null;
@@ -89,7 +91,8 @@ export function phoneNumberValidator(pattern: RegExp): ValidatorFn {
 export function emailExistsValidator(service: AuthenticationService): any {
   return (control: FormControl): Observable<any> => {
     const email = control.value;
-
+    console.log("I got here");
+    console.log(control.value);
     return of(email).pipe(
       debounceTime(3000),
       map(value => value.trim()),
@@ -104,5 +107,36 @@ export function emailExistsValidator(service: AuthenticationService): any {
         );
       })
     );
+  };
+}
+
+
+export function passwordValidator(patterns: AnyRegEx, minLength: number = 8, maxLength: number = 24): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value = control.value;
+
+    const { lowerCase: lowercaseRegex, upperCase: uppercaseRegex, digit: digitRegex, specialChar: specialCharRegex} = patterns;
+
+    if (value.length < minLength || value.length > maxLength) {
+      return { atLeastLength: true, minLength, maxLength };
+    }
+
+    if (!lowercaseRegex.test(value)) {
+      return { atLeastLowercase: true };
+    }
+
+    if (!uppercaseRegex.test(value)) {
+      return { atLeastUppercase: true };
+    }
+
+    if (!digitRegex.test(value)) {
+      return { atLeastDigit: true };
+    }
+
+    if (!specialCharRegex.test(value)) {
+      return { atLeastSpecialChar: true };
+    }
+
+    return null;
   };
 }
