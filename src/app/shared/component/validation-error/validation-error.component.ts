@@ -13,8 +13,6 @@ export class ValidationErrorComponent {
   @Input('control-label') controlLabel: string = "This field";
 
   get errors(): any[] {
-    console.log((<any>this.control).errors);
-    console.log((<any>this.control).value)
     if (this.control && this.control.invalid && (this.control.dirty || this.control.touched)) {
       return this.getValidationErrorMessages(this.control as AbstractControl, this.controlLabel);
     }
