@@ -2,11 +2,11 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {
   dateOfBirthValidator,
   emailExistsValidator,
-  enumTypeValidator, fieldsMatchValidator,
+  enumTypeValidator, fieldsMatchValidator, passwordValidator,
   pastDateValidator, phoneNumberValidator
 } from "../../../shared/validator/validator";
 import {GENDER, PROFESSIONAL_TYPES} from "../../../shared/constant/enum-constant";
-import {DATE, PHONE_NUMBER} from "../../../shared/util/format-pattern";
+import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format-pattern";
 import {SignUpDto} from "../../dto/sign-up-dto";
 import {AuthenticationService} from "../../service/authentication.service";
 
@@ -42,10 +42,10 @@ export abstract class SignUpBaseComponent {
         [Validators.required, enumTypeValidator(GENDER)]
       ],
       password: [this.signUpDto?.password,
-        [Validators.required, Validators.minLength(8), Validators.maxLength(24)]
+        [Validators.required, Validators.minLength(8), Validators.maxLength(24), passwordValidator(PASSWORD_PATTERNS)]
       ],
       confirm_password: [this.signUpDto?.confirm_password,
-        [Validators.required, Validators.minLength(8), Validators.maxLength(24)]
+        [Validators.required, Validators.minLength(8), Validators.maxLength(24), passwordValidator(PASSWORD_PATTERNS)]
       ],
       verification_type: [this.signUpDto?.verification_type,
         [Validators.required]

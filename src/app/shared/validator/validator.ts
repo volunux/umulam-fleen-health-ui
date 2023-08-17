@@ -90,53 +90,56 @@ export function phoneNumberValidator(pattern: RegExp): ValidatorFn {
 
 export function emailExistsValidator(service: AuthenticationService): any {
   return (control: FormControl): Observable<any> => {
-    const email = control.value;
-    console.log("I got here");
-    console.log(control.value);
-    return of(email).pipe(
-      debounceTime(3000),
-      map(value => value.trim()),
-      map(value => isFalsy(value) ? null : value),
-      switchMap(value => {
-        if (isFalsy(value)) {
-          return of(null);
-        }
-        return service.isEmailExists(email).pipe(
-          map(response => (response.exists ? { emailExists: true } : null)),
-          catchError(() => of(null))
-        );
-      })
-    );
+    if (isTruthy(control) && isTruthy(control.value)) {
+      const email = control.value;
+      return of(email).pipe(
+        debounceTime(3000),
+        map(value => value.trim()),
+        map(value => isFalsy(value) ? null : value),
+        switchMap(value => {
+          if (isFalsy(value)) {
+            return of(null);
+          }
+          return service.isEmailExists(email).pipe(
+            map(response => (response.exists ? { emailExists: true } : null)),
+            catchError(() => of(null))
+          );
+        })
+      );
+    }
+    return of(null);
   };
 }
 
 
 export function passwordValidator(patterns: AnyRegEx, minLength: number = 8, maxLength: number = 24): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const value = control.value;
+    if (isTruthy(control) && isTruthy(control.value)) {
+      const value = control.value;
+      console.log(value);
 
-    const { lowerCase: lowercaseRegex, upperCase: uppercaseRegex, digit: digitRegex, specialChar: specialCharRegex} = patterns;
+      const { lowerCase: lowercaseRegex, upperCase: uppercaseRegex, digit: digitRegex, specialChar: specialCharRegex} = patterns;
 
-    if (value.length < minLength || value.length > maxLength) {
-      return { atLeastLength: true, minLength, maxLength };
+      if (value.length < minLength || value.length > maxLength) {
+        return { atLeastLength: true, minLength, maxLength };
+      }
+
+      if (!lowercaseRegex.test(value)) {
+        return { atLeastLowercase: true };
+      }
+
+      if (!uppercaseRegex.test(value)) {
+        return { atLeastUppercase: true };
+      }
+
+      if (!digitRegex.test(value)) {
+        return { atLeastDigit: true };
+      }
+
+      if (!specialCharRegex.test(value)) {
+        return { atLeastSpecialChar: true };
+      }
     }
-
-    if (!lowercaseRegex.test(value)) {
-      return { atLeastLowercase: true };
-    }
-
-    if (!uppercaseRegex.test(value)) {
-      return { atLeastUppercase: true };
-    }
-
-    if (!digitRegex.test(value)) {
-      return { atLeastDigit: true };
-    }
-
-    if (!specialCharRegex.test(value)) {
-      return { atLeastSpecialChar: true };
-    }
-
     return null;
   };
 }
