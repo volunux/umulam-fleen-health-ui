@@ -22,26 +22,26 @@ export abstract class SignUpBaseComponent {
 
   public initForm(): void {
     this.signUpForm = this.getFormBuilder().group({
-      profile_type: [this.signUpDto?.profile_type,
+      profile_type: [this.signUpDto?.profileType,
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
-      first_name: [this.signUpDto?.first_name,
+      first_name: [this.signUpDto?.firstName,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      last_name: [this.signUpDto?.last_name,
+      last_name: [this.signUpDto?.lastName,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      date_of_birth: [this.signUpDto?.date_of_birth,
+      date_of_birth: [this.signUpDto?.dateOfBirth,
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator, ageLimitValidator(MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT)]
       ],
-      email_address: [this.signUpDto?.email_address,
+      email_address: [this.signUpDto?.emailAddress,
         {
           validators: [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)],
           asyncValidators: [emailExistsValidator(this.getAuthenticationService())],
           updateOn: 'blur'
         }
       ],
-      phone_number: [this.signUpDto?.phone_number,
+      phone_number: [this.signUpDto?.phoneNumber,
         [Validators.required, Validators.minLength(4), Validators.maxLength(15), phoneNumberValidator(PHONE_NUMBER)]
       ],
       gender: [this.signUpDto?.gender,
@@ -50,10 +50,10 @@ export abstract class SignUpBaseComponent {
       password: [this.signUpDto?.password,
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
-      confirm_password: [this.signUpDto?.confirm_password,
+      confirm_password: [this.signUpDto?.confirmPassword,
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
-      verification_type: [this.signUpDto?.verification_type,
+      verification_type: [this.signUpDto?.verificationType,
         [Validators.required, enumTypeValidator(VERIFICATION_TYPES)]
       ]
     }, {
@@ -66,7 +66,7 @@ export abstract class SignUpBaseComponent {
   abstract getFormBuilder(): FormBuilder;
 
   get profileType(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('profile_type');
+    return this.signUpForm?.get('profileType');
   }
 
   get firstName(): AbstractControl | null | undefined {
