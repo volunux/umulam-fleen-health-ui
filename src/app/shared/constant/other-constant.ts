@@ -1,0 +1,1 @@
+export const MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT: number = 18;

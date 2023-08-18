@@ -20,5 +20,6 @@ export const validationErrorMessages: { [key: string]: Function } = {
   atLeastUppercase: (control: AbstractControl | any, label: string)=> `${label} should contain at least an uppercase`,
   atLeastDigit: (control: AbstractControl | any, label: string)=> `${label} should contain at least a digit`,
   atLeastSpecialChar: (control: AbstractControl | any, label: string)=> `${label} should contain at least a special character`,
-  exists: (control: AbstractControl | any, label: string) => `${label} '${control?.value}' already exists.`
+  exists: (control: AbstractControl | any, label: string) => `${label} '${control?.value}' already exists.`,
+  ageLimit: (control: AbstractControl | any, label: string) => `You have to be at least ${control?.errors["ageLimit"]} to be eligible for an account.`
 };
