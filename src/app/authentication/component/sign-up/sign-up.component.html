@@ -4,41 +4,41 @@
 <form [formGroup]="signUpForm" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
 
   <div class="form-group">
-    <input type ="radio" formControlName="profile_type" value="PROFESSIONAL" id="user_type_professional"/>
+    <input type ="radio" formControlName="profileType" value="PROFESSIONAL" id="user_type_professional"/>
     <label for="user_type_professional">Professional</label>
 
-    <input type ="radio" formControlName="profile_type" value="USER" id="user_type_user"/>
+    <input type ="radio" formControlName="profileType" value="USER" id="user_type_user"/>
     <label for="user_type_user">User</label><br/>
     <app-validation-error [control]="profileType" [control-label]="'Profile Type'"></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="first_name">First Name</label>
-    <input type="text" formControlName="first_name" id="first_name"/>
+    <input type="text" formControlName="firstName" id="first_name"/>
     <app-validation-error [control]="firstName" [control-label]="'First Name'"></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="last_name">Last Name</label>
-    <input type="text" formControlName="last_name" id="last_name"/>
+    <input type="text" formControlName="lastName" id="last_name"/>
     <app-validation-error [control]="lastName" [control-label]="'Last Name'"></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="date_of_birth">Date of Birth</label>
-    <input type="text" formControlName="date_of_birth" id="date_of_birth"/>
+    <input type="text" formControlName="dateOfBirth" id="date_of_birth"/>
     <app-validation-error [control]="dateOfBirth" [control-label]="'Date of Birth'"></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="email_address">Email Address</label>
-    <input type="email" formControlName="email_address" id="email_address"/>
+    <input type="email" formControlName="emailAddress" id="email_address"/>
     <app-validation-error [control]="emailAddress" [control-label]="'Email Address'" ></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="phone_number">Phone Number</label>
-    <input type="text" formControlName="phone_number" id="phone_number"/>
+    <input type="text" formControlName="phoneNumber" id="phone_number"/>
     <app-validation-error [control]="phoneNumber" [control-label]="'Phone Number'"></app-validation-error>
   </div>
 
@@ -61,12 +61,12 @@
 
   <div class="form-group">
     <label for="confirm_password">Confirm Password</label>
-    <input type="password" formControlName="confirm_password" id="confirm_password"/>
+    <input type="password" formControlName="confirmPassword" id="confirm_password"/>
     <app-validation-error [control]="confirmPassword" [control-label]="'Confirm Password'"></app-validation-error>
   </div>
 
   <div class="form-group">
-    <input type="hidden" formControlName="verification_type" value="EMAIL"/>
+    <input type="hidden" formControlName="verificationType" value="EMAIL"/>
     <app-validation-error [control]="verificationType" [control-label]="'Verification Type'"></app-validation-error>
   </div>
 
