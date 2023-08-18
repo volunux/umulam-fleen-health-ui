@@ -1,7 +1,7 @@
 <p>sign-up works!</p>
 
 
-<form [formGroup]="signUpForm" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
+<form [formGroup]="signUpForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
 
   <div class="form-group">
     <input type ="radio" formControlName="profileType" value="PROFESSIONAL" id="user_type_professional"/>

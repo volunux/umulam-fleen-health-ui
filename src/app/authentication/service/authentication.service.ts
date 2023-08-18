@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClientService} from "../../shared/service/http-client.service";
 import {BaseRequest} from "../../shared/type/http";
 import {Observable} from "rxjs";
-import {toBody} from "../../shared/transformer/transformer";
 
 @Injectable()
 export class AuthenticationService {
