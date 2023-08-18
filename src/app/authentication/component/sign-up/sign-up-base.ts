@@ -1,6 +1,7 @@
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
-  dateOfBirthValidator, emailExistsValidator,
+  dateOfBirthValidator,
+  emailExistsValidator,
   enumTypeValidator,
   fieldsMatchValidator,
   passwordValidator,
