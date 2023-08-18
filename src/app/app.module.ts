@@ -7,8 +7,9 @@ import {AuthenticationModule} from "./authentication/authentication.module";
 import {FleenHeatlhComponent} from './base/component/fleen-heatlh/fleen-heatlh.component';
 import {TemplatePageTitleStrategy} from "./base/strategy/template-page-title.strategy";
 import {TitleStrategy} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./shared/shared.module";
+import {ContentTypeInterceptor} from "./base/interceptor/content-type.interceptor";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {SharedModule} from "./shared/shared.module";
     SharedModule
   ],
   providers: [
-    {provide: TitleStrategy, useClass: TemplatePageTitleStrategy}
+    {provide: TitleStrategy, useClass: TemplatePageTitleStrategy},
+    {provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true}
   ],
   exports: [],
   bootstrap: [AppComponent]

@@ -34,7 +34,7 @@ export abstract class SignUpBaseComponent {
       dateOfBirth: [this.signUpDto?.dateOfBirth,
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator, ageLimitValidator(MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT)]
       ],
-      email_address: [this.signUpDto?.emailAddress,
+      emailAddress: [this.signUpDto?.emailAddress,
         {
           validators: [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)],
           asyncValidators: [emailExistsValidator(this.getAuthenticationService())],
@@ -57,7 +57,7 @@ export abstract class SignUpBaseComponent {
         [Validators.required, enumTypeValidator(VERIFICATION_TYPES)]
       ]
     }, {
-      validators: [fieldsMatchValidator('password', 'confirm_password', 'Password', 'Confirm Password')]
+      validators: [fieldsMatchValidator('password', 'confirmPassword', 'Password', 'Confirm Password')]
     });
   }
 
