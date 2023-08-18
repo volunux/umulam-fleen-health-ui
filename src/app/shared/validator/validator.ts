@@ -10,7 +10,7 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
       const value = control.value;
 
       if (!allowedValues.includes(value)) {
-        return {'invalidType': value, allowedValues};
+        return {invalidType: value, allowedValues};
       }
     }
     return null;
@@ -28,7 +28,7 @@ export function fieldsMatchValidator(fieldName1: string, fieldName2: string, lab
     }
 
     if (field1.value !== field2.value) {
-      const value: AnyProp = { 'mismatch': true, label1, label2 };
+      const value: AnyProp = { mismatch: true, label1, label2 };
       field2.setErrors(value);
       return value;
     } else {
@@ -45,7 +45,6 @@ export function dateOfBirthValidator(pattern: RegExp) {
         return { invalidDateFormat: true};
       }
     }
-
     return null;
   };
 }
@@ -59,7 +58,6 @@ export function pastDateValidator(control: FormControl): ValidationErrors | null
       return { pastDate: true};
     }
   }
-
   return null;
 }
 
