@@ -22,16 +22,16 @@ export abstract class SignUpBaseComponent {
 
   public initForm(): void {
     this.signUpForm = this.getFormBuilder().group({
-      profile_type: [this.signUpDto?.profileType,
+      profileType: [this.signUpDto?.profileType,
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
-      first_name: [this.signUpDto?.firstName,
+      firstName: [this.signUpDto?.firstName,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      last_name: [this.signUpDto?.lastName,
+      lastName: [this.signUpDto?.lastName,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      date_of_birth: [this.signUpDto?.dateOfBirth,
+      dateOfBirth: [this.signUpDto?.dateOfBirth,
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator, ageLimitValidator(MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT)]
       ],
       email_address: [this.signUpDto?.emailAddress,
@@ -41,7 +41,7 @@ export abstract class SignUpBaseComponent {
           updateOn: 'blur'
         }
       ],
-      phone_number: [this.signUpDto?.phoneNumber,
+      phoneNumber: [this.signUpDto?.phoneNumber,
         [Validators.required, Validators.minLength(4), Validators.maxLength(15), phoneNumberValidator(PHONE_NUMBER)]
       ],
       gender: [this.signUpDto?.gender,
@@ -50,10 +50,10 @@ export abstract class SignUpBaseComponent {
       password: [this.signUpDto?.password,
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
-      confirm_password: [this.signUpDto?.confirmPassword,
+      confirmPassword: [this.signUpDto?.confirmPassword,
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
-      verification_type: [this.signUpDto?.verificationType,
+      verificationType: [this.signUpDto?.verificationType,
         [Validators.required, enumTypeValidator(VERIFICATION_TYPES)]
       ]
     }, {
@@ -70,23 +70,23 @@ export abstract class SignUpBaseComponent {
   }
 
   get firstName(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('first_name');
+    return this.signUpForm?.get('firstName');
   }
 
   get lastName(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('last_name');
+    return this.signUpForm?.get('lastName');
   }
 
   get dateOfBirth(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('date_of_birth');
+    return this.signUpForm?.get('dateOfBirth');
   }
 
   get emailAddress(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('email_address');
+    return this.signUpForm?.get('emailAddress');
   }
 
   get phoneNumber(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('phone_number');
+    return this.signUpForm?.get('phoneNumber');
   }
 
   get gender(): AbstractControl | null | undefined {
@@ -98,10 +98,10 @@ export abstract class SignUpBaseComponent {
   }
 
   get confirmPassword(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('confirm_password');
+    return this.signUpForm?.get('confirmPassword');
   }
 
   get verificationType(): AbstractControl | null | undefined {
-    return this.signUpForm?.get('verification_type');
+    return this.signUpForm?.get('verificationType');
   }
 }
