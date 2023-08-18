@@ -5,6 +5,7 @@ import {isObject, isTruthy} from "../util/helpers";
 import {AnyArray, AnyProp} from "../type/base";
 import {BaseRequest, RequestMethod} from "../type/http";
 import {catchError, map, Observable, ObservableInput, retry, tap, throwError} from "rxjs";
+import {toBody} from "../transformer/transformer";
 
 @Injectable()
 export class BaseHttpService {
@@ -50,11 +51,20 @@ export class BaseHttpService {
     );
   }
 
-  public toRequest(pathParams: AnyArray, queryParams?: AnyProp, method?: RequestMethod): BaseRequest {
-    return {
-      pathParams,
-      queryParams,
-      method: isTruthy(method) ? method : 'GET'
-    };
+  public toRequest(pathParams: AnyArray, queryParams?: AnyProp, bodyOrMethod?: AnyProp | RequestMethod, method?: RequestMethod): BaseRequest {
+    if (typeof bodyOrMethod === 'string') {
+      return {
+        pathParams,
+        queryParams,
+        method: isTruthy(method) ? method : bodyOrMethod,
+      };
+    } else {
+      return {
+        pathParams,
+        queryParams,
+        body: toBody(bodyOrMethod),
+        method: isTruthy(method) ? method : 'GET',
+      };
+    }
   }
 }
