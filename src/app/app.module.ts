@@ -8,7 +8,6 @@ import {FleenHeatlhComponent} from './base/component/fleen-heatlh/fleen-heatlh.c
 import {TemplatePageTitleStrategy} from "./base/strategy/template-page-title.strategy";
 import {TitleStrategy} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
-import {FormGroupComponent} from './shared/component/form-field/form-group.component';
 import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
@@ -26,9 +25,7 @@ import {SharedModule} from "./shared/shared.module";
   providers: [
     {provide: TitleStrategy, useClass: TemplatePageTitleStrategy}
   ],
-  exports: [
-    FormGroupComponent
-  ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
