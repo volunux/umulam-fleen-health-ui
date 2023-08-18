@@ -12,7 +12,8 @@ export class SignUpDto {
   public verification_type: string | undefined;
 
 
-  public constructor() {
+  public constructor(data: SignUpDto) {
+    this.profile_type = data.profile_type;
     this.verification_type = "EMAIL";
   }
 
