@@ -2,7 +2,9 @@
 
 
 <form [formGroup]="signUpForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
-
+  <div class="form-error-message">
+    {{errorMessage}}
+  </div>
   <div class="form-group">
     <input type ="radio" formControlName="profileType" value="PROFESSIONAL" id="user_type_professional"/>
     <label for="user_type_professional">Professional</label>

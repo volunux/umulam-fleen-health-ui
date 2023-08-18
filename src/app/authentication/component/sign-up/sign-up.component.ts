@@ -31,11 +31,13 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
     if (isTruthy(this.signUpForm)) {
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
-          next: (value): void => {
+          next: (result): void => {
             console.log("Success");
-            console.log(value);
+            console.log(result);
           },
-          error: (error): void => {
+          error: (result): void => {
+            const { error } = result;
+            this.errorMessage = error.message;
             console.log(error);
           }
       });

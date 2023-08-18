@@ -19,6 +19,7 @@ export abstract class SignUpBaseComponent {
 
   protected signUpDto: SignUpDto | undefined = new SignUpDto();
   protected signUpForm: FormGroup = new FormGroup<any>({});
+  protected errorMessage: string | undefined;
 
   public initForm(): void {
     this.signUpForm = this.getFormBuilder().group({
@@ -104,4 +105,5 @@ export abstract class SignUpBaseComponent {
   get verificationType(): AbstractControl | null | undefined {
     return this.signUpForm?.get('verificationType');
   }
+
 }
