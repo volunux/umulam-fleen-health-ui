@@ -1,7 +1,6 @@
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
-  dateOfBirthValidator,
-  emailExistsValidator,
+  dateOfBirthValidator, emailExistsValidator,
   enumTypeValidator,
   fieldsMatchValidator,
   passwordValidator,
@@ -33,7 +32,8 @@ export abstract class SignUpBaseComponent {
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator]
       ],
       email_address: [this.signUpDto?.email_address,
-        { validators: [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)],
+        {
+          validators: [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)],
           asyncValidators: [emailExistsValidator(this.getAuthenticationService())],
           updateOn: 'blur'
         }

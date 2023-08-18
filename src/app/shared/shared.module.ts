@@ -7,13 +7,15 @@ import {ValidationErrorComponent} from './component/validation-error/validation-
 import {HttpClientModule} from "@angular/common/http";
 import {HttpClientService} from "./service/http-client.service";
 import {LoggerService} from "./service/logger.service";
+import {EmailExistsDirective} from './directive/email-exists.directive';
 
 
 @NgModule({
   declarations: [
     FormGroupComponent,
     ShowErrorDirective,
-    ValidationErrorComponent
+    ValidationErrorComponent,
+    EmailExistsDirective
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import {LoggerService} from "./service/logger.service";
   exports: [
     FormGroupComponent,
     ShowErrorDirective,
-    ValidationErrorComponent
+    ValidationErrorComponent,
+    EmailExistsDirective
   ]
 })
 export class SharedModule { }

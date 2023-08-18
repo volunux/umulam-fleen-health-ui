@@ -20,5 +20,5 @@ export const validationErrorMessages: { [key: string]: Function } = {
   atLeastUppercase: (control: AbstractControl | any, label: string)=> `${label} should contain at least an uppercase`,
   atLeastDigit: (control: AbstractControl | any, label: string)=> `${label} should contain at least a digit`,
   atLeastSpecialChar: (control: AbstractControl | any, label: string)=> `${label} should contain at least a special character`,
-  alreadyExists: (control: AbstractControl | any, label: string) => `${label} '${control?.value}' already exists.`
+  exists: (control: AbstractControl | any, label: string) => `${label} '${control?.value}' already exists.`
 };

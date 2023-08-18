@@ -1,6 +1,6 @@
 import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {isFalsy, isTruthy} from "../util/helpers";
-import {catchError, debounceTime, map, Observable, of, switchMap} from "rxjs";
+import {equalsIgnoreCase, isFalsy, isTruthy} from "../util/helpers";
+import {catchError, delay, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
 import {AnyProp, AnyRegEx} from "../type/base";
 
@@ -89,27 +89,26 @@ export function phoneNumberValidator(pattern: RegExp): ValidatorFn {
 }
 
 export function emailExistsValidator(service: AuthenticationService): any {
+  let previousEmail: string;
   return (control: FormControl): Observable<any> => {
     if (isTruthy(control) && isTruthy(control.value)) {
       const email = control.value;
+
+      if (equalsIgnoreCase(previousEmail, email)) {
+        return of(null);
+      }
+      previousEmail = email;
+
       return of(email).pipe(
-        debounceTime(3000),
+        delay(3000),
         map(value => value.trim()),
         map(value => isFalsy(value) ? null : value),
         switchMap(value => {
           if (isFalsy(value)) {
             return of(null);
           }
-          console.log("First time!!!!!!!!!!");
-          service.isEmailExists(email).subscribe((value) => {
-            console.log("Some values retrieved is " + value);
-          })
           return service.isEmailExists(email).pipe(
-            map(response => {
-              console.log("This is the response");
-              console.log(response);
-              return (response.exists ? { alreadyExists: true } : null)
-            }),
+            map(response => (response.exists ? { exists: true } : null)),
             catchError(() => of(null))
           );
         })
