@@ -38,7 +38,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
           },
           error: (result): void => {
             const { error } = result;
-            const type = error;
+            const { type } = error;
             if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
               this.setErrorsFromApiResponse(error.fields)
             }

@@ -19,10 +19,9 @@ import {BaseFormComponent} from "../../../base/component/base-form/base-form.com
 export abstract class SignUpBaseComponent extends BaseFormComponent {
 
   protected signUpDto: SignUpDto | undefined = new SignUpDto();
-  protected signUpForm: FormGroup = new FormGroup<any>({});
 
   public initForm(): void {
-    this.signUpForm = this.getFormBuilder().group({
+    this.fleenHealthForm = this.getFormBuilder().group({
       profileType: [this.signUpDto?.profileType,
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
@@ -104,6 +103,10 @@ export abstract class SignUpBaseComponent extends BaseFormComponent {
 
   get verificationType(): AbstractControl | null | undefined {
     return this.signUpForm?.get('verificationType');
+  }
+
+  get signUpForm(): FormGroup {
+    return this.fleenHealthForm;
   }
 
 }
