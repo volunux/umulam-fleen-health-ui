@@ -1,0 +1,9 @@
+<div class="otp-input-container">
+  <form>
+    <label for="verification_code">Verification Code:</label>
+    <input type="text" [formControl]="otp" id="verification_code"/>
+    <app-validation-error [control]="otp" [control-label]="'Verification code'"></app-validation-error>
+    <button (click)="submit()">Submit</button>
+  </form>
+</div>
+

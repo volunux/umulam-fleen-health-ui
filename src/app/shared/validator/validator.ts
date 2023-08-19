@@ -161,3 +161,19 @@ export function ageLimitValidator(minAge: number) {
     return null;
   };
 }
+
+export function codeValidator(pattern: RegExp, minLength: number = 1, maxLength: number = 8): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (isTruthy(control) && isTruthy(control.value)) {
+      let otpValue: string = control.value;
+      if (!pattern.test(otpValue)) {
+        return { invalidOTP: true };
+      }
+
+      if (otpValue.length < minLength || otpValue.length > maxLength) {
+        return { atLeastLength: true, minLength, maxLength };
+      }
+    }
+    return null;
+  };
+}

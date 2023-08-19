@@ -35,6 +35,15 @@ export abstract class BaseFormComponent {
     }
   }
 
+  protected setExternalFormErrorsFromApiResponse(errors: AnyProp[], form: FormGroup): void {
+    if (isTruthy(errors) && Array.isArray(errors)) {
+      errors.forEach((error): void => {
+        this.setControlError(form, error[this.ERROR_FIELD_NAME], this.getMessagesInSentence(error[this.ERROR_MESSAGES_NAME]));
+      });
+      form.markAsTouched();
+    }
+  }
+
   protected setControlError(value: FormGroup | AbstractControl | any[] | any, fieldName: string, errorMessage: string): void {
     const control: AbstractControl | any = value.get(fieldName) || value.get(toCamelCase(fieldName));
     if (value instanceof FormGroup) {

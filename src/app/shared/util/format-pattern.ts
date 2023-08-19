@@ -10,3 +10,5 @@ export const PASSWORD_PATTERNS: { [key: string]: RegExp } = {
   digit: /\d/,
   specialChar: /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/
 }
+
+export const VERIFICATION_CODE: RegExp = /^\d+$/;

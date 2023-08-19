@@ -4,15 +4,19 @@ import {ValidationErrorComponent} from './component/validation-error/validation-
 import {HttpClientModule} from "@angular/common/http";
 import {HttpClientService} from "./service/http-client.service";
 import {LoggerService} from "./service/logger.service";
+import { OtpVerificationComponent } from './component/otp-verification/otp-verification.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [
     ValidationErrorComponent,
+    OtpVerificationComponent,
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     HttpClientService,
@@ -20,6 +24,7 @@ import {LoggerService} from "./service/logger.service";
   ],
   exports: [
     ValidationErrorComponent,
+    OtpVerificationComponent,
   ]
 })
 export class SharedModule { }

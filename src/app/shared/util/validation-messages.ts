@@ -22,5 +22,6 @@ export const validationErrorMessages: { [key: string]: Function } = {
   atLeastSpecialChar: (control: AbstractControl | any, label: string)=> `${label} should contain at least a special character`,
   exists: (control: AbstractControl | any, label: string) => `${label} '${control?.value}' already exists.`,
   ageLimit: (control: AbstractControl | any, label: string) => `You have to be at least ${control?.errors["minAge"]} years of age to be eligible for an account.`,
-  fieldError: (control: AbstractControl | any, label: string) => `${control?.errors["fieldError"]}`
+  fieldError: (control: AbstractControl | any, label: string) => `${control?.errors["fieldError"]}`,
+  invalidOTP: (control: AbstractControl | any, label: string) => `${control.value} is not a valid verification code.`,
 };
