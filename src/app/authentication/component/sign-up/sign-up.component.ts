@@ -34,9 +34,10 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
           next: (result): void => {
-            this.isSubmitting = false;
+            this.disableSubmitting();
           },
           error: (result): void => {
+            this.disableSubmitting();
             const { error } = result;
             const { type } = error;
             if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
@@ -44,8 +45,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
               return;
             }
             this.errorMessage = error.message;
-            this.isSubmitting = false;
-          },
+          }
       });
     }
   }

@@ -73,4 +73,8 @@ export abstract class BaseFormComponent {
     }
   }
 
+  protected disableSubmitting(): void {
+    this.isSubmitting = false;
+  }
+
 }
