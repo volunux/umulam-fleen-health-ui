@@ -10,13 +10,6 @@ export abstract class BaseFormComponent {
   private readonly ERROR_MESSAGES_NAME: string = "errors";
   protected isSubmitting: boolean = false;
 
-  public getFormKeys(): string[] {
-    if (isTruthy(this.fleenHealthForm)) {
-      return Object.keys(this.fleenHealthForm.value);
-    }
-    return [];
-  }
-
   private getAllPropertyKeys(obj: any): string[] {
     const keys: string[] = [];
     if (isObject(obj)) {
@@ -33,7 +26,7 @@ export abstract class BaseFormComponent {
     return keys;
   }
 
-  protected setErrorsFromApiResponse(errors: AnyProp[]) {
+  protected setErrorsFromApiResponse(errors: AnyProp[]): void {
     if (isTruthy(errors) && Array.isArray(errors)) {
       errors.forEach((error): void => {
         this.setControlError(this.fleenHealthForm, error[this.ERROR_FIELD_NAME], this.getMessagesInSentence(error[this.ERROR_MESSAGES_NAME]));
@@ -42,7 +35,7 @@ export abstract class BaseFormComponent {
     }
   }
 
-  protected setControlError(value: FormGroup | AbstractControl | any[] | any, fieldName: string, errorMessage: string) {
+  protected setControlError(value: FormGroup | AbstractControl | any[] | any, fieldName: string, errorMessage: string): void {
     const control: AbstractControl | any = value.get(fieldName) || value.get(toCamelCase(fieldName));
     if (value instanceof FormGroup) {
       this.setFieldError(control, errorMessage, convertToDesiredFormat(fieldName));
