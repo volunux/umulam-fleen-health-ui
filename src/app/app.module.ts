@@ -10,6 +10,8 @@ import {TitleStrategy} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./shared/shared.module";
 import {ContentTypeInterceptor} from "./base/interceptor/content-type.interceptor";
+import {LocalStorageService} from "./base/service/local-storage.service";
+import {AuthorizationInterceptor} from "./base/interceptor/authorization.interceptor";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import {ContentTypeInterceptor} from "./base/interceptor/content-type.intercepto
   ],
   providers: [
     {provide: TitleStrategy, useClass: TemplatePageTitleStrategy},
-    {provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true},
+    LocalStorageService
   ],
   exports: [],
   bootstrap: [AppComponent]

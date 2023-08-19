@@ -22,12 +22,12 @@ export class AuthenticationService {
   }
 
   public confirmSignUp(verificationDto: VerificationCodeDto): Observable<any> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'confirm-sign-up'], {}, { ...verificationDto });
+    const req: BaseRequest = this.httpService.toRequest(['verification', 'confirm-sign-up'], {}, { ...verificationDto });
     return this.httpService.post(req);
   }
 
   public resendOtp(resendVerificationDto: ResendVerificationCodeDto): Observable<any> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'resend-pre-verification-code'], {}, { ...resendVerificationDto });
+    const req: BaseRequest = this.httpService.toRequest(['verification', 'resend-pre-verification-code'], {}, { ...resendVerificationDto });
     return this.httpService.post(req);
   }
 

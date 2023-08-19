@@ -14,7 +14,7 @@ import {isFalsy} from "../../../shared/util/helpers";
 export class OtpVerificationComponent {
 
   protected errorMessage: string | undefined;
-  @Input('verification-type') public verificationType: VERIFICATION_TYPE = 'EMAIL';
+  public verificationType: VERIFICATION_TYPE = 'EMAIL';
   @Input('phone-number') public phoneNumber: string | undefined;
   @Input('email-address') public emailAddress: string | undefined;
   public isSubmitting: boolean = false;
@@ -34,14 +34,13 @@ export class OtpVerificationComponent {
   }
 
   public resendOtp(): void {
+    console.log("Got here");
+    console.log("Submission status " + this.isSubmitting);
     if (isFalsy(this.isSubmitting)) {
       this.isSubmitting = true;
-      const verificationDto: ResendVerificationCodeDto = { verificationType: this.verificationType };
-      if (this.verificationType == 'EMAIL') {
-        verificationDto.emailAddress = this.emailAddress;
-      } else if (this.verificationType === 'PHONE') {
-        verificationDto.phoneNumber = this.phoneNumber;
-      }
+      const verificationDto: ResendVerificationCodeDto = { verificationType: this.verificationType, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber };
+      console.log("Verification DTO");
+      console.log(verificationDto);
 
       this.authenticationService.resendOtp(verificationDto)
         .subscribe({
@@ -50,6 +49,7 @@ export class OtpVerificationComponent {
           error: (result): void => {
             const { error } = result;
             this.errorMessage = error.message;
+            this.isSubmitting = false;
           },
           complete: (): void => {
             this.isSubmitting = false;

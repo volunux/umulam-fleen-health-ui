@@ -49,6 +49,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
               return;
             }
             this.errorMessage = error.message;
+            this.disableSubmitting();
           },
           complete: (): void => {
             this.disableSubmitting();
@@ -68,6 +69,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
           error: (result): void => {
             const { error } = result;
             this.otpInputComponent.setErrorMessage(error.message);
+            this.isSubmitting = false;
           },
           complete: (): void => {
             this.disableSubmitting();
