@@ -10,11 +10,10 @@ export class ContentTypeInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (SUPPORTED_CONTENT_TYPES.includes(<string>request.headers.get('Content-Type'))) {
+    if (!SUPPORTED_CONTENT_TYPES.includes(<string>request.headers.get('Content-Type'))) {
       const modifiedRequest: HttpRequest<any> = request.clone({
         setHeaders: { 'Content-Type': CONTENT_TYPE_APPLICATION_JSON },
       });
-
       return next.handle(modifiedRequest);
     }
     return next.handle(request);

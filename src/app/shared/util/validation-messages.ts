@@ -1,6 +1,6 @@
 import {AbstractControl} from "@angular/forms";
 import {DATE_FORMAT} from "./format-pattern";
-import {capitalize, joining} from "./helpers";
+import {capitalizeMany, joining} from "./helpers";
 
 export const validationErrorMessages: { [key: string]: Function } = {
   required: (control: AbstractControl | any, label: string) => `${label} is required and cannot be empty.`,
@@ -9,7 +9,7 @@ export const validationErrorMessages: { [key: string]: Function } = {
   min: (control: AbstractControl | any, label: string) => `${label} '${control.value}' should be greater than or equal to ${control?.errors["min"].min}`,
   max: (control: AbstractControl | any, label: string) => `${label} '${control.value}' should be less than or equal to ${control?.errors["max"].max}`,
   email: (control: AbstractControl | any, label: string) => `${label} '${control.value}' is not a valid email`,
-  invalidType: (control: AbstractControl | any, label: string) => `${label} '${control.value}' is not valid. Use ${joining(capitalize(control?.errors["allowedValues"]))}`,
+  invalidType: (control: AbstractControl | any, label: string) => `${label} '${control.value}' is not valid. Use ${joining(capitalizeMany(control?.errors["allowedValues"]))}`,
   invalidDateFormat: (control: AbstractControl | any, label: string) => `${label} is not a valid date. Use ${DATE_FORMAT}`,
   pastDate: (control: AbstractControl | any, label: string) => `${label} ${control.value} should be in the past`,
   futureDate: (control: AbstractControl | any, label: string) => `${label} ${control.value} should be in the future`,
@@ -21,5 +21,6 @@ export const validationErrorMessages: { [key: string]: Function } = {
   atLeastDigit: (control: AbstractControl | any, label: string)=> `${label} should contain at least a digit`,
   atLeastSpecialChar: (control: AbstractControl | any, label: string)=> `${label} should contain at least a special character`,
   exists: (control: AbstractControl | any, label: string) => `${label} '${control?.value}' already exists.`,
-  ageLimit: (control: AbstractControl | any, label: string) => `You have to be at least ${control?.errors["minAge"]} years of age to be eligible for an account.`
+  ageLimit: (control: AbstractControl | any, label: string) => `You have to be at least ${control?.errors["minAge"]} years of age to be eligible for an account.`,
+  fieldError: (control: AbstractControl | any, label: string) => `${control?.errors["fieldError"]}`
 };

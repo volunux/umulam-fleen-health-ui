@@ -14,12 +14,12 @@ import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format
 import {SignUpDto} from "../../dto/sign-up-dto";
 import {AuthenticationService} from "../../service/authentication.service";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
+import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 
-export abstract class SignUpBaseComponent {
+export abstract class SignUpBaseComponent extends BaseFormComponent {
 
   protected signUpDto: SignUpDto | undefined = new SignUpDto();
   protected signUpForm: FormGroup = new FormGroup<any>({});
-  protected errorMessage: string | undefined;
 
   public initForm(): void {
     this.signUpForm = this.getFormBuilder().group({

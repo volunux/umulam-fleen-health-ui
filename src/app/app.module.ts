@@ -10,11 +10,15 @@ import {TitleStrategy} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./shared/shared.module";
 import {ContentTypeInterceptor} from "./base/interceptor/content-type.interceptor";
+import { BaseComponent } from './base/component/base/base.component';
+import { BaseFormComponent } from './base/component/base-form/base-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FleenHeatlhComponent,
+    BaseComponent,
+    BaseFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
-import {SignUpBaseComponent} from "./sign-up-base";
-import {isTruthy} from "../../../shared/util/helpers";
+import {SignUpBaseComponent} from "./sign-up-base-component";
+import {equalsIgnoreCase, isTruthy} from "../../../shared/util/helpers";
+import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
 
 @Component({
   selector: 'app-sign-up',
@@ -37,6 +38,10 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
           },
           error: (result): void => {
             const { error } = result;
+            const type = error;
+            if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
+              this.setErrorsFromApiResponse(error.fields)
+            }
             this.errorMessage = error.message;
             console.log(error);
           }
