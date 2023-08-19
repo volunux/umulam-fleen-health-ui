@@ -5,3 +5,4 @@ export const FORM_VALIDATION_ERROR_TYPE: string = "DATA_VALIDATION";
 export const AUTHORIZATION_HEADER: string = "Authorization";
 export const AUTHORIZATION_BEARER: string = "Bearer {}";
 export const AUTHORIZATION_TOKEN_KEY: string = "AUTH_TOKEN";
+export const REFRESH_AUTHORIZATION_TOKEN_KEY: string = "REFRESH_TOKEN";

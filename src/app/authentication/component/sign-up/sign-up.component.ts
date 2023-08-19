@@ -38,8 +38,9 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.isSubmitting = true;
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
-          next: (result): void => {
+          next: (result: any): void => {
             this.isOtpVerificationStage = true;
+            this.setAuthToken(result);
           },
           error: (result): void => {
             const { error } = result;
@@ -63,8 +64,8 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.isSubmitting = true;
       this.authenticationService.confirmSignUp(verification)
         .subscribe({
-          next: (result): void => {
-
+          next: (result: any): void => {
+            this.setAuthToken(result);
           },
           error: (result): void => {
             const { error } = result;
@@ -76,6 +77,11 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
           }
         });
     }
+  }
+
+  private setAuthToken(result: any): void {
+    this.authenticationService.saveAuthToken(result["access_token"]);
+    this.authenticationService.saveRefreshToken(result["refresh_token"]);
   }
 
 }
