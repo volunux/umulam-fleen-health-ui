@@ -24,6 +24,11 @@ export class AuthenticationService {
     return this.httpService.post(req);
   }
 
+  public signIn(data: any): Observable<any> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-in'], {}, data);
+    return this.httpService.post(req);
+  }
+
   public confirmSignUp(verificationDto: VerificationCodeDto): Observable<any> {
     const req: BaseRequest = this.httpService.toRequest(['verification', 'confirm-sign-up'], {}, { ...verificationDto });
     return this.httpService.post(req);
@@ -40,6 +45,11 @@ export class AuthenticationService {
 
   public saveRefreshToken(token: string): void {
     this.localStorageService.setObject(REFRESH_AUTHORIZATION_TOKEN_KEY, token);
+  }
+
+  public setAuthToken(result: any): void {
+    this.saveAuthToken(result["access_token"]);
+    this.saveRefreshToken(result["refresh_token"]);
   }
 
 }

@@ -15,8 +15,6 @@ import {SignUpDto} from "../../dto/sign-up-dto";
 import {AuthenticationService} from "../../service/authentication.service";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
-import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
-import {Component, ViewChild} from "@angular/core";
 
 export abstract class SignUpBaseComponent extends BaseFormComponent {
 

@@ -21,7 +21,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
     super();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initForm();
   }
 
@@ -40,7 +40,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
         .subscribe({
           next: (result: any): void => {
             this.isOtpVerificationStage = true;
-            this.setAuthToken(result);
+            this.authenticationService.setAuthToken(result);
           },
           error: (result): void => {
             const { error } = result;
@@ -65,7 +65,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.authenticationService.confirmSignUp(verification)
         .subscribe({
           next: (result: any): void => {
-            this.setAuthToken(result);
+            this.authenticationService.setAuthToken(result);
           },
           error: (result): void => {
             const { error } = result;
@@ -77,11 +77,6 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
           }
         });
     }
-  }
-
-  private setAuthToken(result: any): void {
-    this.authenticationService.saveAuthToken(result["access_token"]);
-    this.authenticationService.saveRefreshToken(result["refresh_token"]);
   }
 
 }
