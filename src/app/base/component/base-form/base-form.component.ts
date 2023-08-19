@@ -1,5 +1,5 @@
 import {AbstractControl, FormGroup} from "@angular/forms";
-import {capitalize, isObject, isTruthy} from "../../../shared/util/helpers";
+import {convertToDesiredFormat, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
 
 export class BaseFormComponent {
@@ -33,25 +33,33 @@ export class BaseFormComponent {
   }
 
   protected setErrorsFromApiResponse(errors: AnyProp[]) {
-    errors.forEach((error) => {
-      this.setControlError(this.fleenHealthForm, error[this.ERROR_FIELD_NAME], this.getMessagesInSentence(error[this.ERROR_MESSAGES_NAME]));
-    });
+    if (isTruthy(errors) && Array.isArray(errors)) {
+      errors.forEach((error): void => {
+        this.setControlError(this.fleenHealthForm, error[this.ERROR_FIELD_NAME], this.getMessagesInSentence(error[this.ERROR_MESSAGES_NAME]));
+      });
+      this.fleenHealthForm.markAsTouched();
+    }
   }
 
-  protected setControlError(group: FormGroup | any[] | any, fieldName: string, errorMessage: string) {
-    if (group instanceof FormGroup) {
-      const control: AbstractControl | any = group.get(fieldName) || group.get(capitalize(fieldName));
-      if (isTruthy(control)) {
-        control.setErrors({ fieldError: errorMessage, fieldName: capitalize(fieldName) });
-      }
-    } else if (Array.isArray(group)) {
-      group.forEach((subGroup): void => {
+  protected setControlError(value: FormGroup | AbstractControl | any[] | any, fieldName: string, errorMessage: string) {
+    const control: AbstractControl | any = value.get(fieldName) || value.get(toCamelCase(fieldName));
+    if (value instanceof FormGroup) {
+      this.setFieldError(control, errorMessage, convertToDesiredFormat(fieldName));
+    } else if (Array.isArray(value)) {
+      value.forEach((subGroup): void => {
         this.setControlError(subGroup, fieldName, errorMessage);
       });
-    } else if (isObject(group)) {
-      for (const key in (<any>group)) {
-        if (group.hasOwnProperty(key) && isObject(group[key])) {
-          this.setControlError(group[key], fieldName, errorMessage);
+    } else if (value instanceof AbstractControl) {
+      this.setFieldError(control, errorMessage, convertToDesiredFormat(fieldName));
+      if (value instanceof FormGroup) {
+        Object.keys(value.controls).forEach((key) => {
+          this.setControlError(value.get(key), fieldName, errorMessage);
+        });
+      }
+    } else if (isObject(value) && Array.isArray(value)) {
+      for (const key in (<any>value)) {
+        if (value.hasOwnProperty(key) && isObject(value[key])) {
+          this.setControlError(value[key], fieldName, errorMessage);
         }
       }
     }
@@ -62,6 +70,13 @@ export class BaseFormComponent {
       return messages.join('. ') + '.';
     }
     return '';
+  }
+
+  protected setFieldError(control: any, errorMessage, fieldName): void {
+    if (isTruthy(control)) {
+      control.setErrors({ fieldError: errorMessage, labelName: convertToDesiredFormat(fieldName) });
+      control.markAsTouched();
+    }
   }
 
 }

@@ -40,3 +40,37 @@ export function equalsIgnoreCase(value1: string, value2: string): boolean {
 export function isObject(value: any): boolean {
   return isTruthy(value) && typeof value === 'object';
 }
+
+
+export function toCamelCase(input: string): string {
+  const words = input.split(/[\s_-]+/);
+  const camelCaseWords = words.map((word, index) =>
+    index === 0 ? word.toLowerCase() : capitalizeFirstLetter(word)
+  );
+
+  return camelCaseWords.join('');
+}
+
+function capitalizeFirstLetter(word: string): string {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+
+function normalizeName(input: string): string {
+  const cleanedInput = input.replace(/[^a-zA-Z0-9\s]/g, '');
+  const words = cleanedInput.split(/\s+/);
+  const normalizedWords = words.map((word) => capitalizeFirstLetter(word));
+  return normalizedWords.join(' ');
+}
+
+export function convertToDesiredFormat(input: string, separator: RegExp = /[_]/): string {
+  const segments: string[] = input.split(separator);
+  const formattedSegments: string[] = segments.map((segment) => {
+    const words: string[] = segment.split(/(?=[A-Z])/); // Split camelCase segments
+    const formattedWords: string[] = words.map((word) => capitalizeFirstLetter(word));
+    return formattedWords.join(' ');
+  });
+
+  return formattedSegments.join(' ');
+}
+
