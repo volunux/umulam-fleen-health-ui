@@ -2,12 +2,13 @@ import {AbstractControl, FormGroup} from "@angular/forms";
 import {convertToDesiredFormat, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
 
-export class BaseFormComponent {
+export abstract class BaseFormComponent {
 
   protected errorMessage: string | undefined;
   protected fleenHealthForm: FormGroup = new FormGroup<any>({});
   private readonly ERROR_FIELD_NAME: string = "field_name";
   private readonly ERROR_MESSAGES_NAME: string = "errors";
+  protected isSubmitting: boolean = false;
 
   public getFormKeys(): string[] {
     if (isTruthy(this.fleenHealthForm)) {

@@ -1,6 +1,6 @@
 import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {equalsIgnoreCase, isFalsy, isTruthy} from "../util/helpers";
-import {catchError, delay, map, Observable, of, switchMap} from "rxjs";
+import {catchError, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
 import {AnyProp, AnyRegEx} from "../type/base";
 
@@ -98,7 +98,6 @@ export function emailExistsValidator(service: AuthenticationService): any {
       previousEmail = email;
 
       return of(email).pipe(
-        delay(3000),
         map(value => value.trim()),
         map(value => isFalsy(value) ? null : value),
         switchMap(value => {
