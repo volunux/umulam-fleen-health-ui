@@ -7,13 +7,15 @@ import {AuthenticationBaseComponent} from './component/authentication-base/authe
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {AuthenticationService} from "./service/authentication.service";
+import {OtpVerificationComponent} from "./component/otp-verification/otp-verification.component";
 
 
 @NgModule({
   declarations: [
     SignUpComponent,
     SignInComponent,
-    AuthenticationBaseComponent
+    AuthenticationBaseComponent,
+    OtpVerificationComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import {AuthenticationService} from "./service/authentication.service";
   exports: [
     SignUpComponent,
     SignInComponent,
+    OtpVerificationComponent,
     AuthenticationRoutingModule
   ],
   providers: [

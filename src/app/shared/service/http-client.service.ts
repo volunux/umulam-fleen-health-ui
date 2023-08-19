@@ -28,13 +28,13 @@ export class HttpClientService extends BaseHttpService {
     return this.get(req);
   }
 
-  public save(req: BaseRequest): Observable<any> {
+  public post(req: BaseRequest): Observable<any> {
     const request: Observable<Object> = this.httpClient.post(this.buildUri(req), req.body);
     return this.pipeline(request);
   }
 
   public saveMany(req: BaseRequest): Observable<any> {
-    return this.save(req);
+    return this.post(req);
   }
 
   public update(req: BaseRequest): Observable<any> {

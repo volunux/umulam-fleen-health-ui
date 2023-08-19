@@ -15,13 +15,12 @@ import {SignUpDto} from "../../dto/sign-up-dto";
 import {AuthenticationService} from "../../service/authentication.service";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
-import {OtpVerificationComponent} from "../../../shared/component/otp-verification/otp-verification.component";
-import {ViewChild} from "@angular/core";
+import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
+import {Component, ViewChild} from "@angular/core";
 
 export abstract class SignUpBaseComponent extends BaseFormComponent {
 
   protected signUpDto: SignUpDto | undefined = new SignUpDto();
-  @ViewChild(OtpVerificationComponent) otpInputComponent!: OtpVerificationComponent;
 
   public initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({

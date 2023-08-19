@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {SignUpBaseComponent} from "./sign-up-base-component";
 import {equalsIgnoreCase, isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
 import {VerificationCodeDto} from "../../../shared/type/authentication";
+import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 
 @Component({
   selector: 'app-sign-up',
@@ -12,6 +13,8 @@ import {VerificationCodeDto} from "../../../shared/type/authentication";
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent extends SignUpBaseComponent implements OnInit {
+
+  @ViewChild(OtpVerificationComponent) otpInputComponent!: OtpVerificationComponent;
   protected isOtpVerificationStage: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
@@ -36,11 +39,9 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
           next: (result): void => {
-            this.disableSubmitting();
             this.isOtpVerificationStage = true;
           },
           error: (result): void => {
-            this.disableSubmitting();
             const { error } = result;
             const { type } = error;
             if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
@@ -48,6 +49,9 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
               return;
             }
             this.errorMessage = error.message;
+          },
+          complete: (): void => {
+            this.disableSubmitting();
           }
       });
     }
@@ -59,16 +63,14 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.authenticationService.confirmSignUp(verification)
         .subscribe({
           next: (result): void => {
-            this.disableSubmitting();
+
           },
           error: (result): void => {
-            this.disableSubmitting();
             const { error } = result;
-            const { type } = error;
-            if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
-              return;
-            }
-            this.errorMessage = error.message;
+            this.otpInputComponent.setErrorMessage(error.message);
+          },
+          complete: (): void => {
+            this.disableSubmitting();
           }
         });
     }
