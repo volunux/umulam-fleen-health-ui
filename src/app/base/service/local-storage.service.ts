@@ -10,7 +10,7 @@ export class LocalStorageService {
 
   public getAuthorizationToken(): string {
     return this.hasObject(AUTHORIZATION_TOKEN_KEY)
-      ? localStorage.getItem(AUTHORIZATION_TOKEN_KEY) as string
+      ? this.getObject(AUTHORIZATION_TOKEN_KEY) as string
       : "";
   }
 

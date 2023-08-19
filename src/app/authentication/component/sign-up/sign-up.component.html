@@ -1,5 +1,4 @@
 <app-otp-verification *ngIf="isOtpVerificationStage" (otpSubmitted)="handleVerificationCode($event)" [email-address]="emailAddress?.value" [phone-number]="phoneNumber?.value"></app-otp-verification>
-<app-otp-verification *ngIf="!isOtpVerificationStage" (otpSubmitted)="handleVerificationCode($event)" [email-address]="emailAddress?.value" [phone-number]="phoneNumber?.value"></app-otp-verification>
 
 <form *ngIf="!isOtpVerificationStage" [formGroup]="signUpForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
   <div class="form-error-message">

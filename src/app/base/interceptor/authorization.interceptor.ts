@@ -10,7 +10,8 @@ export class AuthorizationInterceptor implements HttpInterceptor {
 
   private readonly EXCLUDED_URLS: string[] = [
     '/auth/sign-in',
-    '/auth/sign-up'
+    '/auth/sign-up',
+    '/email-address'
   ];
 
   public constructor(private localStorageService: LocalStorageService) { }
