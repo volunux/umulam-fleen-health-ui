@@ -29,11 +29,10 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
   }
 
   public signUp(): void {
-    if (isTruthy(this.signUpForm)) {
+    if (isTruthy(this.signUpForm) && this.signUpForm.valid) {
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
           next: (result): void => {
-            console.log("Success");
             console.log(result);
           },
           error: (result): void => {
@@ -44,7 +43,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
               return;
             }
             this.errorMessage = error.message;
-          }
+          },
       });
     }
   }
