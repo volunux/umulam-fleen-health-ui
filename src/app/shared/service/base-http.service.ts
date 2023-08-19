@@ -44,7 +44,6 @@ export class BaseHttpService {
     source: Observable<T>,
   ): Observable<T> {
     return source.pipe(
-      delay(3000),
       retry(this.RETRY_TIMES),
       tap(this.logger.log),
       map(res => res),

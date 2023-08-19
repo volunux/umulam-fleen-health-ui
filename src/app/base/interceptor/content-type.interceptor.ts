@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {delay, Observable} from 'rxjs';
 import {SUPPORTED_CONTENT_TYPES} from "../../shared/constant/enum-constant";
 import {CONTENT_TYPE_APPLICATION_JSON} from "../../shared/constant/other-constant";
 
@@ -14,8 +14,8 @@ export class ContentTypeInterceptor implements HttpInterceptor {
       const modifiedRequest: HttpRequest<any> = request.clone({
         setHeaders: { 'Content-Type': CONTENT_TYPE_APPLICATION_JSON },
       });
-      return next.handle(modifiedRequest);
+      return next.handle(modifiedRequest).pipe(delay(3000));
     }
-    return next.handle(request);
+    return next.handle(request).pipe(delay(3000));
   }
 }
