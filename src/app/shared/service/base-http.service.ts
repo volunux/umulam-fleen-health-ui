@@ -6,6 +6,7 @@ import {AnyArray, AnyProp} from "../type/base";
 import {BaseRequest, RequestMethod} from "../type/http";
 import {catchError, map, Observable, ObservableInput, retry, tap, throwError} from "rxjs";
 import {toBody, toCamelCaseKeys} from "../transformer/transformer";
+import {ErrorResponse} from "../../base/response/error-response";
 
 @Injectable()
 export class BaseHttpService {
@@ -36,8 +37,8 @@ export class BaseHttpService {
     return `${this.HOST_URL}/${this.BASE_PATH}`;
   }
 
-  protected handle(err: any): ObservableInput<any> {
-    return throwError(() => err);
+  protected handle(result: any): ObservableInput<any> {
+    return throwError(() => new ErrorResponse(result.error));
   }
 
   protected pipeline<T>(
