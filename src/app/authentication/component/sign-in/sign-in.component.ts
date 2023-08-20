@@ -5,7 +5,12 @@ import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {SignInResponse} from "../../response/sign-in-response";
-import {AuthenticationStatus, ChangePasswordType, NextAuthentication} from "../../../shared/enum/authentication";
+import {
+  AuthenticationStatus,
+  ChangePasswordType,
+  MfaType,
+  NextAuthentication
+} from "../../../shared/enum/authentication";
 
 @Component({
   selector: 'app-sign-in',
@@ -17,6 +22,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   public isVerificationStage: boolean = false;
   public changePasswordType: ChangePasswordType = ChangePasswordType.NONE;
+  public mfaType: MfaType = MfaType.NONE;
   public isPreVerificationStage: boolean = false;
   public isMfaVerificationStage: boolean = false;
   public isChangePasswordStage: boolean = false;
@@ -52,7 +58,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
             this.authenticationService.setAuthToken(result);
             this.isVerificationStage = true;
             if (result.authenticationStatus == AuthenticationStatus.IN_PROGRESS) {
-              this.setVerificationStage(result.nextAuthentication);
+              this.setVerificationStage(result);
             }
           },
           error: (result: any): void => {
@@ -73,10 +79,12 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
     return this?.phoneNumber;
   }
 
-  private setVerificationStage(stage: NextAuthentication): void {
+  private setVerificationStage(result: SignInResponse): void {
+    const { nextAuthentication: stage, mfaType } = result;
     if (stage == NextAuthentication.PRE_VERIFICATION) {
       this.isPreVerificationStage = true;
     } else if (stage == NextAuthentication.MFA_OR_PRE_AUTHENTICATION) {
+      this.mfaType = mfaType;
       this.isMfaVerificationStage = true;
     } else if (stage == NextAuthentication.PRE_ONBOARDED) {
       this.isChangePasswordStage = true;
