@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClientService} from "../../shared/service/http-client.service";
 import {BaseRequest} from "../../shared/type/http";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {ResendVerificationCodeDto, VerificationCodeDto} from "../../shared/type/authentication";
 import {LocalStorageService} from "../../base/service/local-storage.service";
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
+import {toCamelCaseKeys} from "../../shared/transformer/transformer";
+import {SignInResponse} from "../response/sign-in-response";
 
 @Injectable()
 export class AuthenticationService {
@@ -26,7 +28,11 @@ export class AuthenticationService {
 
   public signIn(data: any): Observable<any> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-in'], {}, data);
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => toCamelCaseKeys(data)),
+        map(data => new SignInResponse(data))
+      );
   }
 
   public confirmSignUp(verificationDto: VerificationCodeDto): Observable<any> {

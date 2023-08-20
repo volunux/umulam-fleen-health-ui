@@ -1,4 +1,4 @@
-import {isObject} from "../util/helpers";
+import {isObject, toCamelCase} from "../util/helpers";
 
 export function toRequestBody(data: any): Record<string, string> {
   const newData: Record<string, string> = {};
@@ -23,6 +23,20 @@ export function toBody(data: any): string {
   }
 
   return toJson(newData);
+}
+
+export function toCamelCaseKeys(data: any): any {
+  if (!isObject(data)) {
+    return data;
+  }
+
+  const newData: Record<string, any> = {};
+  for (const property of Object.keys(data)) {
+    const transformedProperty: string = toCamelCase(property);
+    newData[transformedProperty] = data[property];
+  }
+
+  return newData;
 }
 
 export function toJson(data: any) {

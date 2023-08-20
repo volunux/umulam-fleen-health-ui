@@ -43,8 +43,10 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
       this.authenticationService.signIn(this.signInForm.value)
         .subscribe({
           next: (result: any): void => {
+            console.log(result);
             this.isOtpVerificationStage = true;
             this.authenticationService.setAuthToken(result);
+            this.phoneNumber = result.phoneNumber;
           },
           error: (result): void => {
             const { error } = result;
@@ -70,6 +72,5 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   get $phoneNumber(): string | undefined {
     return this?.phoneNumber;
   }
-
 
 }

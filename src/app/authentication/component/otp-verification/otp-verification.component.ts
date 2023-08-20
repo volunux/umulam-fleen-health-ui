@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
-import {ResendVerificationCodeDto, VERIFICATION_TYPE, VerificationCodeDto} from "../../../shared/type/authentication";
+import {ResendVerificationCodeDto, VerificationType, VerificationCodeDto} from "../../../shared/type/authentication";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy} from "../../../shared/util/helpers";
 
@@ -14,7 +14,7 @@ import {isFalsy} from "../../../shared/util/helpers";
 export class OtpVerificationComponent {
 
   protected errorMessage: string | undefined;
-  public verificationType: VERIFICATION_TYPE = 'EMAIL';
+  public verificationType: VerificationType = 'EMAIL';
   public isSubmitting: boolean = false;
   public otp: FormControl = new FormControl<string>('');
   @Input('email-address') public emailAddress: string | undefined;

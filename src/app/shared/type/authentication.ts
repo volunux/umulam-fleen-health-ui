@@ -1,12 +1,16 @@
-export type VERIFICATION_TYPE = 'EMAIL' | 'PHONE';
+export type VerificationType = 'EMAIL' | 'PHONE';
 
 export type VerificationCodeDto = {
   code: string;
-  verificationType: VERIFICATION_TYPE;
+  verificationType: VerificationType;
 }
 
 export type ResendVerificationCodeDto = {
   emailAddress?: string;
   phoneNumber?: string;
-  verificationType: VERIFICATION_TYPE
+  verificationType: VerificationType
 }
+
+export type AuthenticationStatus = 'IN_PROGRESS' | 'COMPLETED';
+export type MfaType = 'SMS' | 'EMAIL' | 'AUTHENTICATION' | 'NONE';
+export type NextAuthentication = 'PRE_VERIFICATION' | 'PRE_ONBOARDED' | 'MFA_OR_PRE_AUTHENTICATION' | 'NONE';

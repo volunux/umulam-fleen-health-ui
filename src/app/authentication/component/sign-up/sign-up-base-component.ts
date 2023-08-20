@@ -12,7 +12,6 @@ import {
 import {GENDER, PROFESSIONAL_TYPES, VERIFICATION_TYPES} from "../../../shared/constant/enum-constant";
 import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format-pattern";
 import {SignUpDto} from "../../dto/sign-up-dto";
-import {AuthenticationService} from "../../service/authentication.service";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
 import {SignInUpBaseComponent} from "../sign-in-up-base/sign-in-up-base.component";
 

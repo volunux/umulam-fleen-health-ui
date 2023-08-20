@@ -43,8 +43,8 @@ export function isObject(value: any): boolean {
 
 
 export function toCamelCase(input: string): string {
-  const words = input.split(/[\s_-]+/);
-  const camelCaseWords = words.map((word, index) =>
+  const words: string[] = input.split(/[\s_-]+/);
+  const camelCaseWords: string[] = words.map((word, index) =>
     index === 0 ? word.toLowerCase() : capitalizeFirstLetter(word)
   );
 
