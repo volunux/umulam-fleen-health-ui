@@ -1,8 +1,10 @@
-export type VerificationType = 'EMAIL' | 'PHONE';
+import {AuthVerificationType, MfaType, VerificationType} from "../enum/authentication";
 
-export type VerificationCodeDto = {
+export type AuthVerificationDto = {
   code: string;
-  verificationType: VerificationType;
+  verificationType?: VerificationType;
+  mfaType?: MfaType
+  type: AuthVerificationType
 }
 
 export type ResendVerificationCodeDto = {
@@ -10,7 +12,3 @@ export type ResendVerificationCodeDto = {
   phoneNumber?: string;
   verificationType: VerificationType
 }
-
-export type AuthenticationStatus = 'IN_PROGRESS' | 'COMPLETED';
-export type MfaType = 'SMS' | 'EMAIL' | 'AUTHENTICATION' | 'NONE';
-export type NextAuthentication = 'PRE_VERIFICATION' | 'PRE_ONBOARDED' | 'MFA_OR_PRE_AUTHENTICATION' | 'NONE';

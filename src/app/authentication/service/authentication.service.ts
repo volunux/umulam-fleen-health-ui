@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClientService} from "../../shared/service/http-client.service";
 import {BaseRequest} from "../../shared/type/http";
 import {map, Observable} from "rxjs";
-import {ResendVerificationCodeDto, VerificationCodeDto} from "../../shared/type/authentication";
+import {ResendVerificationCodeDto, AuthVerificationDto} from "../../shared/type/authentication";
 import {LocalStorageService} from "../../base/service/local-storage.service";
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
 import {SignInResponse} from "../response/sign-in-response";
@@ -38,13 +38,23 @@ export class AuthenticationService {
       );
   }
 
-  public confirmSignUp(verificationDto: VerificationCodeDto): Observable<any> {
+  public completeSignUp(verificationDto: AuthVerificationDto): Observable<any> {
     const req: BaseRequest = this.httpService.toRequest(['verification', 'confirm-sign-up'], {}, { ...verificationDto });
+    return this.httpService.post(req);
+  }
+
+  public validateSignInMfa(verificationDto: AuthVerificationDto): Observable<any> {
+    const req: BaseRequest = this.httpService.toRequest(['verification', 'validate-sign-in-mfa'], {}, { ...verificationDto });
     return this.httpService.post(req);
   }
 
   public resendOtp(resendVerificationDto: ResendVerificationCodeDto): Observable<any> {
     const req: BaseRequest = this.httpService.toRequest(['verification', 'resend-pre-verification-code'], {}, { ...resendVerificationDto });
+    return this.httpService.post(req);
+  }
+
+  public resendPreAuthenticationOtp(resendVerificationDto: ResendVerificationCodeDto): Observable<any> {
+    const req: BaseRequest = this.httpService.toRequest(['verification', 'resend-pre-authentication-code'], {}, { ...resendVerificationDto });
     return this.httpService.post(req);
   }
 

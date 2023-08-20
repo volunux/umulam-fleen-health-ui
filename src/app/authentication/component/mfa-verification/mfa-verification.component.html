@@ -1,4 +1,4 @@
-<div class="otp-input-container">
+<div class="mfa-input-container">
   <div class="form-message">
     {{errorMessage}}
   </div>
@@ -8,9 +8,8 @@
     <label for="verification_code">Verification Code:</label>
     <input type="text" [formControl]="otp" id="verification_code"/>
     <app-validation-error [control]="otp" [control-label]="'Verification code'"></app-validation-error>
-    <button (click)="resendOtp()" [disabled]="isSubmitting"> Resend Verification Code </button>
+    <button *ngIf="canResendCode" (click)="resendOtp()" [disabled]="isSubmitting"> Resend Verification Code </button>
     <button (click)="submit($event)">Submit</button>
-    <button (click)="tryAnotherMethod($event)">Try another method</button>
   </form>
 </div>
 

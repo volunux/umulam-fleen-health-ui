@@ -5,7 +5,8 @@ import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {SignInResponse} from "../../response/sign-in-response";
-import {NextAuthentication} from "../../../shared/type/authentication";
+import {NextAuthentication} from "../../../shared/enum/authentication";
+import {AuthVerificationDto} from "../../../shared/type/authentication";
 
 @Component({
   selector: 'app-sign-in',
@@ -50,6 +51,26 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
           },
           error: (result: any): void => {
             this.handleError(result);
+          },
+          complete: (): void => {
+            this.disableSubmitting();
+          }
+        });
+    }
+  }
+
+  public handleMfaVerificationCode(verification: AuthVerificationDto): void {
+    if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
+      this.isSubmitting = true;
+      this.getAuthenticationService().validateSignInMfa(verification)
+        .subscribe({
+          next: (result: any): void => {
+            this.getAuthenticationService().setAuthToken(result);
+          },
+          error: (result): void => {
+            const { error } = result;
+            this.getOtpComponent().setErrorMessage(error.message);
+            this.isSubmitting = false;
           },
           complete: (): void => {
             this.disableSubmitting();

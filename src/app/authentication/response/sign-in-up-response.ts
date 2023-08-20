@@ -1,4 +1,4 @@
-import {AuthenticationStatus, MfaType, NextAuthentication} from "../../shared/type/authentication";
+import {AuthenticationStatus, NextAuthentication} from "../../shared/enum/authentication";
 
 export class SignInUpResponse {
 
