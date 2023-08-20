@@ -5,7 +5,6 @@ import {map, Observable} from "rxjs";
 import {ResendVerificationCodeDto, VerificationCodeDto} from "../../shared/type/authentication";
 import {LocalStorageService} from "../../base/service/local-storage.service";
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
-import {toCamelCaseKeys} from "../../shared/transformer/transformer";
 import {SignInResponse} from "../response/sign-in-response";
 import {SignUpResponse} from "../response/sign-up-response";
 import {SignInUpResponse} from "../response/sign-in-up-response";
@@ -27,7 +26,6 @@ export class AuthenticationService {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-up'], {}, data);
     return this.httpService.post(req)
       .pipe(
-        map(data => toCamelCaseKeys(data)),
         map(data => new SignUpResponse(data))
       );
   }
@@ -36,7 +34,6 @@ export class AuthenticationService {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-in'], {}, data);
     return this.httpService.post(req)
       .pipe(
-        map(data => toCamelCaseKeys(data)),
         map(data => new SignInResponse(data))
       );
   }

@@ -5,7 +5,7 @@ import {isObject, isTruthy} from "../util/helpers";
 import {AnyArray, AnyProp} from "../type/base";
 import {BaseRequest, RequestMethod} from "../type/http";
 import {catchError, map, Observable, ObservableInput, retry, tap, throwError} from "rxjs";
-import {toBody} from "../transformer/transformer";
+import {toBody, toCamelCaseKeys} from "../transformer/transformer";
 
 @Injectable()
 export class BaseHttpService {
@@ -47,6 +47,7 @@ export class BaseHttpService {
       retry(this.RETRY_TIMES),
       tap(this.logger.log),
       map(res => res),
+      map(data => toCamelCaseKeys(data)),
       catchError(this.handle)
     );
   }
