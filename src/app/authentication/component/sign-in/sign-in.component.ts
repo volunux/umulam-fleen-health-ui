@@ -15,6 +15,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   protected isOtpVerificationStage: boolean = false;
+  protected phoneNumber: string | undefined;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
@@ -61,5 +62,14 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
         });
     }
   }
+
+  get $emailAddress(): string {
+    return this.signInForm?.get('emailAddress')?.value;
+  }
+
+  get $phoneNumber(): string | undefined {
+    return this?.phoneNumber;
+  }
+
 
 }

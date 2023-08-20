@@ -62,4 +62,12 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
     }
   }
 
+  get $emailAddress(): string {
+    return this.signUpForm?.get('emailAddress')?.value;
+  }
+
+  get $phoneNumber(): string {
+    return this.signUpForm?.get('phoneNumber')?.value;
+  }
+
 }
