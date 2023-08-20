@@ -2,9 +2,11 @@ import {AuthVerificationDto, ChangePasswordDto} from "../../../shared/type/authe
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {AuthenticationService} from "../../service/authentication.service";
-import {MfaOtpBaseComponent} from "../mfa-otp-base/mfa-otp-base.component";
 import {Observable, of} from "rxjs";
 import {AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication";
+import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
+import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
+import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
 
 export abstract class AuthBaseComponent extends BaseFormComponent {
 
@@ -18,7 +20,15 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
           },
           error: (result): void => {
             const { error } = result;
-            this.getOtpComponent().setErrorMessage(error.message);
+            if (verification.type === AuthVerificationType.VERIFICATION) {
+              if (isTruthy(this.getOtpComponent())) {
+                this.getOtpComponent()?.setErrorMessage(error.message);
+              }
+            } else if (verification.type === AuthVerificationType.MFA) {
+              if (isTruthy(this.getMfaVerificationComponent())) {
+                this.getMfaVerificationComponent()?.setErrorMessage(error.message);
+              }
+            }
             this.isSubmitting = false;
           },
           complete: (): void => {
@@ -38,7 +48,9 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
           },
           error: (result): void => {
             const { error } = result;
-            this.getOtpComponent().setErrorMessage(error.message);
+            if (isTruthy(this.getChangePasswordComponent())) {
+              this.getChangePasswordComponent()?.setErrorMessage(error.message);
+            }
             this.isSubmitting = false;
           },
           complete: (): void => {
@@ -50,7 +62,11 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   abstract getAuthenticationService(): AuthenticationService;
 
-  abstract getOtpComponent(): MfaOtpBaseComponent;
+  abstract getOtpComponent(): OtpVerificationComponent | null;
+
+  abstract getMfaVerificationComponent(): MfaVerificationComponent | null;
+
+  abstract getChangePasswordComponent(): ChangePasswordComponent | null;
 
   protected completeSignUpOrValidateMfaOrOnboarding(verification: AuthVerificationDto): Observable<any> {
     const { type } = verification;

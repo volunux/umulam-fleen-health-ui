@@ -11,6 +11,8 @@ import {
   MfaType,
   NextAuthentication
 } from "../../../shared/enum/authentication";
+import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
+import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
 
 @Component({
   selector: 'app-sign-in',
@@ -20,13 +22,15 @@ import {
 export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
-  public isVerificationStage: boolean = false;
-  public changePasswordType: ChangePasswordType = ChangePasswordType.NONE;
+  @ViewChild(MfaVerificationComponent) mfaVerificationComponent!: MfaVerificationComponent;
+
   public mfaType: MfaType = MfaType.NONE;
+  public changePasswordType: ChangePasswordType = ChangePasswordType.NONE;
+  protected phoneNumber: string | undefined;
+  public isVerificationStage: boolean = false;
   public isPreVerificationStage: boolean = false;
   public isMfaVerificationStage: boolean = false;
   public isChangePasswordStage: boolean = false;
-  protected phoneNumber: string | undefined;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
@@ -46,6 +50,14 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   override getOtpComponent(): OtpVerificationComponent {
     return this.otpVerificationComponent;
+  }
+
+  override getMfaVerificationComponent(): MfaVerificationComponent {
+    return this.mfaVerificationComponent;
+  }
+
+  override getChangePasswordComponent(): ChangePasswordComponent | null {
+    return null;
   }
 
   public signIn(): void {

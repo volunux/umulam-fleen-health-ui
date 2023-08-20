@@ -5,6 +5,8 @@ import {SignUpBaseComponent} from "./sign-up-base-component";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {SignUpResponse} from "../../response/sign-up-response";
+import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
+import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
 
 @Component({
   selector: 'app-sign-up',
@@ -30,6 +32,14 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
 
   override getOtpComponent(): OtpVerificationComponent {
     return this.otpVerificationComponent;
+  }
+
+  override getMfaVerificationComponent(): MfaVerificationComponent | null {
+    return null;
+  }
+
+  override getChangePasswordComponent(): ChangePasswordComponent | null {
+    return null;
   }
 
   override getFormBuilder(): FormBuilder {
