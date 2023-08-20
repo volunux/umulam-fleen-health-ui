@@ -1,6 +1,7 @@
 import {AbstractControl, FormGroup} from "@angular/forms";
-import {convertToDesiredFormat, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
+import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
+import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
 
 export abstract class BaseFormComponent {
 
@@ -84,6 +85,17 @@ export abstract class BaseFormComponent {
 
   protected disableSubmitting(): void {
     this.isSubmitting = false;
+  }
+
+  protected handleError(result: any): void {
+    const { error } = result;
+    const { type } = error;
+    if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
+      this.setErrorsFromApiResponse(error.fields);
+      return;
+    }
+    this.errorMessage = error.message;
+    this.disableSubmitting();
   }
 
 }

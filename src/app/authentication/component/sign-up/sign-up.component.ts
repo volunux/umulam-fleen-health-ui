@@ -2,9 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {SignUpBaseComponent} from "./sign-up-base-component";
-import {equalsIgnoreCase, isFalsy, isTruthy} from "../../../shared/util/helpers";
-import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
+import {SignUpResponse} from "../../response/sign-up-response";
 
 @Component({
   selector: 'app-sign-up',
@@ -14,7 +14,7 @@ import {OtpVerificationComponent} from "../otp-verification/otp-verification.com
 export class SignUpComponent extends SignUpBaseComponent implements OnInit {
 
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
-  protected isOtpVerificationStage: boolean = false;
+  protected isPreVerificationStage: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
@@ -41,19 +41,12 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
       this.isSubmitting = true;
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
-          next: (result: any): void => {
-            this.isOtpVerificationStage = true;
+          next: (result: SignUpResponse): void => {
+            this.isPreVerificationStage = true;
             this.authenticationService.setAuthToken(result);
           },
           error: (result): void => {
-            const { error } = result;
-            const { type } = error;
-            if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
-              this.setErrorsFromApiResponse(error.fields);
-              return;
-            }
-            this.errorMessage = error.message;
-            this.disableSubmitting();
+            this.handleError(result);
           },
           complete: (): void => {
             this.disableSubmitting();

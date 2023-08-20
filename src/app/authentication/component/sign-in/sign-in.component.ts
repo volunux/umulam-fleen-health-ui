@@ -3,8 +3,9 @@ import {SignInBaseComponent} from "./sign-in-base-component";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
-import {equalsIgnoreCase, isFalsy, isTruthy} from "../../../shared/util/helpers";
-import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
+import {SignInResponse} from "../../response/sign-in-response";
+import {NextAuthentication} from "../../../shared/type/authentication";
 
 @Component({
   selector: 'app-sign-in',
@@ -14,7 +15,7 @@ import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constan
 export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
-  protected isOtpVerificationStage: boolean = false;
+  protected isPreVerificationStage: boolean = false;
   protected phoneNumber: string | undefined;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
@@ -42,21 +43,13 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
       this.isSubmitting = true;
       this.authenticationService.signIn(this.signInForm.value)
         .subscribe({
-          next: (result: any): void => {
-            console.log(result);
-            this.isOtpVerificationStage = true;
-            this.authenticationService.setAuthToken(result);
+          next: (result: SignInResponse): void => {
             this.phoneNumber = result.phoneNumber;
+            this.authenticationService.setAuthToken(result);
+            this.setVerificationStage(result.nextAuthentication);
           },
-          error: (result): void => {
-            const { error } = result;
-            const { type } = error;
-            if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
-              this.setErrorsFromApiResponse(error.fields);
-              return;
-            }
-            this.errorMessage = error.message;
-            this.disableSubmitting();
+          error: (result: any): void => {
+            this.handleError(result);
           },
           complete: (): void => {
             this.disableSubmitting();
@@ -71,6 +64,12 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   get $phoneNumber(): string | undefined {
     return this?.phoneNumber;
+  }
+
+  private setVerificationStage(stage: NextAuthentication): void {
+    if (stage == "PRE_VERIFICATION") {
+      this.isPreVerificationStage = true;
+    }
   }
 
 }
