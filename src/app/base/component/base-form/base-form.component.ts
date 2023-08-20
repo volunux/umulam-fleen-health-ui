@@ -98,11 +98,11 @@ export abstract class BaseFormComponent {
       this.setErrorsFromApiResponse(error.fields);
       return;
     }
-    this.errorMessage = error.message;
+    this.errorMessage = error.message || '';
     this.disableSubmitting();
   }
 
-  protected stopEvent(evt: Event) {
+  protected stopEvent(evt: Event): void {
     evt.preventDefault();
     evt.stopPropagation();
   }

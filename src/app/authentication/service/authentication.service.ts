@@ -73,8 +73,8 @@ export class AuthenticationService {
   }
 
   public setAuthToken(result: SignInUpResponse): void {
-    this.saveAuthToken(result.accessToken);
-    this.saveRefreshToken(result.refreshToken);
+    this.saveAuthToken(result.accessToken || '');
+    this.saveRefreshToken(result.refreshToken || '');
   }
 
 }

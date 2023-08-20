@@ -4,7 +4,7 @@ import {API_BASE_PATH, API_HOST_URL, HTTP_REQUEST_RETRY_TIMES} from "../constant
 import {isObject, isTruthy} from "../util/helpers";
 import {AnyArray, AnyProp} from "../type/base";
 import {BaseRequest, RequestMethod} from "../type/http";
-import {catchError, map, Observable, ObservableInput, retry, tap, throwError} from "rxjs";
+import {catchError, map, Observable, retry, tap, throwError} from "rxjs";
 import {toBody, toCamelCaseKeys} from "../transformer/transformer";
 import {ErrorResponse} from "../../base/response/error-response";
 
@@ -29,15 +29,19 @@ export class BaseHttpService {
       : "?";
   }
 
-  protected buildUri(request: BaseRequest): string {
-    return `${this.baseUri}/${this.getPath(request.pathParams)}${this.getQueryString(request.queryParams)}`
+  protected buildUri(req: BaseRequest): string {
+    return `${this.baseUri}/${this.getPath(req.pathParams)}${this.getQueryString(req.queryParams)}`
+  }
+
+  public buildPathUri(path: string): string {
+    return this.buildUri({ pathParams: [path] });
   }
 
   get baseUri() {
     return `${this.HOST_URL}/${this.BASE_PATH}`;
   }
 
-  protected handle(result: any): ObservableInput<any> {
+  public handleError(result: any): Observable<any> {
     return throwError(() => new ErrorResponse(result.error));
   }
 
@@ -49,7 +53,7 @@ export class BaseHttpService {
       tap(this.logger.log),
       map(res => res),
       map(data => toCamelCaseKeys(data)),
-      catchError(this.handle)
+      catchError(this.handleError)
     );
   }
 

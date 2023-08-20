@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
+import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +14,34 @@ export class LocalStorageService {
       : "";
   }
 
-  setObject(key: string, value: string): void {
+  public getAuthorizationRefreshToken(): string {
+    return this.hasObject(REFRESH_AUTHORIZATION_TOKEN_KEY)
+      ? this.getObject(REFRESH_AUTHORIZATION_TOKEN_KEY) as string
+      : "";
+  }
+
+  public setObject(key: string, value: string): void {
     localStorage.setItem(key, value);
   }
 
-  getObject(key: string): string | null {
+  public getObject(key: string): string | null {
     return localStorage.getItem(key);
   }
 
-  removeObject(key: string): void {
+  public removeObject(key: string): void {
     localStorage.removeItem(key);
   }
 
-  hasObject(key: string): boolean {
+  public hasObject(key: string): boolean {
     return localStorage.getItem(key) !== null;
   }
 
-   clear(): void {
+  public clear(): void {
     localStorage.clear();
+  }
+
+  public clearAuthorizationTokens(): void {
+    this.removeObject(AUTHORIZATION_TOKEN_KEY);
+    this.removeObject(REFRESH_AUTHORIZATION_TOKEN_KEY);
   }
 }

@@ -5,6 +5,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {HttpClientService} from "./service/http-client.service";
 import {LoggerService} from "./service/logger.service";
 import {ReactiveFormsModule} from "@angular/forms";
+import {BaseHttpService} from "./service/base-http.service";
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule
   ],
   providers: [
+    BaseHttpService,
     HttpClientService,
     LoggerService
   ],

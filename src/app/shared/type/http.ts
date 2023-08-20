@@ -2,7 +2,7 @@ export type RequestMethod = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH' | 'HEAD'
 
 
 export type BaseRequest = {
-  pathParams?: [string, any][],
+  pathParams?: (string | number | boolean | object | any)[],
   queryParams?: {[key: string] : any} | undefined,
   body?: any,
   method?: RequestMethod
