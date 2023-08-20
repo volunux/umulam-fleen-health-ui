@@ -1,10 +1,10 @@
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {passwordValidator} from "../../../shared/validator/validator";
 import {PASSWORD_PATTERNS} from "../../../shared/util/format-pattern";
-import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {SignInDto} from "../../dto/sign-in-dto";
+import {SignInUpBaseComponent} from "../sign-in-up-base/sign-in-up-base.component";
 
-export abstract class SignInBaseComponent extends BaseFormComponent {
+export abstract class SignInBaseComponent extends SignInUpBaseComponent {
 
   protected signUpDto: SignInDto | undefined = new SignInDto();
 

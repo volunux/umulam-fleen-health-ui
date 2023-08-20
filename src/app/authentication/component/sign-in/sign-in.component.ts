@@ -5,7 +5,6 @@ import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {equalsIgnoreCase, isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
-import {VerificationCodeDto} from "../../../shared/type/authentication";
 
 @Component({
   selector: 'app-sign-in',
@@ -14,7 +13,7 @@ import {VerificationCodeDto} from "../../../shared/type/authentication";
 })
 export class SignInComponent extends SignInBaseComponent implements OnInit {
 
-  @ViewChild(OtpVerificationComponent) otpInputComponent!: OtpVerificationComponent;
+  @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   protected isOtpVerificationStage: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
@@ -27,6 +26,14 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   override getFormBuilder(): FormBuilder {
     return this.formBuilder;
+  }
+
+  override getAuthenticationService(): AuthenticationService {
+    return this.authenticationService;
+  }
+
+  override getOtpComponent(): OtpVerificationComponent {
+    return this.otpVerificationComponent;
   }
 
   public signIn(): void {
@@ -47,26 +54,6 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
             }
             this.errorMessage = error.message;
             this.disableSubmitting();
-          },
-          complete: (): void => {
-            this.disableSubmitting();
-          }
-        });
-    }
-  }
-
-  public handleVerificationCode(verification: VerificationCodeDto): void {
-    if (isTruthy(verification.code) && this.signInForm.valid && isFalsy(this.isSubmitting)) {
-      this.isSubmitting = true;
-      this.authenticationService.confirmSignUp(verification)
-        .subscribe({
-          next: (result: any): void => {
-            this.authenticationService.setAuthToken(result);
-          },
-          error: (result): void => {
-            const { error } = result;
-            this.otpInputComponent.setErrorMessage(error.message);
-            this.isSubmitting = false;
           },
           complete: (): void => {
             this.disableSubmitting();

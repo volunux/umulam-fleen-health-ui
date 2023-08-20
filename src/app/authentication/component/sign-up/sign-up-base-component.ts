@@ -14,9 +14,9 @@ import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format
 import {SignUpDto} from "../../dto/sign-up-dto";
 import {AuthenticationService} from "../../service/authentication.service";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
-import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
+import {SignInUpBaseComponent} from "../sign-in-up-base/sign-in-up-base.component";
 
-export abstract class SignUpBaseComponent extends BaseFormComponent {
+export abstract class SignUpBaseComponent extends SignInUpBaseComponent {
 
   protected signUpDto: SignUpDto | undefined = new SignUpDto();
 
@@ -60,8 +60,6 @@ export abstract class SignUpBaseComponent extends BaseFormComponent {
       validators: [fieldsMatchValidator('password', 'confirmPassword', 'Password', 'Confirm Password')]
     });
   }
-
-  abstract getAuthenticationService(): AuthenticationService;
 
   abstract getFormBuilder(): FormBuilder;
 

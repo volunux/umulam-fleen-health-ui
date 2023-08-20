@@ -4,7 +4,6 @@ import {AuthenticationService} from "../../service/authentication.service";
 import {SignUpBaseComponent} from "./sign-up-base-component";
 import {equalsIgnoreCase, isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
-import {VerificationCodeDto} from "../../../shared/type/authentication";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 
 @Component({
@@ -14,7 +13,7 @@ import {OtpVerificationComponent} from "../otp-verification/otp-verification.com
 })
 export class SignUpComponent extends SignUpBaseComponent implements OnInit {
 
-  @ViewChild(OtpVerificationComponent) otpInputComponent!: OtpVerificationComponent;
+  @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   protected isOtpVerificationStage: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
@@ -27,6 +26,10 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
 
   override getAuthenticationService(): AuthenticationService {
     return this.authenticationService;
+  }
+
+  override getOtpComponent(): OtpVerificationComponent {
+    return this.otpVerificationComponent;
   }
 
   override getFormBuilder(): FormBuilder {
@@ -56,26 +59,6 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
             this.disableSubmitting();
           }
       });
-    }
-  }
-
-  public handleVerificationCode(verification: VerificationCodeDto): void {
-    if (isTruthy(verification.code) && this.signUpForm.valid && isFalsy(this.isSubmitting)) {
-      this.isSubmitting = true;
-      this.authenticationService.confirmSignUp(verification)
-        .subscribe({
-          next: (result: any): void => {
-            this.authenticationService.setAuthToken(result);
-          },
-          error: (result): void => {
-            const { error } = result;
-            this.otpInputComponent.setErrorMessage(error.message);
-            this.isSubmitting = false;
-          },
-          complete: (): void => {
-            this.disableSubmitting();
-          }
-        });
     }
   }
 

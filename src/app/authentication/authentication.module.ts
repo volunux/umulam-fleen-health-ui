@@ -8,6 +8,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {AuthenticationService} from "./service/authentication.service";
 import {OtpVerificationComponent} from "./component/otp-verification/otp-verification.component";
+import { SignInUpBaseComponent } from './component/sign-in-up-base/sign-in-up-base.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {OtpVerificationComponent} from "./component/otp-verification/otp-verific
     SignUpComponent,
     SignInComponent,
     AuthenticationBaseComponent,
-    OtpVerificationComponent
+    OtpVerificationComponent,
+    SignInUpBaseComponent
   ],
   imports: [
     CommonModule,
