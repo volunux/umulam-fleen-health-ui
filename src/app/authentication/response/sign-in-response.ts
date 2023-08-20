@@ -1,24 +1,13 @@
-import {AuthenticationStatus, MfaType, NextAuthentication} from "../../shared/type/authentication";
+import {MfaType} from "../../shared/type/authentication";
+import {SignInUpResponse} from "./sign-in-up-response";
 
-export class SignInResponse {
+export class SignInResponse extends SignInUpResponse {
 
-  private accessToken: string;
-  private refreshToken: string;
-  private emailAddress: string;
-  private phoneNumber: string;
-  private authenticationStatus: AuthenticationStatus;
   private mfaType: MfaType;
   private mfaEnabled; boolean;
-  private nextAuthentication: NextAuthentication;
 
   public constructor(data: any) {
-    this.accessToken = data.accessToken;
-    this.refreshToken = data.refreshToken;
-    this.emailAddress = data.emailAddress;
-    this.phoneNumber = data.phoneNumber;
-    this.authenticationStatus = data.authenticationStatus;
+    super(data);
     this.mfaType = data.mfaType;
-    this.mfaEnabled = data.mfaEnabled;
-    this.nextAuthentication = data.nextAuthentication;
   }
 }

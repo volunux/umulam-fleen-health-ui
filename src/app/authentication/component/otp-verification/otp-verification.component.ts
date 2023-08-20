@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
-import {ResendVerificationCodeDto, VerificationType, VerificationCodeDto} from "../../../shared/type/authentication";
+import {ResendVerificationCodeDto, VerificationCodeDto, VerificationType} from "../../../shared/type/authentication";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy} from "../../../shared/util/helpers";
 

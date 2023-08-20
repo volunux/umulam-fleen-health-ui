@@ -7,6 +7,8 @@ import {LocalStorageService} from "../../base/service/local-storage.service";
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
 import {toCamelCaseKeys} from "../../shared/transformer/transformer";
 import {SignInResponse} from "../response/sign-in-response";
+import {SignUpResponse} from "../response/sign-up-response";
+import {SignInUpResponse} from "../response/sign-in-up-response";
 
 @Injectable()
 export class AuthenticationService {
@@ -23,7 +25,11 @@ export class AuthenticationService {
 
   public signUp(data: any): Observable<any> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-up'], {}, data);
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => toCamelCaseKeys(data)),
+        map(data => new SignUpResponse(data))
+      );
   }
 
   public signIn(data: any): Observable<any> {
@@ -53,9 +59,9 @@ export class AuthenticationService {
     this.localStorageService.setObject(REFRESH_AUTHORIZATION_TOKEN_KEY, token);
   }
 
-  public setAuthToken(result: any): void {
-    this.saveAuthToken(result["access_token"]);
-    this.saveRefreshToken(result["refresh_token"]);
+  public setAuthToken(result: SignInUpResponse): void {
+    this.saveAuthToken(result.accessToken);
+    this.saveRefreshToken(result.refreshToken);
   }
 
 }
