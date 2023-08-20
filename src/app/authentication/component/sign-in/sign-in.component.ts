@@ -5,7 +5,7 @@ import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {SignInResponse} from "../../response/sign-in-response";
-import {AuthenticationStatus, NextAuthentication} from "../../../shared/enum/authentication";
+import {AuthenticationStatus, ChangePasswordType, NextAuthentication} from "../../../shared/enum/authentication";
 
 @Component({
   selector: 'app-sign-in',
@@ -15,10 +15,12 @@ import {AuthenticationStatus, NextAuthentication} from "../../../shared/enum/aut
 export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
-  protected isPreVerificationStage: boolean = false;
-  protected isMfaVerificationStage: boolean = false;
-  protected phoneNumber: string | undefined;
   public isVerificationStage: boolean = false;
+  public changePasswordType: ChangePasswordType = ChangePasswordType.NONE;
+  public isPreVerificationStage: boolean = false;
+  public isMfaVerificationStage: boolean = false;
+  public isChangePasswordStage: boolean = false;
+  protected phoneNumber: string | undefined;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
@@ -74,9 +76,11 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   private setVerificationStage(stage: NextAuthentication): void {
     if (stage == NextAuthentication.PRE_VERIFICATION) {
       this.isPreVerificationStage = true;
-    }
-    if (stage == NextAuthentication.MFA_OR_PRE_AUTHENTICATION) {
+    } else if (stage == NextAuthentication.MFA_OR_PRE_AUTHENTICATION) {
       this.isMfaVerificationStage = true;
+    } else if (stage == NextAuthentication.PRE_ONBOARDED) {
+      this.isChangePasswordStage = true;
+      this.changePasswordType = ChangePasswordType.ONBOARDING;
     }
   }
 

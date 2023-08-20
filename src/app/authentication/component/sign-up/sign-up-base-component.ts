@@ -13,13 +13,13 @@ import {GENDER, PROFESSIONAL_TYPES, VERIFICATION_TYPES} from "../../../shared/co
 import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format-pattern";
 import {SignUpDto} from "../../dto/sign-up-dto";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
-import {SignInUpBaseComponent} from "../sign-in-up-base/sign-in-up-base.component";
+import {AuthBaseComponent} from "../sign-in-up-base/auth-base.component";
 
-export abstract class SignUpBaseComponent extends SignInUpBaseComponent {
+export abstract class SignUpBaseComponent extends AuthBaseComponent {
 
   protected signUpDto: SignUpDto | undefined = new SignUpDto();
 
-  public initForm(): void {
+  protected initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({
       profileType: [this.signUpDto?.profileType,
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]

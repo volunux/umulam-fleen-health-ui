@@ -27,3 +27,8 @@ export enum AuthVerificationType {
   VERIFICATION = 'VERIFICATION',
   ONBOARDING = 'ONBOARDING'
 }
+
+export enum ChangePasswordType {
+  NONE = 'NONE',
+  ONBOARDING = 'ONBOARDING'
+}

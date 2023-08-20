@@ -5,7 +5,7 @@ import {AuthenticationService} from "../../authentication/service/authentication
 import {AnyProp, AnyRegEx} from "../type/base";
 
 export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
-  return (control: AbstractControl): {[key: string]: any} | null => {
+  return (control: AbstractControl): ValidationErrors | null => {
     if (isTruthy(control) && isTruthy(control.value)) {
       const value = control.value;
 
@@ -19,7 +19,7 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
 
 
 export function fieldsMatchValidator(fieldName1: string, fieldName2: string, label1: string, label2: string): ValidatorFn {
-  return (formGroup: AbstractControl): {[key: string]: any} | null => {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
     const field1: AbstractControl | any = formGroup.get(fieldName1);
     const field2: AbstractControl | any = formGroup.get(fieldName2);
 
@@ -38,7 +38,7 @@ export function fieldsMatchValidator(fieldName1: string, fieldName2: string, lab
   };
 }
 
-export function dateOfBirthValidator(pattern: RegExp) {
+export function dateOfBirthValidator(pattern: RegExp): ValidatorFn | any {
   return (control: FormControl): ValidationErrors | null => {
     if (isTruthy(control) && isTruthy(control.value)) {
       if (!pattern.test(control.value)) {
@@ -147,7 +147,7 @@ export function passwordValidator(patterns: AnyRegEx, minLength: number = 8, max
 }
 
 
-export function ageLimitValidator(minAge: number) {
+export function ageLimitValidator(minAge: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (isTruthy(control) && isTruthy(control.value)) {
       const value = control.value;

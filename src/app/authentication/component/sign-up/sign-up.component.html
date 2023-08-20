@@ -1,6 +1,6 @@
 <app-otp-verification *ngIf="isPreVerificationStage" (otpSubmitted)="handleVerificationCode($event)" [email-address]="$emailAddress" [phone-number]="$phoneNumber"></app-otp-verification>
 
-<form *ngIf="!isPreVerificationStage" [formGroup]="signUpForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="signup-form">
+<form *ngIf="!isPreVerificationStage" [formGroup]="signUpForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
   <div class="form-error-message">
     {{errorMessage}}
   </div>
