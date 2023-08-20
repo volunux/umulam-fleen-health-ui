@@ -98,4 +98,9 @@ export abstract class BaseFormComponent {
     this.disableSubmitting();
   }
 
+  protected stopEvent(evt: Event) {
+    evt.preventDefault();
+    evt.stopPropagation();
+  }
+
 }
