@@ -5,8 +5,7 @@ import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {SignInResponse} from "../../response/sign-in-response";
-import {NextAuthentication} from "../../../shared/enum/authentication";
-import {AuthVerificationDto} from "../../../shared/type/authentication";
+import {AuthenticationStatus, NextAuthentication} from "../../../shared/enum/authentication";
 
 @Component({
   selector: 'app-sign-in',
@@ -17,7 +16,9 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   protected isPreVerificationStage: boolean = false;
+  protected isMfaVerificationStage: boolean = false;
   protected phoneNumber: string | undefined;
+  public isVerificationStage: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
@@ -47,30 +48,13 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
           next: (result: SignInResponse): void => {
             this.phoneNumber = result.phoneNumber;
             this.authenticationService.setAuthToken(result);
-            this.setVerificationStage(result.nextAuthentication);
+            this.isVerificationStage = true;
+            if (result.authenticationStatus == AuthenticationStatus.IN_PROGRESS) {
+              this.setVerificationStage(result.nextAuthentication);
+            }
           },
           error: (result: any): void => {
             this.handleError(result);
-          },
-          complete: (): void => {
-            this.disableSubmitting();
-          }
-        });
-    }
-  }
-
-  public handleMfaVerificationCode(verification: AuthVerificationDto): void {
-    if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
-      this.isSubmitting = true;
-      this.getAuthenticationService().validateSignInMfa(verification)
-        .subscribe({
-          next: (result: any): void => {
-            this.getAuthenticationService().setAuthToken(result);
-          },
-          error: (result): void => {
-            const { error } = result;
-            this.getOtpComponent().setErrorMessage(error.message);
-            this.isSubmitting = false;
           },
           complete: (): void => {
             this.disableSubmitting();
@@ -88,8 +72,11 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   }
 
   private setVerificationStage(stage: NextAuthentication): void {
-    if (stage == "PRE_VERIFICATION") {
+    if (stage == NextAuthentication.PRE_VERIFICATION) {
       this.isPreVerificationStage = true;
+    }
+    if (stage == NextAuthentication.MFA_OR_PRE_AUTHENTICATION) {
+      this.isMfaVerificationStage = true;
     }
   }
 

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClientService} from "../../shared/service/http-client.service";
 import {BaseRequest} from "../../shared/type/http";
 import {map, Observable} from "rxjs";
-import {ResendVerificationCodeDto, AuthVerificationDto} from "../../shared/type/authentication";
+import {AuthVerificationDto, ResendVerificationCodeDto} from "../../shared/type/authentication";
 import {LocalStorageService} from "../../base/service/local-storage.service";
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
 import {SignInResponse} from "../response/sign-in-response";
