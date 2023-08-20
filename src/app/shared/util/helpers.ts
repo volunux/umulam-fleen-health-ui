@@ -30,9 +30,9 @@ export function isTruthy(value: any): boolean {
   return !!value;
 }
 
-export function equalsIgnoreCase(value1: string, value2: string): boolean {
+export function equalsIgnoreCase(value1: string | undefined, value2: string | undefined): boolean {
   if (isTruthy(value1) && isTruthy(value2)) {
-    return value1.toLowerCase() === value2.toLowerCase();
+    return value1?.toLowerCase() === value2?.toLowerCase();
   }
   return false;
 }

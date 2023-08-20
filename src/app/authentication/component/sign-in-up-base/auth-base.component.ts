@@ -7,6 +7,7 @@ import {AuthVerificationType, ChangePasswordType} from "../../../shared/enum/aut
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
+import {ErrorResponse} from "../../../base/response/error-response";
 
 export abstract class AuthBaseComponent extends BaseFormComponent {
 
@@ -22,10 +23,7 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
           next: (result: any): void => {
             this.getAuthenticationService().setAuthToken(result);
           },
-          error: (result: any): void => {
-            console.log("The error is");
-            console.log(result);
-            const { error } = result;
+          error: (error: ErrorResponse): void => {
             this.setHandleVerificationCodeErrorMessage(type, error.message);
             this.disableSubmitting();
           },
@@ -44,8 +42,7 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
           next: (result: any): void => {
             this.getAuthenticationService().setAuthToken(result);
           },
-          error: (result: any): void => {
-            const { error } = result;
+          error: (error: ErrorResponse): void => {
             if (isTruthy(this.getChangePasswordComponent())) {
               this.getChangePasswordComponent()?.setErrorMessage(error.message);
             }

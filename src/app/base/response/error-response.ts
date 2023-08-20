@@ -1,10 +1,12 @@
+import {AnyProp} from "../../shared/type/base";
+
 export class ErrorResponse {
 
   public message!: string;
   public status?: number;
   public timestamp?: Date;
   public type?: string;
-  public fields?: any[];
+  public fields?: AnyProp[];
   public path?: string;
 
   public constructor(data: any) {

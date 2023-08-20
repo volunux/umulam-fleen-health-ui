@@ -2,6 +2,7 @@ import {AbstractControl, FormGroup} from "@angular/forms";
 import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
+import {ErrorResponse} from "../../response/error-response";
 
 export abstract class BaseFormComponent {
 
@@ -27,7 +28,7 @@ export abstract class BaseFormComponent {
     return keys;
   }
 
-  protected setErrorsFromApiResponse(errors: AnyProp[]): void {
+  protected setErrorsFromApiResponse(errors: AnyProp[] | any): void {
     if (isTruthy(errors) && Array.isArray(errors)) {
       errors.forEach((error): void => {
         this.setControlError(this.fleenHealthForm, error[this.ERROR_FIELD_NAME], this.getMessagesInSentence(error[this.ERROR_MESSAGES_NAME]));
@@ -56,7 +57,7 @@ export abstract class BaseFormComponent {
     } else if (value instanceof AbstractControl) {
       this.setFieldError(control, errorMessage, convertToDesiredFormat(fieldName));
       if (value instanceof FormGroup) {
-        Object.keys(value.controls).forEach((key) => {
+        Object.keys(value.controls).forEach((key): void => {
           this.setControlError(value.get(key), fieldName, errorMessage);
         });
       }
@@ -91,8 +92,7 @@ export abstract class BaseFormComponent {
     this.isSubmitting = true;
   }
 
-  protected handleError(result: any): void {
-    const { error } = result;
+  protected handleError(error: ErrorResponse): void {
     const { type } = error;
     if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
       this.setErrorsFromApiResponse(error.fields);
