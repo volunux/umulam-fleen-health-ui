@@ -87,6 +87,10 @@ export abstract class BaseFormComponent {
     this.isSubmitting = false;
   }
 
+  protected enableSubmitting(): void {
+    this.isSubmitting = true;
+  }
+
   protected handleError(result: any): void {
     const { error } = result;
     const { type } = error;
@@ -101,6 +105,10 @@ export abstract class BaseFormComponent {
   protected stopEvent(evt: Event) {
     evt.preventDefault();
     evt.stopPropagation();
+  }
+
+  public resetErrorMessage(): void {
+    this.errorMessage = '';
   }
 
 }

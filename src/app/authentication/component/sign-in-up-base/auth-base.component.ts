@@ -12,24 +12,22 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   public handleVerificationCode(verification: AuthVerificationDto): void {
     if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
-      this.isSubmitting = true;
+
+      const { type } = verification;
+      this.enableSubmitting();
+      this.resetHandleVerificationCodeErrorMessage(type);
+
       this.completeSignUpOrValidateMfaOrOnboarding(verification)
         .subscribe({
           next: (result: any): void => {
             this.getAuthenticationService().setAuthToken(result);
           },
-          error: (result): void => {
+          error: (result: any): void => {
+            console.log("The error is");
+            console.log(result);
             const { error } = result;
-            if (verification.type === AuthVerificationType.VERIFICATION) {
-              if (isTruthy(this.getOtpComponent())) {
-                this.getOtpComponent()?.setErrorMessage(error.message);
-              }
-            } else if (verification.type === AuthVerificationType.MFA) {
-              if (isTruthy(this.getMfaVerificationComponent())) {
-                this.getMfaVerificationComponent()?.setErrorMessage(error.message);
-              }
-            }
-            this.isSubmitting = false;
+            this.setHandleVerificationCodeErrorMessage(type, error.message);
+            this.disableSubmitting();
           },
           complete: (): void => {
             this.disableSubmitting();
@@ -40,18 +38,18 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   public changePassword(dto: ChangePasswordDto): void {
     if (isFalsy(this.isSubmitting)) {
-      this.isSubmitting = true;
+      this.enableSubmitting();
       this.completeChangePassword(dto)
         .subscribe({
           next: (result: any): void => {
             this.getAuthenticationService().setAuthToken(result);
           },
-          error: (result): void => {
+          error: (result: any): void => {
             const { error } = result;
             if (isTruthy(this.getChangePasswordComponent())) {
               this.getChangePasswordComponent()?.setErrorMessage(error.message);
             }
-            this.isSubmitting = false;
+            this.disableSubmitting();
           },
           complete: (): void => {
             this.disableSubmitting();
@@ -85,6 +83,26 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
       return this.getAuthenticationService().completeOnboarding(dto);
     } else {
       return of({});
+    }
+  }
+
+  protected resetHandleVerificationCodeErrorMessage(type: AuthVerificationType): void {
+    if (isTruthy(this.getOtpComponent()) || isTruthy(this.getMfaVerificationComponent())) {
+      if (type === AuthVerificationType.VERIFICATION) {
+        this.getOtpComponent()?.resetErrorMessage();
+      } else if (type === AuthVerificationType.MFA) {
+        this.getMfaVerificationComponent()?.resetErrorMessage();
+      }
+    }
+  }
+
+  protected setHandleVerificationCodeErrorMessage(type: AuthVerificationType, message: string): void {
+    if (isTruthy(this.getOtpComponent()) || isTruthy(this.getMfaVerificationComponent())) {
+      if (type === AuthVerificationType.VERIFICATION) {
+        this.getOtpComponent()?.setErrorMessage(message);
+      } else if (type === AuthVerificationType.MFA) {
+        this.getMfaVerificationComponent()?.setErrorMessage(message);
+      }
     }
   }
 }

@@ -33,7 +33,7 @@ export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
 
   public resendOtp(): void {
     if (isFalsy(this.isSubmitting)) {
-      this.isSubmitting = true;
+      this.enableSubmitting();
       const verificationDto: ResendVerificationCodeDto = this.toResendVerificationCodeDto();
       this.serviceResendOtp(verificationDto)
         .subscribe({
@@ -41,7 +41,7 @@ export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
             this.handleError(result);
           },
           complete: (): void => {
-            this.isSubmitting = false;
+            this.disableSubmitting();
           }
       });
     }
