@@ -12,6 +12,7 @@ import {SharedModule} from "./shared/shared.module";
 import {ContentTypeInterceptor} from "./base/interceptor/content-type.interceptor";
 import {LocalStorageService} from "./base/service/local-storage.service";
 import {AuthorizationInterceptor} from "./base/interceptor/authorization.interceptor";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {AuthorizationInterceptor} from "./base/interceptor/authorization.interce
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AuthenticationModule,
     AppRoutingModule,

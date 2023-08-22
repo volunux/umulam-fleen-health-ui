@@ -98,7 +98,7 @@ export abstract class BaseFormComponent {
       this.setErrorsFromApiResponse(error.fields);
       return;
     }
-    this.errorMessage = error.message || '';
+    this.errorMessage = error?.message || '';
     this.disableSubmitting();
   }
 

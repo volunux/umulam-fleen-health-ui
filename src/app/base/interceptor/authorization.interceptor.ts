@@ -15,6 +15,7 @@ import {Router} from "@angular/router";
 import {BaseHttpService} from "../../shared/service/base-http.service";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
 import {Location} from "@angular/common";
+import {isTruthy} from "../../shared/util/helpers";
 
 @Injectable()
 export class AuthorizationInterceptor implements HttpInterceptor {
@@ -24,6 +25,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
   private readonly EXCLUDED_URLS: string[] = [
     '/auth/sign-in',
     '/auth/sign-up',
+    '/auth/forgot-password',
     '/email-address'
   ];
 
@@ -40,42 +42,54 @@ export class AuthorizationInterceptor implements HttpInterceptor {
       );
     }
 
-    const authRequest: HttpRequest<any> = request.clone({ setHeaders: { [AUTHORIZATION_HEADER]: this.getAccessToken() } });
-    return next.handle(authRequest).pipe(
-      delay(3000),
-      catchError((response: HttpErrorResponse): Observable<any> => {
-        const { error } = response;
-        if (error.status === 401) {
-          return this.handleUnauthorized(authRequest, next);
-        }
-        return this.baseHttpService.handleError(error);
-      })
-    );
+    const authToken: string = this.getAccessToken();
+    if (isTruthy(authToken)) {
+      const authRequest: HttpRequest<any> = request.clone({ setHeaders: { [AUTHORIZATION_HEADER]: this.getAccessToken() } });
+      return next.handle(authRequest).pipe(
+        delay(3000),
+        catchError((response: HttpErrorResponse): Observable<any> => {
+          const { error } = response;
+          if (error.status === 401) {
+            return this.handleUnauthorized(authRequest, next);
+          }
+          return this.baseHttpService.handleError(error);
+        })
+      );
+    }
+    return this.clearDataAndStartAuthentication();
   }
 
   private handleUnauthorized(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    const refreshRequest: HttpRequest<any> = request.clone({
-      setHeaders: { [AUTHORIZATION_HEADER]: this.getRefreshToken() },
-      url: this.baseHttpService.buildPathUri(this.API_REFRESH_TOKEN_ENDPOINT),
-      method: 'GET'
-    });
+    const refreshToken: string | undefined = this.getRefreshToken();
+    if (isTruthy(refreshToken)) {
+      const refreshRequest: HttpRequest<any> = request.clone({
+        setHeaders: { [AUTHORIZATION_HEADER]: this.getRefreshToken() },
+        url: this.baseHttpService.buildPathUri(this.API_REFRESH_TOKEN_ENDPOINT),
+        method: 'GET'
+      });
 
-    return next.handle(refreshRequest).pipe(
-      delay(3000),
-      tap((value: HttpEvent<any>): void => {
-        if (value instanceof HttpResponse) {
-          const { body } = value as HttpResponse<any>;
-          this.authenticationService.setAuthToken(body);
-          this.gotoDestination();
-        }
-      }),
-      catchError(() => {
-        this.localStorageService.clearAuthorizationTokens();
-        this.startAuthentication();
-        return EMPTY;
-      }),
-      switchMap(() => of(EMPTY))
-    );
+      return next.handle(refreshRequest).pipe(
+        delay(3000),
+        tap((value: HttpEvent<any>): void => {
+          if (value instanceof HttpResponse) {
+            const { body } = value as HttpResponse<any>;
+            this.authenticationService.setAuthToken(body);
+            this.gotoDestination();
+          }
+        }),
+        catchError(() => {
+          return this.clearDataAndStartAuthentication();
+        }),
+        switchMap(() => of(EMPTY))
+      );
+    }
+    return this.clearDataAndStartAuthentication();
+  }
+
+  private clearDataAndStartAuthentication(): Observable<any> {
+    this.localStorageService.clearAuthorizationTokens();
+    this.startAuthentication();
+    return EMPTY;
   }
 
   private startAuthentication(): void {
@@ -89,11 +103,19 @@ export class AuthorizationInterceptor implements HttpInterceptor {
   }
 
   private getAccessToken(): string {
-    return AUTHORIZATION_BEARER.replace('{}', this.localStorageService.getAuthorizationToken());
+    const authToken: string = this.localStorageService.getAuthorizationToken();
+    if (isTruthy(authToken)) {
+      return AUTHORIZATION_BEARER.replace('{}', this.localStorageService.getAuthorizationToken());
+    }
+    return '';
   }
 
   private getRefreshToken(): string {
-    return AUTHORIZATION_BEARER.replace('{}', this.localStorageService.getAuthorizationRefreshToken());
+    const refreshToken: string = this.localStorageService.getAuthorizationRefreshToken();
+    if (isTruthy(refreshToken)) {
+      return AUTHORIZATION_BEARER.replace('{}', refreshToken);
+    }
+    return '';
   }
 
   private isExcluded(url: string): boolean {

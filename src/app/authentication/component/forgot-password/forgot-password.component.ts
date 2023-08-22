@@ -39,9 +39,10 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
 
   public submit(event: Event): void {
     this.stopEvent(event);
-    const emailAddress: string = this.emailAddress.value.toString();
-    const dto: ForgotPasswordDto = { emailAddress, verificationType: VerificationType.EMAIL };
     if (this.emailAddress.valid && isFalsy(this.isSubmitting)) {
+      const emailAddress: string = this.emailAddress.value.toString();
+      const dto: ForgotPasswordDto = { emailAddress, verificationType: VerificationType.EMAIL };
+      this.authenticationService.clearAuthTokens();
       this.disableSubmitting();
       this.authenticationService.forgotPassword(dto)
         .subscribe({
@@ -61,8 +62,8 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
 
   public submitOtp(event: Event): void {
     this.stopEvent(event);
-    const emailAddress: string = this.emailAddress.value.toString();
     if (this.emailAddress.valid && this.verificationCode.valid && isFalsy(this.isSubmitting)) {
+      const emailAddress: string = this.emailAddress.value.toString();
       const dto: ResetPasswordDto = { emailAddress, code: this.verificationCode.value };
       this.disableSubmitting();
       this.authenticationService.verifyResetPasswordCode(dto)
