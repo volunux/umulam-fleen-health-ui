@@ -7,11 +7,18 @@ import {isFalsy} from "../../../shared/util/helpers";
 import {ForgotPasswordDto, ResetPasswordDto} from "../../../shared/type/authentication";
 import {ForgotPasswordResponse} from "../../response/forgot-password-response";
 import {InitiatePasswordChangeResponse} from "../../response/initiate-password-change-response";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.css']
+  styleUrls: ['./forgot-password.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void', style({ opacity: 0 })), // Initial state for entering elements
+      transition('void <=> *', animate('300ms ease-in-out')), // Transition between states
+    ]),
+  ],
 })
 export class ForgotPasswordComponent extends BaseFormComponent implements OnInit {
 
