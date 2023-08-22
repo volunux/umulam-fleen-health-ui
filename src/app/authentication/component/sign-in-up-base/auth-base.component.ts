@@ -13,9 +13,8 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   public handleVerificationCode(verification: AuthVerificationDto): void {
     if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
-
       const { type } = verification;
-      this.enableSubmitting();
+      this.disableSubmitting();
       this.resetHandleVerificationCodeErrorMessage(type);
 
       this.completeSignUpOrValidateMfaOrOnboarding(verification)
@@ -25,10 +24,10 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
           },
           error: (error: ErrorResponse): void => {
             this.setHandleVerificationCodeErrorMessage(type, error.message);
-            this.disableSubmitting();
+            this.enableSubmitting();
           },
           complete: (): void => {
-            this.disableSubmitting();
+            this.enableSubmitting();
           }
       });
     }
@@ -36,7 +35,7 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   public changePassword(dto: ChangePasswordDto): void {
     if (isFalsy(this.isSubmitting)) {
-      this.enableSubmitting();
+      this.disableSubmitting();
       this.completeChangePassword(dto)
         .subscribe({
           next: (result: any): void => {
@@ -46,12 +45,12 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
             if (isTruthy(this.getChangePasswordComponent())) {
               this.getChangePasswordComponent()?.setErrorMessage(error.message);
             }
-            this.disableSubmitting();
+            this.enableSubmitting();
           },
           complete: (): void => {
-            this.disableSubmitting();
+            this.enableSubmitting();
           }
-        });
+      });
     }
   }
 

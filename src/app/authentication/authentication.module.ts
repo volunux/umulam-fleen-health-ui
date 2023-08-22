@@ -11,6 +11,8 @@ import {OtpVerificationComponent} from "./component/otp-verification/otp-verific
 import { MfaVerificationComponent } from './component/mfa-verification/mfa-verification.component';
 import { MfaOtpBaseComponent } from './component/mfa-otp-base/mfa-otp-base.component';
 import { ChangePasswordComponent } from './component/onboarding-verification/change-password.component';
+import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './component/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { ChangePasswordComponent } from './component/onboarding-verification/cha
     MfaVerificationComponent,
     MfaOtpBaseComponent,
     ChangePasswordComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     CommonModule,

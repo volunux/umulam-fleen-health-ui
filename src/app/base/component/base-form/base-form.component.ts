@@ -85,11 +85,11 @@ export abstract class BaseFormComponent {
   }
 
   protected disableSubmitting(): void {
-    this.isSubmitting = false;
+    this.isSubmitting = true;
   }
 
   protected enableSubmitting(): void {
-    this.isSubmitting = true;
+    this.isSubmitting = false;
   }
 
   protected handleError(error: ErrorResponse): void {

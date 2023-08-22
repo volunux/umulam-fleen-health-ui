@@ -18,3 +18,13 @@ export type ChangePasswordDto = {
   confirmPassword: string;
   type: ChangePasswordType
 }
+
+export type ForgotPasswordDto = {
+  emailAddress: string;
+  verificationType: VerificationType
+}
+
+export type ResetPasswordDto = {
+  emailAddress: string;
+  code: string;
+}
