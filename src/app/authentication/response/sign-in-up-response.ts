@@ -9,12 +9,12 @@ export class SignInUpResponse {
   public authenticationStatus: AuthenticationStatus;
   public nextAuthentication: NextAuthentication;
 
-  public constructor(data: any) {
-    this.accessToken = data.accessToken;
-    this.refreshToken = data.refreshToken;
-    this.emailAddress = data.emailAddress;
-    this.phoneNumber = data.phoneNumber;
-    this.authenticationStatus = data.authenticationStatus;
-    this.nextAuthentication = data.nextAuthentication;
+  public constructor(data: SignInUpResponse) {
+    this.accessToken = data?.accessToken;
+    this.refreshToken = data?.refreshToken;
+    this.emailAddress = data?.emailAddress;
+    this.phoneNumber = data?.phoneNumber;
+    this.authenticationStatus = data?.authenticationStatus;
+    this.nextAuthentication = data?.nextAuthentication;
   }
 }

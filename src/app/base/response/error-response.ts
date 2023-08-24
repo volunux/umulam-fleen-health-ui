@@ -9,13 +9,13 @@ export class ErrorResponse {
   public fields?: AnyProp[];
   public path?: string;
 
-  public constructor(data: any) {
-    this.message = data.message;
-    this.status = data.status;
-    this.type = data.type;
-    this.timestamp = new Date(data.timestamp);
-    this.fields = data.fields;
-    this.path = data.path;
+  public constructor(data: ErrorResponse) {
+    this.message = data?.message;
+    this.status = data?.status;
+    this.type = data?.type;
+    this.timestamp = (data?.timestamp ? new Date(data?.timestamp) : new Date());
+    this.fields = data?.fields;
+    this.path = data?.path;
   }
 
 }

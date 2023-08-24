@@ -6,9 +6,9 @@ export class SignInResponse extends SignInUpResponse {
   public mfaType: MfaType;
   public mfaEnabled: boolean;
 
-  public constructor(data: any) {
+  public constructor(data: SignInResponse) {
     super(data);
-    this.mfaType = data.mfaType;
-    this.mfaEnabled = data.mfaEnabled;
+    this.mfaType = data?.mfaType;
+    this.mfaEnabled = data?.mfaEnabled;
   }
 }

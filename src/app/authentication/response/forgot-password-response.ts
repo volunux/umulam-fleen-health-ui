@@ -4,7 +4,7 @@ export class ForgotPasswordResponse {
   public phoneNumber: string;
 
   public constructor(data: ForgotPasswordResponse) {
-    this.emailAddress = data.emailAddress;
-    this.phoneNumber = data.phoneNumber;
+    this.emailAddress = data?.emailAddress;
+    this.phoneNumber = data?.phoneNumber;
   }
 }
