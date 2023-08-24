@@ -8,6 +8,8 @@ import {ForgotPasswordDto, ResetPasswordDto} from "../../../shared/type/authenti
 import {ForgotPasswordResponse} from "../../response/forgot-password-response";
 import {InitiatePasswordChangeResponse} from "../../response/initiate-password-change-response";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {codeValidator} from "../../../shared/validator/validator";
+import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 
 @Component({
   selector: 'app-forgot-password',
@@ -34,6 +36,9 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
   ngOnInit(): void {
     this.emailAddress.addValidators([
       Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)
+    ]);
+    this.verificationCode.addValidators([
+      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)
     ]);
   }
 

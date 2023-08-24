@@ -26,7 +26,8 @@ export class AuthorizationInterceptor implements HttpInterceptor {
     '/auth/sign-in',
     '/auth/sign-up',
     '/auth/forgot-password',
-    '/email-address'
+    '/auth/verify-reset-password-code',
+    '/email-address',
   ];
 
   public constructor(private localStorageService: LocalStorageService,
