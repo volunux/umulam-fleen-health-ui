@@ -16,10 +16,13 @@ import {SignUpResponse} from "../response/sign-up-response";
 import {SignInUpResponse} from "../response/sign-in-up-response";
 import {ForgotPasswordResponse} from "../response/forgot-password-response";
 import {InitiatePasswordChangeResponse} from "../response/initiate-password-change-response";
+import {FleenHealthResponse} from "../../shared/response/fleen-health-response";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class AuthenticationService {
 
+  private readonly AUTHENTICATION_ENTRY_POINT: string = '/auth/sign-in';
   private readonly BASE_PATH: string = "auth";
   private readonly VERIFICATION_BASE_PATH: string = "verification";
 
@@ -88,6 +91,14 @@ export class AuthenticationService {
       );
   }
 
+  public resetAndChangePassword(dto: ChangePasswordDto): Observable<any> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'reset-change-password'], {}, { ...dto });
+    return this.httpService.post(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
+      );
+  }
+
   public saveAuthToken(token: string): void {
     this.localStorageService.setObject(AUTHORIZATION_TOKEN_KEY, token);
   }
@@ -104,6 +115,11 @@ export class AuthenticationService {
   public clearAuthTokens(): void {
     this.saveAuthToken('');
     this.saveRefreshToken('');
+  }
+
+  public startAuthentication(router: Router): void {
+    router.navigate([this.AUTHENTICATION_ENTRY_POINT])
+      .then((r: boolean) => r);
   }
 
 }

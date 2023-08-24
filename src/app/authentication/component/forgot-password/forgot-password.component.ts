@@ -2,14 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {FormControl, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
-import {VerificationType} from "../../../shared/enum/authentication";
+import {ChangePasswordType, VerificationType} from "../../../shared/enum/authentication";
 import {isFalsy} from "../../../shared/util/helpers";
-import {ForgotPasswordDto, ResetPasswordDto} from "../../../shared/type/authentication";
+import {ChangePasswordDto, ForgotPasswordDto, ResetPasswordDto} from "../../../shared/type/authentication";
 import {ForgotPasswordResponse} from "../../response/forgot-password-response";
 import {InitiatePasswordChangeResponse} from "../../response/initiate-password-change-response";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-forgot-password',
@@ -26,10 +27,12 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
 
   public emailAddress: FormControl = new FormControl<string>('');
   public verificationCode: FormControl = new FormControl<string>('');
+  public changePasswordType: ChangePasswordType = ChangePasswordType.RESET;
   public isDetailValid: boolean = false;
+  public isChangePasswordStage: boolean = false;
   public phoneNumber: string | undefined;
 
-  public constructor(private authenticationService: AuthenticationService) {
+  public constructor(private authenticationService: AuthenticationService, private router: Router) {
     super();
   }
 
@@ -76,12 +79,30 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
           next: (result: InitiatePasswordChangeResponse): void => {
             this.authenticationService.clearAuthTokens();
             this.authenticationService.saveAuthToken(result.accessToken);
+            this.isChangePasswordStage = true;
           },
           error: (result: any): void => {
             this.handleError(result);
           },
           complete: (): void => {
             this.enableSubmitting();
+          }
+      });
+    }
+  }
+
+  public changePassword(dto: ChangePasswordDto): void {
+    if (isFalsy(this.isSubmitting)) {
+      this.disableSubmitting();
+      this.authenticationService.resetAndChangePassword(dto)
+        .subscribe({
+          error: (result: any): void => {
+            this.handleError(result);
+          },
+          complete: (): void => {
+            this.enableSubmitting();
+            this.authenticationService.clearAuthTokens();
+            this.authenticationService.startAuthentication(this.router);
           }
       });
     }

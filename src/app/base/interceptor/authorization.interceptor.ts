@@ -21,7 +21,6 @@ import {isTruthy} from "../../shared/util/helpers";
 export class AuthorizationInterceptor implements HttpInterceptor {
 
   private readonly API_REFRESH_TOKEN_ENDPOINT: string = 'verification/refresh-token';
-  private readonly AUTHENTICATION_ENTRY_POINT: string = '/auth/sign-in';
   private readonly EXCLUDED_URLS: string[] = [
     '/auth/sign-in',
     '/auth/sign-up',
@@ -94,8 +93,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
   }
 
   private startAuthentication(): void {
-    this.router.navigate([this.AUTHENTICATION_ENTRY_POINT])
-      .then((r: boolean) => r);
+    this.authenticationService.startAuthentication(this.router);
   }
 
   private gotoDestination(): void {
