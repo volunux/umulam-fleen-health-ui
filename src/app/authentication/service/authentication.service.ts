@@ -18,6 +18,7 @@ import {ForgotPasswordResponse} from "../response/forgot-password.response";
 import {InitiatePasswordChangeResponse} from "../response/initiate-password-change.response";
 import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 import {Router} from "@angular/router";
+import {EntityExistsResponse} from "../../shared/response/entity-exists.response";
 
 @Injectable()
 export class AuthenticationService {
@@ -29,12 +30,12 @@ export class AuthenticationService {
   constructor(private httpService: HttpClientService,
               private localStorageService: LocalStorageService) { }
 
-  public isEmailExists(emailAddress: string): Observable<any> {
+  public isEmailExists(emailAddress: string): Observable<EntityExistsResponse> {
     const req: BaseRequest = this.httpService.toRequest(['email-address', 'exists'], { emailAddress });
     return this.httpService.get(req);
   }
 
-  public signUp(data: any): Observable<any> {
+  public signUp(data: any): Observable<SignUpResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-up'], {}, data);
     return this.httpService.post(req)
       .pipe(
@@ -42,7 +43,7 @@ export class AuthenticationService {
       );
   }
 
-  public signIn(data: any): Observable<any> {
+  public signIn(data: any): Observable<SignInResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-in'], {}, data);
     return this.httpService.post(req)
       .pipe(
@@ -50,32 +51,47 @@ export class AuthenticationService {
       );
   }
 
-  public completeSignUp(dto: AuthVerificationDto): Observable<any> {
+  public completeSignUp(dto: AuthVerificationDto): Observable<SignUpResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'confirm-sign-up'], {}, { ...dto });
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => new SignUpResponse(data))
+      );
   }
 
-  public validateSignInMfa(dto: AuthVerificationDto): Observable<any> {
+  public validateSignInMfa(dto: AuthVerificationDto): Observable<SignInResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'validate-sign-in-mfa'], {}, { ...dto });
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => new SignInResponse(data))
+      );
   }
 
-  public completeOnboarding(dto: ChangePasswordDto): Observable<any> {
+  public completeOnboarding(dto: ChangePasswordDto): Observable<SignInResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'complete-onboarding'], {}, { ...dto });
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => new SignInResponse(data))
+      );
   }
 
-  public resendOtp(dto: ResendVerificationCodeDto): Observable<any> {
+  public resendOtp(dto: ResendVerificationCodeDto): Observable<FleenHealthResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'resend-pre-verification-code'], {}, { ...dto });
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
+      );
   }
 
-  public resendPreAuthenticationOtp(dto: ResendVerificationCodeDto): Observable<any> {
+  public resendPreAuthenticationOtp(dto: ResendVerificationCodeDto): Observable<FleenHealthResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'resend-pre-authentication-code'], {}, { ...dto });
-    return this.httpService.post(req);
+    return this.httpService.post(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
+      );
   }
 
-  public forgotPassword(dto: ForgotPasswordDto): Observable<any> {
+  public forgotPassword(dto: ForgotPasswordDto): Observable<ForgotPasswordResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'forgot-password'], {}, { ...dto });
     return this.httpService.post(req)
       .pipe(
@@ -83,7 +99,7 @@ export class AuthenticationService {
       );
   }
 
-  public verifyResetPasswordCode(dto: ResetPasswordDto): Observable<any> {
+  public verifyResetPasswordCode(dto: ResetPasswordDto): Observable<InitiatePasswordChangeResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verify-reset-password-code'], {}, { ...dto });
     return this.httpService.post(req)
       .pipe(
@@ -91,7 +107,7 @@ export class AuthenticationService {
       );
   }
 
-  public resetAndChangePassword(dto: ChangePasswordDto): Observable<any> {
+  public resetAndChangePassword(dto: ChangePasswordDto): Observable<FleenHealthResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'reset-change-password'], {}, { ...dto });
     return this.httpService.post(req)
       .pipe(

@@ -3,6 +3,7 @@ import {equalsIgnoreCase, isFalsy, isTruthy} from "../util/helpers";
 import {catchError, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
 import {AnyProp, AnyRegEx} from "../type/base";
+import {EntityExistsResponse} from "../response/entity-exists.response";
 
 export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -100,12 +101,12 @@ export function emailExistsValidator(service: AuthenticationService): any {
       return of(email).pipe(
         map(value => value.trim()),
         map(value => isFalsy(value) ? null : value),
-        switchMap(value => {
+        switchMap((value: string): Observable<any> => {
           if (isFalsy(value)) {
             return of(null);
           }
-          return service.isEmailExists(email).pipe(
-            map(response => (response.exists ? { exists: true } : null)),
+          return service.isEmailExists(value).pipe(
+            map((response:EntityExistsResponse) => (response.exists ? { exists: true } : null)),
             catchError(() => of(null))
           );
         })
