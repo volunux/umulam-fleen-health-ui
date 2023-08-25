@@ -10,14 +10,18 @@ import {CountryBaseComponent} from "../component/country-base/country-base.compo
 import {CountryDashboardComponent} from "../component/country-dashboard/country-dashboard.component";
 
 const routes: Routes = [
-  { path: '', component: CountryBaseComponent, title: 'Country' },
-  { path: 'dashboard', component: CountryDashboardComponent, title: 'Country Dashboard' },
-  { path: 'entries', component: CountryEntriesComponent, title: 'Country Entries' },
-  { path: 'add', component: CountryAddComponent, title: 'Country Add' },
-  { path: 'update/:id', component: CountryUpdateComponent, title: 'Country Update' },
-  { path: 'detail/:id', component: CountryDetailComponent, title: 'Country Detail' },
-  { path: 'delete-all', component: CountryDeleteAllComponent, title: 'Country Delete All' },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+  { path: '',
+    component: CountryBaseComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: CountryDashboardComponent, title: 'Country Dashboard' },
+      { path: 'entries', component: CountryEntriesComponent, title: 'Country Entries' },
+      { path: 'add', component: CountryAddComponent, title: 'Country Add' },
+      { path: 'update/:id', component: CountryUpdateComponent, title: 'Country Update' },
+      { path: 'detail/:id', component: CountryDetailComponent, title: 'Country Detail' },
+      { path: 'delete-all', component: CountryDeleteAllComponent, title: 'Country Delete All' }
+    ]
+  }
 ];
 
 @NgModule({
