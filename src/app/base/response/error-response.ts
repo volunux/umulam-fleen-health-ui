@@ -10,7 +10,7 @@ export class ErrorResponse {
   public path?: string | null;
 
   public constructor(data: ErrorResponse) {
-    this.message = data?.message;
+    this.message = data?.message ? data?.message : '';
     this.status = data?.status;
     this.type = data?.type ? data?.type : null;
     this.timestamp = (data?.timestamp ? new Date(data?.timestamp) : new Date());
