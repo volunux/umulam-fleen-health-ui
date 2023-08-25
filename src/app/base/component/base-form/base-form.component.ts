@@ -102,7 +102,7 @@ export abstract class BaseFormComponent {
       return;
     }
     this.errorMessage = error?.message || '';
-    this.disableSubmitting();
+    this.enableSubmitting();
   }
 
   protected stopEvent(evt: Event): void {

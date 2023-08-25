@@ -5,17 +5,17 @@ export class ErrorResponse {
   public message!: string;
   public status?: number;
   public timestamp?: Date;
-  public type?: string;
+  public type?: string | null;
   public fields?: AnyProp[];
-  public path?: string;
+  public path?: string | null;
 
   public constructor(data: ErrorResponse) {
     this.message = data?.message;
     this.status = data?.status;
-    this.type = data?.type;
+    this.type = data?.type ? data?.type : null;
     this.timestamp = (data?.timestamp ? new Date(data?.timestamp) : new Date());
-    this.fields = data?.fields;
-    this.path = data?.path;
+    this.fields = data?.fields ? data?.fields : [];
+    this.path = data?.path ? data?.path : null;
   }
 
 }
