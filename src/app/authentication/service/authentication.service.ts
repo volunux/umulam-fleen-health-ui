@@ -92,7 +92,7 @@ export class AuthenticationService {
   }
 
   public resetAndChangePassword(dto: ChangePasswordDto): Observable<any> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'reset-change-password'], {}, { ...dto });
+    const req: BaseRequest = this.httpService.toRequest([this.VERIFICATION_BASE_PATH, 'reset-change-password'], {}, { ...dto });
     return this.httpService.post(req)
       .pipe(
         map(data => new FleenHealthResponse(data))

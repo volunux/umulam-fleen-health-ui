@@ -93,9 +93,6 @@ export abstract class BaseFormComponent {
   }
 
   protected handleError(error: ErrorResponse): void {
-    console.log("I want to handle the error");
-    console.log(error);
-    console.log("I've handled the error");
     const { type } = error;
     if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
       this.setErrorsFromApiResponse(error.fields);
