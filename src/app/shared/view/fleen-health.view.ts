@@ -1,9 +1,9 @@
 
 export class FleenHealthView {
 
-  private id: number | null;
-  private createdOn: Date | null;
-  private updatedOn: Date | null;
+  public id: number | null;
+  public createdOn: Date | null;
+  public updatedOn: Date | null;
 
   public constructor(data: FleenHealthView) {
     this.id = data?.id ? data?.id : null;
