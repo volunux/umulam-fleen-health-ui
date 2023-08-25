@@ -11,12 +11,12 @@ import {
 } from "../../shared/type/authentication";
 import {LocalStorageService} from "../../base/service/local-storage.service";
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
-import {SignInResponse} from "../response/sign-in-response";
-import {SignUpResponse} from "../response/sign-up-response";
-import {SignInUpResponse} from "../response/sign-in-up-response";
-import {ForgotPasswordResponse} from "../response/forgot-password-response";
-import {InitiatePasswordChangeResponse} from "../response/initiate-password-change-response";
-import {FleenHealthResponse} from "../../shared/response/fleen-health-response";
+import {SignInResponse} from "../response/sign-in.response";
+import {SignUpResponse} from "../response/sign-up.response";
+import {SignInUpResponse} from "../response/sign-in-up.response";
+import {ForgotPasswordResponse} from "../response/forgot-password.response";
+import {InitiatePasswordChangeResponse} from "../response/initiate-password-change.response";
+import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 import {Router} from "@angular/router";
 
 @Injectable()

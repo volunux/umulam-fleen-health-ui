@@ -1,4 +1,4 @@
-import {SignInUpResponse} from "./sign-in-up-response";
+import {SignInUpResponse} from "./sign-in-up.response";
 import {MfaType} from "../../shared/enum/authentication";
 
 export class SignInResponse extends SignInUpResponse {

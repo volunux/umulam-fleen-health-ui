@@ -4,7 +4,7 @@ import {AuthenticationService} from "../../service/authentication.service";
 import {SignUpBaseComponent} from "./sign-up-base-component";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
-import {SignUpResponse} from "../../response/sign-up-response";
+import {SignUpResponse} from "../../response/sign-up.response";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
 

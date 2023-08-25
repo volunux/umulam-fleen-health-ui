@@ -1,4 +1,4 @@
-import {SignInUpResponse} from "./sign-in-up-response";
+import {SignInUpResponse} from "./sign-in-up.response";
 
 export class SignUpResponse extends SignInUpResponse {
 

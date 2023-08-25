@@ -4,7 +4,7 @@ import {OtpVerificationComponent} from "../otp-verification/otp-verification.com
 import {FormBuilder} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
-import {SignInResponse} from "../../response/sign-in-response";
+import {SignInResponse} from "../../response/sign-in.response";
 import {
   AuthenticationStatus,
   ChangePasswordType,

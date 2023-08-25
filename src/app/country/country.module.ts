@@ -7,7 +7,10 @@ import {CountryUpdateComponent} from './component/country-update/country-update.
 import {CountryDetailComponent} from './component/country-detail/country-detail.component';
 import {CountryDeleteAllComponent} from './component/country-delete-all/country-delete-all.component';
 import {CountryRoutingModule} from "./routing/country-routing.module";
-import { CountryDashboardComponent } from './component/country-dashboard/country-dashboard.component';
+import {CountryDashboardComponent} from './component/country-dashboard/country-dashboard.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../shared/shared.module";
+import {CountryServiceService} from "./service/country.service";
 
 
 @NgModule({
@@ -22,7 +25,12 @@ import { CountryDashboardComponent } from './component/country-dashboard/country
   ],
   imports: [
     CommonModule,
-    CountryRoutingModule
+    ReactiveFormsModule,
+    CountryRoutingModule,
+    SharedModule
+  ],
+  providers: [
+    CountryServiceService
   ]
 })
 export class CountryModule { }
