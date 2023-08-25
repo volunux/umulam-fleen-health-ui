@@ -5,6 +5,7 @@ import {AppComponent} from "./app.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
+  { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
   { path: 'country', loadChildren: () => import('./country/country.module').then(m => m.CountryModule) },
   { path: "**", component: FleenHeatlhComponent }
 ];

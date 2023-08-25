@@ -7,6 +7,7 @@ import {CountryUpdateComponent} from './component/country-update/country-update.
 import {CountryDetailComponent} from './component/country-detail/country-detail.component';
 import {CountryDeleteAllComponent} from './component/country-delete-all/country-delete-all.component';
 import {CountryRoutingModule} from "./routing/country-routing.module";
+import { CountryDashboardComponent } from './component/country-dashboard/country-dashboard.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {CountryRoutingModule} from "./routing/country-routing.module";
     CountryAddComponent,
     CountryUpdateComponent,
     CountryDetailComponent,
-    CountryDeleteAllComponent
+    CountryDeleteAllComponent,
+    CountryDashboardComponent
   ],
   imports: [
     CommonModule,

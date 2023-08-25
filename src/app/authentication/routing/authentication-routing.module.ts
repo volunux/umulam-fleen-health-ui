@@ -9,9 +9,10 @@ const resolveSignInTitle: ResolveFn<string> = () => Promise.resolve('Sign In');
 const resolveForgotPasswordTitle: ResolveFn<string> = () => Promise.resolve('Sign In');
 
 const routes: Routes = [
-  { path: "sign-up", component: SignUpComponent, title: resolveSignUpTitle },
-  { path: "sign-in", component: SignInComponent, title: resolveSignInTitle },
-  { path: "forgot-password", component: ForgotPasswordComponent, title: resolveForgotPasswordTitle }
+  { path: 'sign-up', component: SignUpComponent, title: resolveSignUpTitle },
+  { path: 'sign-in', component: SignInComponent, title: resolveSignInTitle },
+  { path: 'forgot-password', component: ForgotPasswordComponent, title: resolveForgotPasswordTitle },
+  { path: '', redirectTo: 'sign-in', pathMatch: 'full' }
 ];
 
 
