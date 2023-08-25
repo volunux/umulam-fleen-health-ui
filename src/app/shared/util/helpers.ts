@@ -1,3 +1,5 @@
+import {SearchResultView} from "../view/search-result.view";
+import {Newable} from "../type/base";
 
 export function capitalizeMany(inputArray: string[]): string[] {
   if (isTruthy(inputArray) && Array.isArray(inputArray) && inputArray.length > 0) {
@@ -74,3 +76,9 @@ export function convertToDesiredFormat(input: string, separator: RegExp = /[_]/)
   return formattedSegments.join(' ');
 }
 
+export function mapToSearchResult<T extends Object>(Constructor: Newable<T>, response: any): SearchResultView<T> {
+  const values = response.values.map((value: any) => new Constructor(value));
+  const searchResultView : SearchResultView<T> = new SearchResultView(response);
+  searchResultView.values = values;
+  return searchResultView;
+}
