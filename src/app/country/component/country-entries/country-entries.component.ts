@@ -1,20 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {CountryService} from "../../service/country.service";
 import {CountryView} from "../../view/country.view";
-import {
-  BETWEEN_DATE_SEARCH_KEY,
-  BETWEEN_DATE_TYPE,
-  DATE_TYPE,
-  NO_INPUT_KEY
-} from "../../../shared/constant/enum-constant";
 import {AnyProp} from "../../../shared/type/base";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BaseEntriesComponent} from "../../../shared/component/base-entries/base-entries.component";
 import {SearchResultView} from "../../../shared/view/search-result.view";
 import {Observable} from "rxjs";
-import {SearchFilter} from "../../../shared/type/authentication";
 import {DeleteIdsDto} from "../../../shared/type/other";
 import {DeleteResponse} from "../../../shared/response/delete.response";
+import {SEARCH_FILTER_BETWEEN_DATE} from "../../../shared/constant/search-filter";
+import {SearchFilter} from "../../../shared/type/search";
 
 @Component({
   selector: 'app-country-entries',
@@ -24,12 +19,7 @@ import {DeleteResponse} from "../../../shared/response/delete.response";
 export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> implements OnInit {
 
   public override entries: CountryView[] = [];
-  public override searchFilter: SearchFilter[] = [
-    {key: NO_INPUT_KEY, label: ''},
-    {key: BETWEEN_DATE_SEARCH_KEY, label: 'Between Date', type: BETWEEN_DATE_TYPE},
-    {key: 'afterDate', label: 'After Date', type: DATE_TYPE},
-    {key: 'beforeDate', label: 'Before Date', type: DATE_TYPE}
-  ];
+  public override searchFilter: SearchFilter[] = SEARCH_FILTER_BETWEEN_DATE;
 
   public constructor(private countryService: CountryService,
                      router: Router,
@@ -46,6 +36,4 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
   override deleteEntries(dto: DeleteIdsDto): Observable<DeleteResponse> {
     return this.countryService.deleteCountries(dto);
   }
-
-
 }
