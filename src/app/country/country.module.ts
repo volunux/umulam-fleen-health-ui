@@ -10,7 +10,7 @@ import {CountryRoutingModule} from "./routing/country-routing.module";
 import {CountryDashboardComponent} from './component/country-dashboard/country-dashboard.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
-import {CountryServiceService} from "./service/country.service";
+import {CountryService} from "./service/country.service";
 
 
 @NgModule({
@@ -30,7 +30,7 @@ import {CountryServiceService} from "./service/country.service";
     SharedModule
   ],
   providers: [
-    CountryServiceService
+    CountryService
   ]
 })
 export class CountryModule { }

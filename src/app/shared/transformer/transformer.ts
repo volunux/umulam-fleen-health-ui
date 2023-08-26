@@ -30,10 +30,14 @@ export function toCamelCaseKeys(data: any): any {
     return data;
   }
 
+  if (Array.isArray(data)) {
+    return data.map((item: string) => toCamelCaseKeys(item));
+  }
+
   const newData: Record<string, any> = {};
   for (const property of Object.keys(data)) {
     const transformedProperty: string = toCamelCase(property);
-    newData[transformedProperty] = data[property];
+    newData[transformedProperty] = toCamelCaseKeys(data[property]);
   }
 
   return newData;
