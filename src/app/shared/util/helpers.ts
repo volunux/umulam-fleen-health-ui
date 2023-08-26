@@ -94,3 +94,15 @@ export function getPropsValueAsArray(obj: AnyProp[], key: string): string[] {
 export function validatePattern(pattern: RegExp, value: string): boolean {
   return pattern.test(value);
 }
+
+export function createBetweenDateObj(value: string, keys: [string, string] = ['startDate', 'endDate'], separator: string = ':'): AnyProp {
+  if (isTruthy(value)) {
+    const twoDateString: string[] = value.split(separator);
+    return { [keys[0]]: twoDateString[0], [keys[1]]: twoDateString[1] }
+  }
+  return {};
+}
+
+export function propExists(obj: AnyProp, key: string): boolean {
+  return isObject(obj) && obj.hasOwnProperty(key);
+}

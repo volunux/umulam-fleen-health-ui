@@ -3,11 +3,17 @@ import {CountryService} from "../../service/country.service";
 import {CountryView} from "../../view/country.view";
 import {SearchResultView} from "../../../shared/view/search-result.view";
 import {ErrorResponse} from "../../../base/response/error-response";
-import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {enumTypeValidator, typeValidator} from "../../../shared/validator/validator";
-import {capitalize, getPropsValueAsArray} from "../../../shared/util/helpers";
-import {BETWEEN_DATE_TYPE, DATE_TYPE, NO_INPUT_KEY} from "../../../shared/constant/enum-constant";
+import {capitalize, createBetweenDateObj, getPropsValueAsArray, propExists} from "../../../shared/util/helpers";
+import {
+  BETWEEN_DATE_SEARCH_KEY,
+  BETWEEN_DATE_TYPE,
+  DATE_TYPE,
+  NO_INPUT_KEY
+} from "../../../shared/constant/enum-constant";
 import {AnyProp} from "../../../shared/type/base";
+import {DEFAULT_PAGE_SIZE} from "../../../shared/constant/other-constant";
 
 @Component({
   selector: 'app-country-entries',
@@ -15,19 +21,20 @@ import {AnyProp} from "../../../shared/type/base";
   styleUrls: ['./country-entries.component.css']
 })
 export class CountryEntriesComponent implements OnInit {
-  public currentPage: number = 1;
-  public pageSize: number = 10;
+  public currentPage: number = 0;
+  public pageSize: number = DEFAULT_PAGE_SIZE;
   public isFirst: boolean | undefined;
   public isLast: boolean | undefined;
   public entries: CountryView[] = [];
   public searchFilter: AnyProp[] = [
     {key: NO_INPUT_KEY, label: ''},
-    {key: 'betweenDate', label: 'Between Date', type: BETWEEN_DATE_TYPE},
+    {key: BETWEEN_DATE_SEARCH_KEY, label: 'Between Date', type: BETWEEN_DATE_TYPE},
     {key: 'afterDate', label: 'After Date', type: DATE_TYPE},
     {key: 'beforeDate', label: 'Before Date', type: DATE_TYPE}
   ];
-  public isSubmitting = false;
+  public isSubmitting: boolean = false;
   public searchForm: FormGroup = new FormGroup<any>({});
+  public searchParams: AnyProp = {};
 
   public constructor(private countryService: CountryService, private formBuilder: FormBuilder) { }
 
@@ -45,12 +52,24 @@ export class CountryEntriesComponent implements OnInit {
   }
 
   public search(): void {
-    console.log(this.searchForm.value);
-    console.log(this.searchForm.errors);
+    if (this.searchForm.valid) {
+      const typeValue: string = ((<FormControl>this.searchType).value);
+      const inputValue: string = this.searchInput?.value;
+      let searchParams: AnyProp = { [typeValue]: inputValue };
+      console.log("Before transformation");
+      console.log(searchParams);
+      if (propExists(searchParams, BETWEEN_DATE_SEARCH_KEY)) {
+        const twoDates: AnyProp = createBetweenDateObj(searchParams[BETWEEN_DATE_SEARCH_KEY]);
+        this.searchParams = { ...searchParams, ...twoDates };
+      }
+      console.log("After transformation");
+      console.log(searchParams);
+      this.getEntries(this.prepareSearchParams());
+    }
   }
 
-  private initEntries(): void {
-    this.countryService.findCountries()
+  private getEntries(params: AnyProp): void {
+    this.countryService.findCountries(params)
       .subscribe({
         next: (result: SearchResultView<CountryView>): void => {
           console.log(result);
@@ -71,23 +90,37 @@ export class CountryEntriesComponent implements OnInit {
   public nextPage(): void {
     if (this.entries && !this.isLast) {
       this.currentPage++;
-      this.initEntries();
+      this.getEntries(this.prepareSearchParams());
     }
   }
 
   public previousPage(): void {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 0) {
       this.currentPage--;
-      this.initEntries();
+      this.getEntries(this.prepareSearchParams());
     }
   }
 
   get searchType(): AbstractControl | null | undefined {
-    return this.searchForm.get('searchFilter');
+    return this.searchForm.get('searchType');
   }
 
   get searchInput(): AbstractControl | null | undefined {
     return this.searchForm.get('searchInput');
+  }
+
+  private getPaginationDetails(): AnyProp {
+    return {
+      pageNo: this.currentPage,
+      pageSize: this.pageSize
+    }
+  }
+
+  private prepareSearchParams(): AnyProp {
+    return {
+      ...(this.searchParams),
+      ...(this.getPaginationDetails())
+    }
   }
 
   protected readonly capitalize = capitalize;
