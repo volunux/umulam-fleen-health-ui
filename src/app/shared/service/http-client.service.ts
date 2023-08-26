@@ -48,6 +48,7 @@ export class HttpClientService extends BaseHttpService {
   }
 
   public deleteMany(req: BaseRequest): Observable<any> {
+    req.method = 'DELETE';
     return this.request(req);
   }
 

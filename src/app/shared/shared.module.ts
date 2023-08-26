@@ -6,20 +6,16 @@ import {HttpClientService} from "./service/http-client.service";
 import {LoggerService} from "./service/logger.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import {BaseHttpService} from "./service/base-http.service";
-import { BaseEntriesComponent } from './component/base-entries/base-entries.component';
-import { SearchFormComponent } from './component/search-form/search-form.component';
-import { PaginationComponent } from './component/pagination/pagination.component';
-import { EntryOptionComponent } from './component/entry-option/entry-option.component';
-import { RowEntryOptionComponent } from './component/row-entry-option/row-entry-option.component';
+import {SearchFormComponent} from './component/search-form/search-form.component';
+import {PaginationComponent} from './component/pagination/pagination.component';
+import {RowEntryOptionComponent} from './component/row-entry-option/row-entry-option.component';
 
 
 @NgModule({
   declarations: [
     ValidationErrorComponent,
-    BaseEntriesComponent,
     SearchFormComponent,
     PaginationComponent,
-    EntryOptionComponent,
     RowEntryOptionComponent,
   ],
   imports: [

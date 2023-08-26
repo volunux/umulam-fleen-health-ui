@@ -5,8 +5,8 @@ import {enumTypeValidator, typeValidator} from "../../validator/validator";
 import {createBetweenDateObj, getPropsValueAsArray, isFalsy, propExists} from "../../util/helpers";
 import {BETWEEN_DATE_SEARCH_KEY} from "../../constant/enum-constant";
 import {SearchDto} from "../../interface/base";
-import {SearchFilter, SearchParamDto} from "../../type/authentication";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
+import {SearchFilter, SearchParamDto} from "../../type/search";
 
 @Component({
   selector: 'app-search-form',

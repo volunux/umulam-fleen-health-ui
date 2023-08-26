@@ -13,6 +13,8 @@ import {BaseEntriesComponent} from "../../../shared/component/base-entries/base-
 import {SearchResultView} from "../../../shared/view/search-result.view";
 import {Observable} from "rxjs";
 import {SearchFilter} from "../../../shared/type/authentication";
+import {DeleteIdsDto} from "../../../shared/type/other";
+import {DeleteResponse} from "../../../shared/response/delete.response";
 
 @Component({
   selector: 'app-country-entries',
@@ -39,6 +41,10 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
 
   override findEntries(params: AnyProp): Observable<SearchResultView<CountryView>> {
     return this.countryService.findCountries(params);
+  }
+
+  override deleteEntries(dto: DeleteIdsDto): Observable<DeleteResponse> {
+    return this.countryService.deleteCountries(dto);
   }
 
 

@@ -1,5 +1,6 @@
 import {SearchResultView} from "../view/search-result.view";
-import {AnyProp, Newable} from "../type/base";
+import {AnyProp} from "../type/base";
+import {Newable} from "../interface/base";
 
 export function capitalizeMany(inputArray: string[]): string[] {
   if (isTruthy(inputArray) && Array.isArray(inputArray) && inputArray.length > 0) {
