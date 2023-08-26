@@ -9,6 +9,7 @@
 
 <div *ngIf="entries.length > 0">
   <table>
+
     <thead>
       <tr>
         <th>S/N</th>
@@ -20,24 +21,25 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let country of entries; let i = index">
+      <tr *ngFor="let country of entries; let i = index; trackBy: trackByFn">
         <td>{{ i }}</td>
         <td>{{ country.title }}</td>
         <td>{{ country.code }}</td>
-        <td>{{ country.createdOn }}</td>
-        <td>{{ country.updatedOn }}</td>
+        <td>{{ country.createdOn | date:'mediumDate' }}</td>
+        <td>{{ country.updatedOn | date:'mediumDate' }}</td>
         <td>
           <button (click)="viewDetail(country.id)">View</button>
           <button (click)="updateEntry(country.id)">Update</button>
         </td>
+        <td>
+          <label class="custom-checkbox" [class.checked]="checked.checked">
+            <input type="checkbox" (change)="handleChecked(country.id, checked.checked)" #checked >
+            <span class="checkmark"></span>
+          </label>
+        </td>
       </tr>
     </tbody>
   </table>
-  <ul>
-    <li *ngFor="let country of entries">
-      {{ country.title }}
-    </li>
-  </ul>
 
   <div>
     <button *ngIf="!isFirst" (click)="previousPage()" [disabled]="isFirst">Previous</button>

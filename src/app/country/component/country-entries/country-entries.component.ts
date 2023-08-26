@@ -27,6 +27,7 @@ export class CountryEntriesComponent implements OnInit {
   public isFirst: boolean | undefined;
   public isLast: boolean | undefined;
   public entries: CountryView[] = [];
+  private deleteIds: string[] = [];
   public searchFilter: AnyProp[] = [
     {key: NO_INPUT_KEY, label: ''},
     {key: BETWEEN_DATE_SEARCH_KEY, label: 'Between Date', type: BETWEEN_DATE_TYPE},
@@ -146,5 +147,16 @@ export class CountryEntriesComponent implements OnInit {
       await this.router.navigate(['update', id], {relativeTo: this.route});
      }
   }
+
+  public handleChecked(id: number | string | undefined, checked: boolean): void {
+    if (checked) {
+
+    }
+  }
+
+  public trackByFn(index: number, item: any): any {
+    return item.id;
+  }
+
 
 }

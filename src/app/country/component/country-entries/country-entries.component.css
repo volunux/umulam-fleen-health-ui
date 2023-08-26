@@ -1,0 +1,47 @@
+.custom-checkbox {
+  position: relative;
+  cursor: pointer;
+  display: flex; /* Use flexbox */
+  align-items: center; /* Vertically center the content */
+  padding-left: 25px; /* Adjust based on your design */
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  width: 20px; /* Adjust based on your design */
+  height: 20px; /* Adjust based on your design */
+  background-color: #eee; /* Unchecked background color */
+  border-radius: 50%; /* Make the checkbox round */
+  border: 1px solid #ccc; /* Border style */
+  display: flex; /* Use flexbox */
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: #2196F3; /* Checked background color */
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: none; /* Hide the checkmark symbol when checked */
+}
+
+
+.custom-checkbox .checkmark:after {
+  width: 4px; /* Adjust the width to make the checkmark smaller */
+  height: 8px; /* Adjust the height to make the checkmark smaller */
+  border: solid white;
+  border-width: 0 1.5px 1.5px 0; /* Adjust the border width to make the checkmark smaller */
+  transform: rotate(45deg);
+}
