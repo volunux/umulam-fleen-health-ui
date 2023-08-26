@@ -21,6 +21,7 @@ import {DEFAULT_PAGE_SIZE} from "../../../shared/constant/other-constant";
 })
 export class CountryEntriesComponent implements OnInit {
   public currentPage: number = 0;
+  private totalEntries: number = 0;
   public pageSize: number = DEFAULT_PAGE_SIZE;
   public isFirst: boolean | undefined;
   public isLast: boolean | undefined;
@@ -48,6 +49,7 @@ export class CountryEntriesComponent implements OnInit {
     }, {
       validators: [typeValidator(['searchType', 'searchInput'], this.searchFilter)]
     });
+    this.getEntries();
   }
 
   public search(): void {
@@ -78,7 +80,7 @@ export class CountryEntriesComponent implements OnInit {
   }
 
   public nextPage(): void {
-    if (this.entries && !this.isLast) {
+    if (this.entries && !this.isLast && this.isNextPageAvailable()) {
       this.currentPage++;
       this.getEntries();
     }
@@ -99,6 +101,10 @@ export class CountryEntriesComponent implements OnInit {
     return this.searchForm.get('searchInput');
   }
 
+  get currentPageNumber(): number {
+    return this.currentPage + 1;
+  }
+
   private getPaginationDetails(): AnyProp {
     return {
       pageNo: this.currentPage,
@@ -117,5 +123,12 @@ export class CountryEntriesComponent implements OnInit {
     this.isFirst = result.isFirst;
     this.isLast = result.isLast;
     this.entries = result.values;
+    this.totalEntries = result.totalEntries;
   }
+
+  private isNextPageAvailable(): boolean {
+    const totalPages: number = Math.ceil( this.totalEntries / this.pageSize);
+    return this.currentPageNumber <= totalPages;
+  }
+
 }
