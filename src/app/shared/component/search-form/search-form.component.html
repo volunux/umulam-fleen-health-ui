@@ -7,6 +7,6 @@
   </select>
 
   <input type="text" formControlName="searchInput" name="search-input">
-  <button type="submit">Search</button>
+  <button type="submit" [disabled]="isSubmitting">Search</button>
 
 </form>

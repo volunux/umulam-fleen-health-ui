@@ -1,11 +1,5 @@
 
-<form class="search-menu" [formGroup]="searchForm" (ngSubmit)="search()">
-  <select formControlName="searchType">
-    <option *ngFor="let filter of searchFilter" [value]="filter['key']">{{filter['label']}}</option>
-  </select>
-  <input type="text" formControlName="searchInput">
-  <button type="submit">Search</button>
-</form>
+<app-search-form [is-submitting]="isSubmitting" [search-filter]="searchFilter" (searchSubmitted)="search($event)"></app-search-form>
 
 <div *ngIf="entries.length > 0">
   <table>

@@ -1,25 +1,27 @@
 import {DEFAULT_PAGE_SIZE} from "../../constant/other-constant";
-import {FormGroup} from "@angular/forms";
 import {AnyProp} from "../../type/base";
 import {isTruthy} from "../../util/helpers";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SearchResultView} from "../../view/search-result.view";
 import {Observable} from "rxjs";
 import {SearchDto} from "../../interface/base";
+import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
+import {SearchFilter} from "../../type/authentication";
 
-export abstract class BaseEntriesComponent<T> {
+export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   public currentPage: number = 0;
-  private totalEntries: number = 0;
   public pageSize: number = DEFAULT_PAGE_SIZE;
   public isFirst: boolean | undefined;
   public isLast: boolean | undefined;
   public entries: T[] = [];
   private deleteIds: string[] = [];
-  public isSubmitting: boolean = false;
-  public searchParams: AnyProp = {};
+  private totalEntries: number = 0;
+  protected searchParams: AnyProp = {};
+  protected searchFilter: SearchFilter[] = [];
 
-  public constructor(private router: Router, private route: ActivatedRoute) {
+  protected constructor(private router: Router, private route: ActivatedRoute) {
+    super();
   }
 
   abstract findEntries(params: AnyProp): Observable<SearchResultView<T>>;
@@ -100,11 +102,16 @@ export abstract class BaseEntriesComponent<T> {
         },
         error: (): void => {
           this.entries = [];
+          this.enableSubmitting();
+        },
+        complete: (): void => {
+          this.enableSubmitting();
         }
       });
   }
 
   public search(dto: SearchDto): void {
+    this.searchParams = dto;
     this.getEntries();
   }
 

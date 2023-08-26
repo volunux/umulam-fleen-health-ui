@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {BaseEntriesComponent} from "../../../shared/component/base-entries/base-entries.component";
 import {SearchResultView} from "../../../shared/view/search-result.view";
 import {Observable} from "rxjs";
+import {SearchFilter} from "../../../shared/type/authentication";
 
 @Component({
   selector: 'app-country-entries',
@@ -21,7 +22,7 @@ import {Observable} from "rxjs";
 export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> implements OnInit {
 
   public override entries: CountryView[] = [];
-  public searchFilter: AnyProp[] = [
+  public override searchFilter: SearchFilter[] = [
     {key: NO_INPUT_KEY, label: ''},
     {key: BETWEEN_DATE_SEARCH_KEY, label: 'Between Date', type: BETWEEN_DATE_TYPE},
     {key: 'afterDate', label: 'After Date', type: DATE_TYPE},

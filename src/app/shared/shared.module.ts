@@ -28,6 +28,7 @@ import { SearchFormComponent } from './component/search-form/search-form.compone
   ],
   exports: [
     ValidationErrorComponent,
+    SearchFormComponent,
   ]
 })
 export class SharedModule { }

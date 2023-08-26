@@ -2,26 +2,28 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AnyProp} from "../../type/base";
 import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
 import {enumTypeValidator, typeValidator} from "../../validator/validator";
-import {createBetweenDateObj, getPropsValueAsArray, propExists} from "../../util/helpers";
+import {createBetweenDateObj, getPropsValueAsArray, isFalsy, propExists} from "../../util/helpers";
 import {BETWEEN_DATE_SEARCH_KEY} from "../../constant/enum-constant";
 import {SearchDto} from "../../interface/base";
 import {SearchFilter, SearchParamDto} from "../../type/authentication";
+import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.css']
 })
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent extends BaseFormComponent implements OnInit {
 
-  public isSubmitting: boolean = false;
   public searchParams: AnyProp = {};
   public searchForm: FormGroup = new FormGroup<any>({});
+  @Input('is-submitting') public override isSubmitting: boolean = false;
   @Input('search-filter') public searchFilter: SearchFilter[] = [];
   @Output() public searchSubmitted: EventEmitter<SearchDto> = new EventEmitter<SearchDto>();
 
-
-  public constructor(private formBuilder: FormBuilder) { }
+  public constructor(private formBuilder: FormBuilder) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.initForm();
@@ -37,7 +39,8 @@ export class SearchFormComponent implements OnInit {
   }
 
   public search(): void {
-    if (this.searchForm.valid) {
+    if (this.searchForm.valid && isFalsy(this.isSubmitting)) {
+      this.disableSubmitting();
       const { type, value } = this.searchFormValue;
       this.searchParams = {[type]: value};
       this.checkBetweenDateParam();

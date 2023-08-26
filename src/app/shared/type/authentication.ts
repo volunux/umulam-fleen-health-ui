@@ -37,5 +37,5 @@ export type SearchParamDto = {
 export type SearchFilter = {
   key: string;
   label: string;
-  type: string;
+  type?: string;
 }
