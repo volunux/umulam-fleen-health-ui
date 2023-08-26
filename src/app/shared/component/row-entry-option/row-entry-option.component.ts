@@ -7,20 +7,20 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class RowEntryOptionComponent {
 
-  @Input('entry-id') entryId!: number;
-  @Output() detailClicked: EventEmitter<number> = new EventEmitter<number>();
-  @Output() updateClicked: EventEmitter<number> = new EventEmitter<number>();
-  @Output() checkedChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input('entry-id') public entryId!: number;
+  @Output() public detailClicked: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public updateClicked: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public checkedChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  viewDetail() {
+  public viewDetail(): void {
     this.detailClicked.emit(this.entryId);
   }
 
-  updateEntry() {
+  public updateEntry(): void {
     this.updateClicked.emit(this.entryId);
   }
 
-  handleChecked(checked: boolean) {
+  public handleChecked(checked: boolean): void {
     this.checkedChanged.emit(checked);
   }
 }

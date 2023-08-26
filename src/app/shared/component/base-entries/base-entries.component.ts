@@ -1,6 +1,6 @@
 import {DEFAULT_PAGE_SIZE} from "../../constant/other-constant";
 import {AnyProp} from "../../type/base";
-import {isTruthy} from "../../util/helpers";
+import {isFalsy, isTruthy} from "../../util/helpers";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SearchResultView} from "../../view/search-result.view";
 import {Observable} from "rxjs";
@@ -15,7 +15,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   public isFirst: boolean | undefined;
   public isLast: boolean | undefined;
   public entries: T[] = [];
-  private deleteIds: string[] = [];
+  private deleteIds: Array<number | string> = [];
   private totalEntries: number = 0;
   protected searchParams: AnyProp = {};
   protected searchFilter: SearchFilter[] = [];
@@ -26,14 +26,19 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   abstract findEntries(params: AnyProp): Observable<SearchResultView<T>>;
 
+  abstract deleteEntries(): Observable<any>;
+
 
   public trackByFn(index: number, item: any): any {
     return item.id;
   }
 
-  public handleChecked(id: number | string | undefined, checked: boolean): void {
-    if (checked) {
-
+  public handleChecked(id: number | string, checked: boolean): void {
+    if (checked && !this.deleteIds.includes(id)) {
+      this.deleteIds.push(id);
+    } else {
+      this.deleteIds = this.deleteIds
+        .filter((val: number | string) => val !== id);
     }
   }
 
@@ -113,6 +118,27 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   public search(dto: SearchDto): void {
     this.searchParams = dto;
     this.getEntries();
+  }
+
+  public confirmDeleteEntries(): void {
+    if (this.deleteIds.length > 0 && isFalsy(this.isSubmitting)) {
+      this.disableSubmitting();
+      this.deleteEntries()
+        .subscribe({
+          error: (): void => {
+            this.enableSubmitting();
+          },
+          complete: (): void => {
+            this.enableSubmitting();
+            this.refreshEntries();
+          }
+        })
+    }
+  }
+
+  private refreshEntries(): void {
+    this.entries = this.entries
+      .filter((entry: T) => this.deleteIds.includes(entry['id']))
   }
 
 }
