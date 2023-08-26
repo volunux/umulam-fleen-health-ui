@@ -1,5 +1,6 @@
-
 <app-search-form [is-submitting]="isSubmitting" [search-filter]="searchFilter" (searchSubmitted)="search($event)"></app-search-form>
+
+<button>Delete</button>
 
 <div *ngIf="entries.length > 0">
   <table>
@@ -21,20 +22,12 @@
         <td>{{ country.code }}</td>
         <td>{{ country.createdOn | date:'mediumDate' }}</td>
         <td>{{ country.updatedOn | date:'mediumDate' }}</td>
-        <td>
-          <button (click)="viewDetail(country.id)">View</button>
-          <button (click)="updateEntry(country.id)">Update</button>
-        </td>
-        <td>
-          <label class="custom-checkbox" [class.checked]="checked.checked">
-            <input type="checkbox" (change)="handleChecked(country.id, checked.checked)" #checked >
-            <span class="checkmark"></span>
-          </label>
-        </td>
+        <app-row-entry-option [entry-id]="country.id" (detailClicked)="viewDetail(country.id)"
+                              (updateClicked)="updateEntry(country.id)" (checkedChanged)="handleChecked(country.id, $event)"></app-row-entry-option>
       </tr>
     </tbody>
   </table>
-  
+
   <app-pagination [is-first]="isFirst" [is-last]="isLast" [current-page-number]="currentPageNumber"
                   (toNextPage)="nextPage()" (toPreviousPage)="previousPage()"></app-pagination>
 
