@@ -12,6 +12,8 @@ export function toRequestBody(data: any): Record<string, string> {
   return newData;
 }
 
+export const toSnakeCase = toRequestBody;
+
 export function toBody(data: any): string {
   const newData: Record<string, string> = {};
 

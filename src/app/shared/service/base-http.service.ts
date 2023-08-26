@@ -5,7 +5,7 @@ import {isObject, isTruthy} from "../util/helpers";
 import {AnyArray, AnyProp} from "../type/base";
 import {BaseRequest, RequestMethod} from "../type/http";
 import {catchError, map, Observable, retry, tap, throwError} from "rxjs";
-import {toBody, toCamelCaseKeys} from "../transformer/transformer";
+import {toBody, toCamelCaseKeys, toSnakeCase} from "../transformer/transformer";
 import {ErrorResponse} from "../../base/response/error-response";
 
 @Injectable()
@@ -61,7 +61,7 @@ export class BaseHttpService {
     if (typeof bodyOrMethod === 'string') {
       return {
         pathParams,
-        queryParams,
+        queryParams: toSnakeCase(queryParams),
         method: isTruthy(method) ? method : bodyOrMethod,
       };
     } else {
