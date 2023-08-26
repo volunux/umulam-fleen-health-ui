@@ -1,5 +1,5 @@
 import {SearchResultView} from "../view/search-result.view";
-import {Newable} from "../type/base";
+import {AnyProp, Newable} from "../type/base";
 
 export function capitalizeMany(inputArray: string[]): string[] {
   if (isTruthy(inputArray) && Array.isArray(inputArray) && inputArray.length > 0) {
@@ -81,4 +81,16 @@ export function mapToSearchResult<T extends Object>(Constructor: Newable<T>, res
   const searchResultView : SearchResultView<T> = new SearchResultView(response);
   searchResultView.values = values;
   return searchResultView;
+}
+
+export function getPropsValueAsArray(obj: AnyProp[], key: string): string[] {
+  if (isObject(obj) && Array.isArray(obj) && obj.length > 0) {
+    return obj.map((option: AnyProp) => option[key]);
+  }
+  return [];
+}
+
+
+export function validatePattern(pattern: RegExp, value: string): boolean {
+  return pattern.test(value);
 }

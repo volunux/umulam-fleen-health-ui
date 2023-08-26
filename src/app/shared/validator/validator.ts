@@ -1,9 +1,11 @@
 import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {equalsIgnoreCase, isFalsy, isTruthy} from "../util/helpers";
+import {equalsIgnoreCase, isFalsy, isTruthy, validatePattern} from "../util/helpers";
 import {catchError, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
 import {AnyProp, AnyRegEx} from "../type/base";
 import {EntityExistsResponse} from "../response/entity-exists.response";
+import {BETWEEN_DATE_TYPE, DATE_TYPE, NO_INPUT_KEY} from "../constant/enum-constant";
+import {DATE, TWO_DATES} from "../util/format-pattern";
 
 export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -39,7 +41,7 @@ export function fieldsMatchValidator(fieldName1: string, fieldName2: string, lab
   };
 }
 
-export function dateOfBirthValidator(pattern: RegExp): ValidatorFn | any {
+export function dateValidator(pattern: RegExp): ValidatorFn | any {
   return (control: FormControl): ValidationErrors | null => {
     if (isTruthy(control) && isTruthy(control.value)) {
       if (!pattern.test(control.value)) {
@@ -49,6 +51,8 @@ export function dateOfBirthValidator(pattern: RegExp): ValidatorFn | any {
     return null;
   };
 }
+
+export const dateOfBirthValidator = dateValidator;
 
 export function pastDateValidator(control: FormControl): ValidationErrors | null {
   if (isTruthy(control) && isTruthy(control.value)) {
@@ -174,6 +178,42 @@ export function codeValidator(pattern: RegExp, minLength: number = 1, maxLength:
       if (otpValue.length < minLength || otpValue.length > maxLength) {
         return { atLeastLength: true, minLength, maxLength };
       }
+    }
+    return null;
+  };
+}
+
+
+export function typeValidator(controlNames: [string, string], options: any[], propToFilter: string = 'key'): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+
+    const selectedKey = control.get(controlNames[0])?.value;
+    const inputValue = control.get(controlNames[1])?.value;
+
+    console.log("Selected key is " + selectedKey);
+    console.log("Inputted value is " + inputValue);
+
+    if (selectedKey && selectedKey !== NO_INPUT_KEY && inputValue !== undefined) {
+      const config = options.find(option => option[propToFilter] === selectedKey);
+      console.log(config);
+
+      if (isTruthy(config)) {
+        if (config.type === DATE_TYPE) {
+          const isValidDate: boolean = validatePattern(DATE, inputValue);
+          console.log('Is valid date ' + isValidDate);
+          if (!isValidDate) {
+            return { invalidDate: true };
+          }
+        } else if (config.type === BETWEEN_DATE_TYPE) {
+          const isValidDate: boolean = validatePattern(TWO_DATES, inputValue);
+          console.log('Is valid date ' + isValidDate);
+          if (!isValidDate) {
+            return { invalidDate: true };
+          }
+        }
+      }
+
+
     }
     return null;
   };

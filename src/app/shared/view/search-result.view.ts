@@ -1,20 +1,20 @@
 export class SearchResultView<T> {
 
-  public pageNo: number | null;
-  public pageSize: number | null;
-  public totalEntries: number | null;
-  public totalPages: number | null;
-  public isLast: boolean | null;
-  public isFirst: boolean | null;
+  public pageNo: number;
+  public pageSize: number;
+  public totalEntries: number;
+  public totalPages: number;
+  public isLast: boolean;
+  public isFirst: boolean;
   public values: T[];
 
   public constructor(data: SearchResultView<T>) {
-    this.pageNo = data?.pageNo ? data.pageNo : null;
-    this.pageSize = data?.pageSize ? data.pageSize : null;
-    this.totalEntries = data?.totalEntries ? data.totalEntries : null;
-    this.totalPages = data?.totalPages ? data.totalPages : null;
-    this.isLast = data?.isLast ? data.isLast : null;
-    this.isFirst = data?.isFirst ? data.isFirst : null;
+    this.pageNo = data?.pageNo ? data.pageNo : data?.pageNo;
+    this.pageSize = data?.pageSize ? data.pageSize : data?.pageSize;
+    this.totalEntries = data?.totalEntries ? data.totalEntries : data?.totalEntries;
+    this.totalPages = data?.totalPages ? data.totalPages : data?.totalPages;
+    this.isLast = data?.isLast ? data.isLast : data?.isLast;
+    this.isFirst = data?.isFirst ? data.isFirst : data?.isFirst;
     this.values = data?.values ? data.values : [];
   }
 }
