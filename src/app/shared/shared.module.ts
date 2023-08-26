@@ -6,11 +6,15 @@ import {HttpClientService} from "./service/http-client.service";
 import {LoggerService} from "./service/logger.service";
 import {ReactiveFormsModule} from "@angular/forms";
 import {BaseHttpService} from "./service/base-http.service";
+import { BaseEntriesComponent } from './component/base-entries/base-entries.component';
+import { SearchFormComponent } from './component/search-form/search-form.component';
 
 
 @NgModule({
   declarations: [
     ValidationErrorComponent,
+    BaseEntriesComponent,
+    SearchFormComponent,
   ],
   imports: [
     CommonModule,

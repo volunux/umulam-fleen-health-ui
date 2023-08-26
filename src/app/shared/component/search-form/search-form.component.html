@@ -1,0 +1,12 @@
+<form class="search-menu" [formGroup]="searchForm" (ngSubmit)="search()">
+
+  <select formControlName="searchType" name="search-type">
+    <option *ngFor="let filter of searchFilter" [value]="filter['key']">
+      {{ filter['label'] }}
+    </option>
+  </select>
+
+  <input type="text" formControlName="searchInput" name="search-input">
+  <button type="submit">Search</button>
+
+</form>
