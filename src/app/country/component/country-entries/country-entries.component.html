@@ -34,10 +34,8 @@
       </tr>
     </tbody>
   </table>
+  
+  <app-pagination [is-first]="isFirst" [is-last]="isLast" [current-page-number]="currentPageNumber"
+                  (toNextPage)="nextPage()" (toPreviousPage)="previousPage()"></app-pagination>
 
-  <div>
-    <button *ngIf="!isFirst" (click)="previousPage()" [disabled]="isFirst">Previous</button>
-    <span>Page {{ currentPageNumber }}</span>
-    <button *ngIf="!isLast" (click)="nextPage()" [disabled]="isLast">Next</button>
-  </div>
 </div>

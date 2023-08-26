@@ -1,0 +1,5 @@
+<div>
+  <button *ngIf="!isFirst" (click)="previousPage()" [disabled]="isFirst">Previous</button>
+  <span>Page {{ currentPageNumber }}</span>
+  <button *ngIf="!isLast" (click)="nextPage()" [disabled]="isLast">Next</button>
+</div>

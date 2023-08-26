@@ -8,6 +8,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {BaseHttpService} from "./service/base-http.service";
 import { BaseEntriesComponent } from './component/base-entries/base-entries.component';
 import { SearchFormComponent } from './component/search-form/search-form.component';
+import { PaginationComponent } from './component/pagination/pagination.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { SearchFormComponent } from './component/search-form/search-form.compone
     ValidationErrorComponent,
     BaseEntriesComponent,
     SearchFormComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,7 @@ import { SearchFormComponent } from './component/search-form/search-form.compone
   exports: [
     ValidationErrorComponent,
     SearchFormComponent,
+    PaginationComponent,
   ]
 })
 export class SharedModule { }
