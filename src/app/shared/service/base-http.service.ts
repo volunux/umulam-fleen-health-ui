@@ -67,7 +67,7 @@ export class BaseHttpService {
     } else {
       return {
         pathParams,
-        queryParams,
+        queryParams: toSnakeCase(queryParams),
         body: toBody(bodyOrMethod),
         method: isTruthy(method) ? method : 'GET',
       };
