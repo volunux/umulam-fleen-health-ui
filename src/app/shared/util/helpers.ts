@@ -46,7 +46,7 @@ export function isObject(value: any): boolean {
 
 export function toCamelCase(input: string): string {
   const words: string[] = input.split(/[\s_-]+/);
-  const camelCaseWords: string[] = words.map((word, index) =>
+  const camelCaseWords: string[] = words.map((word:string, index: number): string =>
     index === 0 ? word.toLowerCase() : capitalizeFirstLetter(word)
   );
 
@@ -59,9 +59,9 @@ function capitalizeFirstLetter(word: string): string {
 
 
 function normalizeName(input: string): string {
-  const cleanedInput = input.replace(/[^a-zA-Z0-9\s]/g, '');
-  const words = cleanedInput.split(/\s+/);
-  const normalizedWords = words.map((word) => capitalizeFirstLetter(word));
+  const cleanedInput: string = input.replace(/[^a-zA-Z0-9\s]/g, '');
+  const words: string[] = cleanedInput.split(/\s+/);
+  const normalizedWords: string[] = words.map((word) => capitalizeFirstLetter(word));
   return normalizedWords.join(' ');
 }
 

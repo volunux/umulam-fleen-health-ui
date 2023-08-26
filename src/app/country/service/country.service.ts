@@ -7,9 +7,7 @@ import {mapToSearchResult} from "../../shared/util/helpers";
 import {SearchResultView} from "../../shared/view/search-result.view";
 import {AnyProp} from "../../shared/type/base";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CountryService {
 
   private readonly BASE_PATH: string = "country";
