@@ -8,6 +8,31 @@
 </form>
 
 <div *ngIf="entries.length > 0">
+  <table>
+    <thead>
+      <tr>
+        <th>S/N</th>
+        <th>Title</th>
+        <th>Code</th>
+        <th>Created On</th>
+        <th>Updated On</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let country of entries; let i = index">
+        <td>{{ i }}</td>
+        <td>{{ country.title }}</td>
+        <td>{{ country.code }}</td>
+        <td>{{ country.createdOn }}</td>
+        <td>{{ country.updatedOn }}</td>
+        <td>
+          <button (click)="viewDetail(country.id)">View</button>
+          <button (click)="updateEntry(country.id)">Update</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <ul>
     <li *ngFor="let country of entries">
       {{ country.title }}

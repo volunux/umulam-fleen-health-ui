@@ -4,7 +4,7 @@ import {CountryView} from "../../view/country.view";
 import {SearchResultView} from "../../../shared/view/search-result.view";
 import {AbstractControl, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {enumTypeValidator, typeValidator} from "../../../shared/validator/validator";
-import {createBetweenDateObj, getPropsValueAsArray, propExists} from "../../../shared/util/helpers";
+import {createBetweenDateObj, getPropsValueAsArray, isTruthy, propExists} from "../../../shared/util/helpers";
 import {
   BETWEEN_DATE_SEARCH_KEY,
   BETWEEN_DATE_TYPE,
@@ -13,6 +13,7 @@ import {
 } from "../../../shared/constant/enum-constant";
 import {AnyProp} from "../../../shared/type/base";
 import {DEFAULT_PAGE_SIZE} from "../../../shared/constant/other-constant";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-country-entries',
@@ -36,7 +37,10 @@ export class CountryEntriesComponent implements OnInit {
   public searchForm: FormGroup = new FormGroup<any>({});
   public searchParams: AnyProp = {};
 
-  public constructor(private countryService: CountryService, private formBuilder: FormBuilder) { }
+  public constructor(private countryService: CountryService,
+                     private formBuilder: FormBuilder,
+                     private router: Router,
+                     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
@@ -128,7 +132,19 @@ export class CountryEntriesComponent implements OnInit {
 
   private isNextPageAvailable(): boolean {
     const totalPages: number = Math.ceil( this.totalEntries / this.pageSize);
-    return this.currentPageNumber <= totalPages;
+    return this.currentPageNumber < totalPages;
+  }
+
+  public async viewDetail(id: number | string | undefined): Promise<void> {
+    if (isTruthy(id)) {
+      await this.router.navigate(['detail', id], {relativeTo: this.route});
+     }
+  }
+
+  public async updateEntry(id: number | string | undefined): Promise<void> {
+    if (isTruthy(id)) {
+      await this.router.navigate(['update', id], {relativeTo: this.route});
+     }
   }
 
 }

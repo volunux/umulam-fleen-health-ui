@@ -1,13 +1,13 @@
 
 export class FleenHealthView {
 
-  public id: number | null;
-  public createdOn: Date | null;
-  public updatedOn: Date | null;
+  public id: number | undefined;
+  public createdOn: Date;
+  public updatedOn: Date;
 
   public constructor(data?: FleenHealthView) {
-    this.id = data?.id ? data.id : null;
-    this.createdOn = data?.createdOn ? new Date(data.createdOn) : null;
-    this.updatedOn = data?.updatedOn ? new Date(data.updatedOn) : null;
+    this.id = data?.id ? data.id : data?.id;
+    this.createdOn = data?.createdOn ? new Date(data.createdOn) : new Date();
+    this.updatedOn = data?.updatedOn ? new Date(data.updatedOn) : new Date;
   }
 }
