@@ -6,7 +6,8 @@ import {SearchResultView} from "../../view/search-result.view";
 import {Observable} from "rxjs";
 import {SearchDto} from "../../interface/base";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
-import {SearchFilter} from "../../type/authentication";
+import {DeleteIdsDto} from "../../type/other";
+import {SearchFilter} from "../../type/search";
 
 export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
@@ -26,8 +27,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   abstract findEntries(params: AnyProp): Observable<SearchResultView<T>>;
 
-  abstract deleteEntries(): Observable<any>;
-
+  abstract deleteEntries(dto: DeleteIdsDto): Observable<any>;
 
   public trackByFn(index: number, item: any): any {
     return item.id;
@@ -123,7 +123,8 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   public confirmDeleteEntries(): void {
     if (this.deleteIds.length > 0 && isFalsy(this.isSubmitting)) {
       this.disableSubmitting();
-      this.deleteEntries()
+      const dto: DeleteIdsDto = { ids: this.deleteIds };
+      this.deleteEntries(dto)
         .subscribe({
           error: (): void => {
             this.enableSubmitting();
@@ -132,13 +133,13 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
             this.enableSubmitting();
             this.refreshEntries();
           }
-        })
+      });
     }
   }
 
   private refreshEntries(): void {
     this.entries = this.entries
-      .filter((entry: T) => this.deleteIds.includes(entry['id']))
+      .filter((entry: T) => !this.deleteIds.includes(entry['id']))
   }
 
 }
