@@ -56,19 +56,19 @@ export class CountryEntriesComponent implements OnInit {
       const typeValue: string = ((<FormControl>this.searchType).value);
       const inputValue: string = this.searchInput?.value;
       let searchParams: AnyProp = { [typeValue]: inputValue };
-      console.log("Before transformation");
-      console.log(searchParams);
+      this.searchParams = searchParams;
       if (propExists(searchParams, BETWEEN_DATE_SEARCH_KEY)) {
         const twoDates: AnyProp = createBetweenDateObj(searchParams[BETWEEN_DATE_SEARCH_KEY]);
         this.searchParams = { ...searchParams, ...twoDates };
       }
-      console.log("After transformation");
-      console.log(searchParams);
-      this.getEntries(this.prepareSearchParams());
+      this.getEntries();
     }
   }
 
-  private getEntries(params: AnyProp): void {
+  private getEntries(): void {
+    console.log("This are params");
+    const params = this.prepareSearchParams();
+    console.log(params);
     this.countryService.findCountries(params)
       .subscribe({
         next: (result: SearchResultView<CountryView>): void => {
@@ -76,7 +76,6 @@ export class CountryEntriesComponent implements OnInit {
           this.isFirst = result.isFirst;
           this.isLast = result.isLast;
           this.entries = result.values;
-          console.log(this.entries);
         },
         error: (result: ErrorResponse): void => {
           console.log(result);
@@ -90,14 +89,14 @@ export class CountryEntriesComponent implements OnInit {
   public nextPage(): void {
     if (this.entries && !this.isLast) {
       this.currentPage++;
-      this.getEntries(this.prepareSearchParams());
+      this.getEntries();
     }
   }
 
   public previousPage(): void {
     if (this.currentPage > 0) {
       this.currentPage--;
-      this.getEntries(this.prepareSearchParams());
+      this.getEntries();
     }
   }
 
