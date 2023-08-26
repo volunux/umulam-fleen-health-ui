@@ -20,7 +20,7 @@ export class CountryService {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'entries'], params);
     return this.httpService.get(req)
       .pipe(
-        map(data => mapToSearchResult<CountryView>(CountryView, data))
+        map(data => mapToSearchResult(CountryView, data))
       )
   }
 }

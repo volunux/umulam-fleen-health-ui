@@ -2,10 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {CountryService} from "../../service/country.service";
 import {CountryView} from "../../view/country.view";
 import {SearchResultView} from "../../../shared/view/search-result.view";
-import {ErrorResponse} from "../../../base/response/error-response";
 import {AbstractControl, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {enumTypeValidator, typeValidator} from "../../../shared/validator/validator";
-import {capitalize, createBetweenDateObj, getPropsValueAsArray, propExists} from "../../../shared/util/helpers";
+import {createBetweenDateObj, getPropsValueAsArray, propExists} from "../../../shared/util/helpers";
 import {
   BETWEEN_DATE_SEARCH_KEY,
   BETWEEN_DATE_TYPE,
@@ -66,22 +65,14 @@ export class CountryEntriesComponent implements OnInit {
   }
 
   private getEntries(): void {
-    console.log("This are params");
-    const params = this.prepareSearchParams();
-    console.log(params);
+    const params: AnyProp = this.prepareSearchParams();
     this.countryService.findCountries(params)
       .subscribe({
         next: (result: SearchResultView<CountryView>): void => {
-          console.log(result);
-          this.isFirst = result.isFirst;
-          this.isLast = result.isLast;
-          this.entries = result.values;
+          this.initResult(result);
         },
-        error: (result: ErrorResponse): void => {
-          console.log(result);
-        },
-        complete: (): void => {
-          console.log('Done');
+        error: (): void => {
+          this.entries = [];
         }
     });
   }
@@ -122,5 +113,9 @@ export class CountryEntriesComponent implements OnInit {
     }
   }
 
-  protected readonly capitalize = capitalize;
+  private initResult(result: SearchResultView<any>): void {
+    this.isFirst = result.isFirst;
+    this.isLast = result.isLast;
+    this.entries = result.values;
+  }
 }

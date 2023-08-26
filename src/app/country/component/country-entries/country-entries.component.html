@@ -10,13 +10,13 @@
 <div *ngIf="entries.length > 0">
   <ul>
     <li *ngFor="let country of entries">
-      {{ country.title }} <!-- Display other properties as needed -->
+      {{ country.title }}
     </li>
   </ul>
 
   <div>
-    <button (click)="previousPage()" [disabled]="isFirst">Previous</button>
-    <span>Page {{ currentPage }}</span>
-    <button (click)="nextPage()" [disabled]="isLast">Next</button>
+    <button *ngIf="!isFirst" (click)="previousPage()" [disabled]="isFirst">Previous</button>
+    <span>Page {{ currentPage + 1 }}</span>
+    <button *ngIf="!isLast" (click)="nextPage()" [disabled]="isLast">Next</button>
   </div>
 </div>
