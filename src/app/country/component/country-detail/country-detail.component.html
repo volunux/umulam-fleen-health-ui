@@ -20,11 +20,11 @@
       </tr>
       <tr>
         <th>Created On</th>
-        <td>{{ countryView.createdOn }}</td>
+        <td>{{ countryView.createdOn | date:'longDate' }}</td>
       </tr>
       <tr>
         <th>Updated On</th>
-        <td>{{ countryView.updatedOn }}</td>
+        <td>{{ countryView.updatedOn | date:'longDate' }}</td>
       </tr>
     </tbody>
   </table>
