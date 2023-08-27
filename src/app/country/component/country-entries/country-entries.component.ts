@@ -22,7 +22,7 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
   public override entries: CountryView[] = [];
   public override searchFilter: SearchFilter[] = SEARCH_FILTER_BETWEEN_DATE;
 
-  public constructor(private countryService: CountryService,
+  public constructor(protected countryService: CountryService,
                      router: Router,
                      route: ActivatedRoute, location: Location) {
     super(router, route, location);

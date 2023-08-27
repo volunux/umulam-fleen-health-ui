@@ -1,7 +1,7 @@
 import {DEFAULT_PAGE_SIZE} from "../../constant/other-constant";
 import {AnyProp} from "../../type/base";
 import {isFalsy, isTruthy} from "../../util/helpers";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, Navigation, Params, Router} from "@angular/router";
 import {SearchResultView} from "../../view/search-result.view";
 import {Observable} from "rxjs";
 import {SearchDto} from "../../interface/base";
@@ -22,8 +22,9 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   protected searchParams: AnyProp = {};
   protected searchFilter: SearchFilter[] = [];
 
-  protected constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
+  protected constructor(protected router: Router, protected route: ActivatedRoute, protected location: Location) {
     super();
+    this.initRouteState(this.router.getCurrentNavigation());
   }
 
   abstract findEntries(params: AnyProp): Observable<SearchResultView<T>>;
@@ -156,7 +157,6 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   }
 
   protected startComponent(): void {
-    this.initStateCommonProps();
     this.route.queryParams.subscribe((params: Params): void => {
       const page = params['page'];
       if (page !== undefined && isNaN(page)) {
@@ -170,10 +170,12 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
     this.deleteIds = [];
   }
 
-  protected initStateCommonProps(): void {
-    const state: AnyProp = this.location.getState() as any;
-    if (isTruthy(state) && state != null && state['error']) {
-     this.errorMessage = state?.['error'];
+  protected initRouteState(navigation?: Navigation | null): void {
+    if (isTruthy(navigation)) {
+      const state: AnyProp | any = navigation?.extras?.state;
+      if (isTruthy(state) && state != null && state['error']) {
+        this.errorMessage = state?.['error'];
+      }
     }
   }
 }
