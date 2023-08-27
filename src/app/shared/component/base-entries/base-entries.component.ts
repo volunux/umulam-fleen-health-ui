@@ -157,7 +157,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   protected startComponent(): void {
     this.route.queryParams.subscribe((params: Params): void => {
       const page = params['page'];
-      if (page !== undefined && isTruthy((+page))) {
+      if (page !== undefined && isNaN(page)) {
         this.currentPage = +page;
       }
       this.getEntries();

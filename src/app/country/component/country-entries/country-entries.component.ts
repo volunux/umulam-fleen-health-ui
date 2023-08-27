@@ -5,7 +5,7 @@ import {AnyProp} from "../../../shared/type/base";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BaseEntriesComponent} from "../../../shared/component/base-entries/base-entries.component";
 import {SearchResultView} from "../../../shared/view/search-result.view";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {DeleteIdsDto} from "../../../shared/type/other";
 import {DeleteResponse} from "../../../shared/response/delete.response";
 import {SEARCH_FILTER_BETWEEN_DATE} from "../../../shared/constant/search-filter";
