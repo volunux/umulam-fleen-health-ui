@@ -10,6 +10,7 @@ import {DeleteIdsDto} from "../../../shared/type/other";
 import {DeleteResponse} from "../../../shared/response/delete.response";
 import {SEARCH_FILTER_BETWEEN_DATE} from "../../../shared/constant/search-filter";
 import {SearchFilter} from "../../../shared/type/search";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-country-entries',
@@ -23,8 +24,8 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
 
   public constructor(private countryService: CountryService,
                      router: Router,
-                     route: ActivatedRoute) {
-    super(router, route);
+                     route: ActivatedRoute, location: Location) {
+    super(router, route, location);
   }
 
   ngOnInit(): void {

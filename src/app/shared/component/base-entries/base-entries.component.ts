@@ -8,6 +8,7 @@ import {SearchDto} from "../../interface/base";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {DeleteIdsDto} from "../../type/other";
 import {SearchFilter} from "../../type/search";
+import {Location} from "@angular/common";
 
 export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
@@ -21,7 +22,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   protected searchParams: AnyProp = {};
   protected searchFilter: SearchFilter[] = [];
 
-  protected constructor(private router: Router, private route: ActivatedRoute) {
+  protected constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
     super();
   }
 
@@ -170,9 +171,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   }
 
   protected initStateCommonProps(): void {
-    const state: AnyProp | undefined = this.router.getCurrentNavigation()?.extras.state;
-    console.log('The state is ');
-    console.log(state);
+    const state: AnyProp = this.location.getState() as any;
     if (isTruthy(state) && state != null && state['error']) {
      this.errorMessage = state?.['error'];
     }

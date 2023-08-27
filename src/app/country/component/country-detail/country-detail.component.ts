@@ -37,7 +37,7 @@ export class CountryDetailComponent implements OnInit {
         error: async (error: ErrorResponse): Promise<void> => {
           console.log('Errors');
           console.log(error);
-          // await this.goToEntries(error.message)
+          await this.goToEntries(error.message)
           return;
         }
     });
@@ -48,7 +48,10 @@ export class CountryDetailComponent implements OnInit {
     currentUrlSegments.pop();
     currentUrlSegments.pop();
 
+    console.log('Message is :: ' + errorMessage);
+
     const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
-    await this.router.navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } });
+    await this.router.navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } })
+      .then((m: boolean) => m);
   }
 }
