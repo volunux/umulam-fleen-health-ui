@@ -155,6 +155,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   }
 
   protected startComponent(): void {
+    this.initStateCommonProps();
     this.route.queryParams.subscribe((params: Params): void => {
       const page = params['page'];
       if (page !== undefined && isNaN(page)) {
