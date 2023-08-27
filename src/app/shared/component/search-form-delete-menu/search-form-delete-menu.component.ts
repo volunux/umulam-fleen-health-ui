@@ -9,17 +9,18 @@ import {BaseFormComponent} from "../../../base/component/base-form/base-form.com
 import {SearchFilter, SearchParamDto} from "../../type/search";
 
 @Component({
-  selector: 'app-search-form',
-  templateUrl: './search-form.component.html',
-  styleUrls: ['./search-form.component.css']
+  selector: 'app-search-form-delete-menu',
+  templateUrl: './search-form-delete-menu.component.html',
+  styleUrls: ['./search-form-delete-menu.component.css']
 })
-export class SearchFormComponent extends BaseFormComponent implements OnInit {
+export class SearchFormDeleteMenuComponent extends BaseFormComponent implements OnInit {
 
   public searchParams: AnyProp = {};
   public searchForm: FormGroup = new FormGroup<any>({});
   @Input('is-submitting') public override isSubmitting: boolean = false;
   @Input('search-filter') public searchFilter: SearchFilter[] = [];
   @Output() public searchSubmitted: EventEmitter<SearchDto> = new EventEmitter<SearchDto>();
+  @Output() public deleteConfirmed: EventEmitter<void> = new EventEmitter<void>();
 
   public constructor(private formBuilder: FormBuilder) {
     super();
@@ -46,6 +47,10 @@ export class SearchFormComponent extends BaseFormComponent implements OnInit {
       this.checkBetweenDateParam();
       this.searchSubmitted.emit({ ...(this.searchParams) });
     }
+  }
+
+  public confirmDeleteEntries(): void {
+    this.deleteConfirmed.emit();
   }
 
   get searchType(): AbstractControl | null | undefined {

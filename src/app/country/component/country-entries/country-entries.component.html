@@ -1,6 +1,4 @@
-<app-search-form [is-submitting]="isSubmitting" [search-filter]="searchFilter" (searchSubmitted)="search($event)"></app-search-form>
-
-<button (click)="confirmDeleteEntries()" [disabled]="isSubmitting">Delete</button>
+<app-search-form-delete-menu [is-submitting]="isSubmitting" [search-filter]="searchFilter" (searchSubmitted)="search($event)" (deleteConfirmed)="confirmDeleteEntries()"></app-search-form-delete-menu>
 
 <div *ngIf="entries.length > 0">
   <table>
