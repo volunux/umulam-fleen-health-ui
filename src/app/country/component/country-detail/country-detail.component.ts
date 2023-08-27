@@ -42,6 +42,11 @@ export class CountryDetailComponent implements OnInit {
   }
 
   protected async goToEntries(errorMessage?: string): Promise<void> {
-    await this.router.navigate(['..', 'entries'], { state: { error: errorMessage ? errorMessage : '' } });
+    const currentUrlSegments: string[] = this.router.url.split('/');
+    currentUrlSegments.pop();
+    currentUrlSegments.pop();
+
+    const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
+    await this.router.navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } });
   }
 }
