@@ -11,7 +11,7 @@ import {SearchFilter} from "../../type/search";
 
 export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
-  public currentPage: number = 0;
+  public currentPage: number = 1;
   public pageSize: number = DEFAULT_PAGE_SIZE;
   public isFirst: boolean | undefined;
   public isLast: boolean | undefined;
@@ -56,7 +56,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   private isNextPageAvailable(): boolean {
     const totalPages: number = Math.ceil( this.totalEntries / this.pageSize);
-    return this.currentPageNumber < totalPages;
+    return this.currentPage < totalPages;
   }
 
   private initResult(result: SearchResultView<any>): void {
@@ -68,7 +68,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   private getPaginationDetails(): AnyProp {
     return {
-      pageNo: this.currentPage,
+      pageNo: this.currentPage - 1,
       pageSize: this.pageSize
     }
   }
@@ -93,10 +93,6 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
       this.currentPage--;
       this.getEntries();
     }
-  }
-
-  get currentPageNumber(): number {
-    return this.currentPage + 1;
   }
 
   protected getEntries(): void {
@@ -163,8 +159,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
       if (page !== undefined && isTruthy((+page))) {
         this.currentPage = +page;
       }
+      this.getEntries();
     });
-    this.getEntries();
   }
-
 }
