@@ -6,7 +6,7 @@ import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 
 export abstract class BaseUpdateComponent<T, D> extends BaseFormComponent {
 
-  public entryView!: T;
+  public abstract entryView: T;
   protected entryId: number | string = 0;
 
   protected constructor(protected router: Router,
@@ -58,7 +58,7 @@ export abstract class BaseUpdateComponent<T, D> extends BaseFormComponent {
             this.enableSubmitting();
             await this.goToEntries();
           }
-        });
+      });
     }
   }
 

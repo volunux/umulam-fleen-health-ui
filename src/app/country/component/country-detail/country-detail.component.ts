@@ -13,6 +13,7 @@ import {Observable} from "rxjs";
 export class CountryDetailComponent extends BaseDetailComponent<CountryView> implements OnInit {
 
   public override entryView!: CountryView;
+  protected override formBuilder;
 
   public constructor(private countryService: CountryService,
                      router: Router,

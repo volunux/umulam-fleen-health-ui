@@ -10,7 +10,7 @@ import {AuthenticationService} from "./service/authentication.service";
 import {OtpVerificationComponent} from "./component/otp-verification/otp-verification.component";
 import {MfaVerificationComponent} from './component/mfa-verification/mfa-verification.component';
 import {MfaOtpBaseComponent} from './component/mfa-otp-base/mfa-otp-base.component';
-import {ChangePasswordComponent} from './component/onboarding-verification/change-password.component';
+import {ChangePasswordComponent} from './component/change-password/change-password.component';
 import {ForgotPasswordComponent} from './component/forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './component/reset-password/reset-password.component';
 

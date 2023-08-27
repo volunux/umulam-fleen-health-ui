@@ -12,7 +12,7 @@ import {
   NextAuthentication
 } from "../../../shared/enum/authentication";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
-import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
+import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
 
 @Component({

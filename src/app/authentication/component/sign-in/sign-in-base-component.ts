@@ -1,12 +1,9 @@
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {passwordValidator} from "../../../shared/validator/validator";
 import {PASSWORD_PATTERNS} from "../../../shared/util/format-pattern";
-import {SignInDto} from "../../dto/sign-in-dto";
 import {AuthBaseComponent} from "../sign-in-up-base/auth-base.component";
 
 export abstract class SignInBaseComponent extends AuthBaseComponent {
-
-  protected signUpDto: SignInDto | undefined = new SignInDto();
 
   public initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({

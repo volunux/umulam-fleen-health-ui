@@ -22,7 +22,7 @@ export class SearchFormDeleteMenuComponent extends BaseFormComponent implements 
   @Output() public searchSubmitted: EventEmitter<SearchDto> = new EventEmitter<SearchDto>();
   @Output() public deleteConfirmed: EventEmitter<void> = new EventEmitter<void>();
 
-  public constructor(private formBuilder: FormBuilder) {
+  public constructor(protected formBuilder: FormBuilder) {
     super();
   }
 

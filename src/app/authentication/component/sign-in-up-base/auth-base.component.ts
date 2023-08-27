@@ -6,7 +6,7 @@ import {Observable, of} from "rxjs";
 import {AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
-import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
+import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
 
 export abstract class AuthBaseComponent extends BaseFormComponent {

@@ -16,7 +16,7 @@ export class ChangePasswordComponent extends BaseFormComponent implements OnInit
   @Input('change-password-type') public changePasswordType: ChangePasswordType = ChangePasswordType.NONE;
   @Output() public changePassword: EventEmitter<ChangePasswordDto> = new EventEmitter<ChangePasswordDto>();
 
-  public constructor(private formBuilder: FormBuilder) {
+  public constructor(protected formBuilder: FormBuilder) {
     super();
   }
 
