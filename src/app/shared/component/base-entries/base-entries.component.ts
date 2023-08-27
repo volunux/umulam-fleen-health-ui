@@ -1,7 +1,7 @@
 import {DEFAULT_PAGE_SIZE} from "../../constant/other-constant";
 import {AnyProp} from "../../type/base";
 import {isFalsy, isTruthy} from "../../util/helpers";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {SearchResultView} from "../../view/search-result.view";
 import {Observable} from "rxjs";
 import {SearchDto} from "../../interface/base";
@@ -80,14 +80,15 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
     }
   }
 
-  public nextPage(): void {
+  public async nextPage(): Promise<void> {
     if (this.entries && !this.isLast && this.isNextPageAvailable()) {
       this.currentPage++;
+      await this.updateUrlWithPage();
       this.getEntries();
     }
   }
 
-  public previousPage(): void {
+  public async previousPage(): Promise<void> {
     if (this.currentPage > 0) {
       this.currentPage--;
       this.getEntries();
@@ -146,6 +147,24 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   public addOneToIndex(idx: number): number {
     return idx + 1;
+  }
+
+  private async updateUrlWithPage(): Promise<void> {
+    await this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {page: this.currentPage},
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  protected startComponent(): void {
+    this.route.queryParams.subscribe((params: Params): void => {
+      const page = params['page'];
+      if (page !== undefined && isTruthy((+page))) {
+        this.currentPage = +page;
+      }
+    });
+    this.getEntries();
   }
 
 }
