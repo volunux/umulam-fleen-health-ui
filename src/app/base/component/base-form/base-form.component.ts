@@ -1,4 +1,4 @@
-import {AbstractControl, FormGroup} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
 import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
@@ -11,6 +11,7 @@ export abstract class BaseFormComponent {
   private readonly ERROR_FIELD_NAME: string = "field_name";
   private readonly ERROR_MESSAGES_NAME: string = "errors";
   public isSubmitting: boolean = false;
+  protected abstract formBuilder: FormBuilder;
 
   private getAllPropertyKeys(obj: any): string[] {
     const keys: string[] = [];
