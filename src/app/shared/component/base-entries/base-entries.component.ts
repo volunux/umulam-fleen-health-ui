@@ -167,4 +167,11 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   protected resetDeleteIds(): void {
     this.deleteIds = [];
   }
+
+  protected initStateCommonProps(): void {
+    const state: AnyProp | undefined = this.router.getCurrentNavigation()?.extras.state;
+    if (isTruthy(state) && state != null && state['error']) {
+     this.errorMessage = state?.['error'];
+    }
+  }
 }

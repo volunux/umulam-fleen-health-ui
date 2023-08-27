@@ -24,6 +24,14 @@ export class CountryService {
       )
   }
 
+  public findCountry(id: number | string | null): Observable<CountryView> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'detail', id]);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new CountryView(data))
+      );
+  }
+
   public deleteCountries(dto: DeleteIdsDto): Observable<DeleteResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-many'], {}, dto)
     return this.httpService.deleteMany(req)

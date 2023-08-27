@@ -28,6 +28,7 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
   }
 
   ngOnInit(): void {
+    this.initStateCommonProps();
     this.startComponent();
   }
 
