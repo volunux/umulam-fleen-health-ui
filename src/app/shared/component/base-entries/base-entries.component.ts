@@ -131,6 +131,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
           complete: (): void => {
             this.enableSubmitting();
             this.refreshEntries();
+            this.resetDeleteIds();
           }
       });
     }
@@ -161,5 +162,9 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
       }
       this.getEntries();
     });
+  }
+
+  protected resetDeleteIds(): void {
+    this.deleteIds = [];
   }
 }
