@@ -44,13 +44,13 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   public async updateEntry(id: number | string | undefined): Promise<void> {
     if (isTruthy(id)) {
-      await this.router.navigate(['update', id], {relativeTo: this.route});
+      await this.router.navigate(['..', 'update', id], {relativeTo: this.route});
     }
   }
 
   public async viewDetail(id: number | string | undefined): Promise<void> {
     if (isTruthy(id)) {
-      await this.router.navigate(['detail', id], {relativeTo: this.route});
+      await this.router.navigate(['..', 'detail', id], {relativeTo: this.route});
     }
   }
 
