@@ -1,1 +1,31 @@
-<p>country-detail works!</p>
+<ng-container *ngIf="countryView">
+  <table>
+    <thead>
+      <tr>
+        <td colspan="2">Country Detail</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>ID</th>
+        <td>{{ countryView.id }}</td>
+      </tr>
+      <tr>
+        <th>Title</th>
+        <td>{{ countryView.title }}</td>
+      </tr>
+      <tr>
+        <th>Code</th>
+        <td>{{ countryView.code }}</td>
+      </tr>
+      <tr>
+        <th>Created On</th>
+        <td>{{ countryView.createdOn }}</td>
+      </tr>
+      <tr>
+        <th>Updated On</th>
+        <td>{{ countryView.updatedOn }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
