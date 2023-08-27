@@ -14,6 +14,8 @@ import {UpdateCountryDto} from "../../dto/country.dto";
 })
 export class CountryUpdateComponent extends BaseUpdateComponent<CountryView, UpdateCountryDto> implements OnInit {
 
+  public override entryView!: CountryView;
+
   public constructor(private countryService: CountryService,
                      protected formBuilder: FormBuilder,
                      router: Router,
