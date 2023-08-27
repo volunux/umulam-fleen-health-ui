@@ -12,7 +12,7 @@ import {Observable} from "rxjs";
 })
 export class CountryDetailComponent extends BaseDetailComponent<CountryView> implements OnInit {
 
-  public countryView!: CountryView;
+  public override entryView!: CountryView;
 
   public constructor(private countryService: CountryService,
                      router: Router,
@@ -26,5 +26,9 @@ export class CountryDetailComponent extends BaseDetailComponent<CountryView> imp
 
   protected override getServiceEntry(id: number | string): Observable<CountryView> {
     return this.countryService.findCountry(id);
+  }
+
+  get countryView(): CountryView {
+    return this.entryView;
   }
 }
