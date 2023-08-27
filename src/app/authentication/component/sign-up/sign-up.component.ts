@@ -19,7 +19,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   protected isPreVerificationStage: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(protected formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
   }
 

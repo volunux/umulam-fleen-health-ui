@@ -15,6 +15,7 @@ import {ErrorResponse} from "../../../base/response/error-response";
   styles: ['']
 })
 export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
+  protected override formBuilder;
 
   public otp: FormControl = new FormControl<string>('');
   public verificationType: VerificationType = VerificationType.EMAIL;
