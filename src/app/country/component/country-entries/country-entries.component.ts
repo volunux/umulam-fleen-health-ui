@@ -3,7 +3,7 @@ import {CountryService} from "../../service/country.service";
 import {CountryView} from "../../view/country.view";
 import {AnyProp} from "../../../shared/type/base";
 import {ActivatedRoute, Router} from "@angular/router";
-import {BaseEntriesComponent} from "../../../shared/component/base-entries/base-entries.component";
+import {BaseEntriesComponent} from "../../../base/component/base-entries/base-entries.component";
 import {SearchResultView} from "../../../shared/view/search-result.view";
 import {Observable} from "rxjs";
 import {DeleteIdsDto} from "../../../shared/type/other";

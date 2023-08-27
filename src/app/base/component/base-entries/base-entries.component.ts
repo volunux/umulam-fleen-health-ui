@@ -1,13 +1,13 @@
-import {DEFAULT_PAGE_SIZE} from "../../constant/other-constant";
-import {AnyProp} from "../../type/base";
-import {isFalsy, isTruthy} from "../../util/helpers";
+import {DEFAULT_PAGE_SIZE} from "../../../shared/constant/other-constant";
+import {AnyProp} from "../../../shared/type/base";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {ActivatedRoute, Navigation, Params, Router} from "@angular/router";
-import {SearchResultView} from "../../view/search-result.view";
+import {SearchResultView} from "../../../shared/view/search-result.view";
 import {Observable} from "rxjs";
-import {SearchDto} from "../../interface/base";
-import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
-import {DeleteIdsDto} from "../../type/other";
-import {SearchFilter} from "../../type/search";
+import {SearchDto} from "../../../shared/interface/base";
+import {BaseFormComponent} from "../base-form/base-form.component";
+import {DeleteIdsDto} from "../../../shared/type/other";
+import {SearchFilter} from "../../../shared/type/search";
 import {Location} from "@angular/common";
 
 export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
