@@ -186,34 +186,24 @@ export function codeValidator(pattern: RegExp, minLength: number = 1, maxLength:
 
 export function typeValidator(controlNames: [string, string], options: any[], propToFilter: string = 'key'): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-
     const selectedKey = control.get(controlNames[0])?.value;
     const inputValue = control.get(controlNames[1])?.value;
 
-    console.log("Selected key is " + selectedKey);
-    console.log("Inputted value is " + inputValue);
-
     if (selectedKey && selectedKey !== NO_INPUT_KEY && inputValue !== undefined) {
       const config = options.find(option => option[propToFilter] === selectedKey);
-      console.log(config);
-
       if (isTruthy(config)) {
         if (config.type === DATE_TYPE) {
           const isValidDate: boolean = validatePattern(DATE, inputValue);
-          console.log('Is valid date ' + isValidDate);
           if (!isValidDate) {
             return { invalidDate: true };
           }
         } else if (config.type === BETWEEN_DATE_TYPE) {
           const isValidDate: boolean = validatePattern(TWO_DATES, inputValue);
-          console.log('Is valid date ' + isValidDate);
           if (!isValidDate) {
             return { invalidDate: true };
           }
         }
       }
-
-
     }
     return null;
   };
