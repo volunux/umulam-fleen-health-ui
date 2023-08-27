@@ -41,8 +41,8 @@ export class BaseHttpService {
     return `${this.HOST_URL}/${this.BASE_PATH}`;
   }
 
-  public handleError(result: any): Observable<any> {
-    return throwError(() => new ErrorResponse(result.error));
+  public handleError(error: any): Observable<any> {
+    return throwError(() => new ErrorResponse(error));
   }
 
   protected pipeline<T>(

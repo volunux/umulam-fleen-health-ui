@@ -28,14 +28,16 @@ export class CountryDetailComponent implements OnInit {
     });
   }
 
-  protected getCountry(id: number | string | null): void {
+  protected getCountry(id: number | string): void {
     this.countryService.findCountry(id)
       .subscribe({
         next: (result: CountryView): void => {
           this.countryView = result;
         },
         error: async (error: ErrorResponse): Promise<void> => {
-          await this.goToEntries(error.message)
+          console.log('Errors');
+          console.log(error);
+          // await this.goToEntries(error.message)
           return;
         }
     });

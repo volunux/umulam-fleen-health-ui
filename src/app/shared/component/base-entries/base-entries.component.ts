@@ -171,6 +171,8 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   protected initStateCommonProps(): void {
     const state: AnyProp | undefined = this.router.getCurrentNavigation()?.extras.state;
+    console.log('The state is ');
+    console.log(state);
     if (isTruthy(state) && state != null && state['error']) {
      this.errorMessage = state?.['error'];
     }
