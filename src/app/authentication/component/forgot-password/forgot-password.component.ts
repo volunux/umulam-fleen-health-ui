@@ -31,6 +31,7 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
   public isDetailValid: boolean = false;
   public isChangePasswordStage: boolean = false;
   public phoneNumber: string | undefined;
+  protected formBuilder;
 
   public constructor(private authenticationService: AuthenticationService, private router: Router) {
     super();

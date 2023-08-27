@@ -57,7 +57,7 @@ export class BaseHttpService {
     );
   }
 
-  public toRequest(pathParams: AnyArray, queryParams?: AnyProp, bodyOrMethod?: AnyProp | RequestMethod, method?: RequestMethod): BaseRequest {
+  public toRequest(pathParams: AnyArray, queryParams?: AnyProp | null, bodyOrMethod?: AnyProp | RequestMethod, method?: RequestMethod): BaseRequest {
     if (typeof bodyOrMethod === 'string') {
       return {
         pathParams,

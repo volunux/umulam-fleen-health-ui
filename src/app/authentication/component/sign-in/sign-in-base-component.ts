@@ -10,10 +10,10 @@ export abstract class SignInBaseComponent extends AuthBaseComponent {
 
   public initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({
-      emailAddress: [this.signUpDto?.emailAddress,
+      emailAddress: ['',
         [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)]
       ],
-      password: [this.signUpDto?.password,
+      password: ['',
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
     });

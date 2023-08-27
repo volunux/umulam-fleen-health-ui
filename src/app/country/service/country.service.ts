@@ -34,7 +34,7 @@ export class CountryService {
   }
 
   public updateCountry(id: number | string, body: UpdateCountryDto): Observable<CountryView> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'detail', +id], body);
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update', +id], null, { ...body });
     return this.httpService.update(req)
       .pipe(
         map(data => new CountryView(data))
@@ -42,7 +42,7 @@ export class CountryService {
   }
 
   public deleteCountries(body: DeleteIdsDto): Observable<DeleteResponse> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-many'], {}, body)
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-many'], null, { ...body })
     return this.httpService.deleteMany(req)
       .pipe(
         map(data => new DeleteResponse(data))

@@ -9,50 +9,53 @@ import {
   pastDateValidator,
   phoneNumberValidator
 } from "../../../shared/validator/validator";
-import {GENDER, PROFESSIONAL_TYPES, VERIFICATION_TYPES} from "../../../shared/constant/enum-constant";
+import {
+  DEFAULT_FORM_CONTROL_VALUE,
+  DEFAULT_VERIFICATION_TYPE,
+  GENDER,
+  PROFESSIONAL_TYPES,
+  VERIFICATION_TYPES
+} from "../../../shared/constant/enum-constant";
 import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format-pattern";
-import {SignUpDto} from "../../dto/sign-up-dto";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
 import {AuthBaseComponent} from "../sign-in-up-base/auth-base.component";
 
 export abstract class SignUpBaseComponent extends AuthBaseComponent {
 
-  protected signUpDto: SignUpDto | undefined = new SignUpDto();
-
   protected initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({
-      profileType: [this.signUpDto?.profileType,
+      profileType: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
-      firstName: [this.signUpDto?.firstName,
+      firstName: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      lastName: [this.signUpDto?.lastName,
+      lastName: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      dateOfBirth: [this.signUpDto?.dateOfBirth,
+      dateOfBirth: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator, ageLimitValidator(MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT)]
       ],
-      emailAddress: [this.signUpDto?.emailAddress,
+      emailAddress: [DEFAULT_FORM_CONTROL_VALUE,
         {
           validators: [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)],
           asyncValidators: [emailExistsValidator(this.getAuthenticationService())],
           updateOn: 'blur'
         }
       ],
-      phoneNumber: [this.signUpDto?.phoneNumber,
+      phoneNumber: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, Validators.minLength(4), Validators.maxLength(15), phoneNumberValidator(PHONE_NUMBER)]
       ],
-      gender: [this.signUpDto?.gender,
+      gender: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, enumTypeValidator(GENDER)]
       ],
-      password: [this.signUpDto?.password,
+      password: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
-      confirmPassword: [this.signUpDto?.confirmPassword,
+      confirmPassword: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, passwordValidator(PASSWORD_PATTERNS)]
       ],
-      verificationType: [this.signUpDto?.verificationType,
+      verificationType: [DEFAULT_VERIFICATION_TYPE,
         [Validators.required, enumTypeValidator(VERIFICATION_TYPES)]
       ]
     }, {
