@@ -10,7 +10,7 @@ export abstract class BaseFormComponent {
   protected fleenHealthForm: FormGroup = new FormGroup<any>({});
   private readonly ERROR_FIELD_NAME: string = "field_name";
   private readonly ERROR_MESSAGES_NAME: string = "errors";
-  protected isSubmitting: boolean = false;
+  public isSubmitting: boolean = false;
 
   private getAllPropertyKeys(obj: any): string[] {
     const keys: string[] = [];

@@ -15,7 +15,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let country of entries; let i = index; trackBy: trackByFn">
-        <td>{{ i }}</td>
+        <td>{{ addOneToIndex(i) }}</td>
         <td>{{ country.title }}</td>
         <td>{{ country.code }}</td>
         <td>{{ country.createdOn | date:'mediumDate' }}</td>

@@ -100,9 +100,11 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   protected getEntries(): void {
     const params: AnyProp = this.prepareSearchParams();
+    this.disableSubmitting();
     this.findEntries(params)
       .subscribe({
         next: (result: SearchResultView<T>): void => {
+
           this.initResult(result);
         },
         error: (): void => {
@@ -112,7 +114,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
         complete: (): void => {
           this.enableSubmitting();
         }
-      });
+    });
   }
 
   public search(dto: SearchDto): void {
@@ -140,6 +142,10 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   private refreshEntries(): void {
     this.entries = this.entries
       .filter((entry: T) => !this.deleteIds.includes(entry['id']))
+  }
+
+  public addOneToIndex(idx: number): number {
+    return idx + 1;
   }
 
 }
