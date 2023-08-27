@@ -11,6 +11,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {Router} from "@angular/router";
+import {ErrorResponse} from "../../../base/response/error-response";
 
 @Component({
   selector: 'app-forgot-password',
@@ -59,7 +60,7 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
             this.phoneNumber = result.phoneNumber;
             this.isDetailValid = true;
           },
-          error: (result: any): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: (): void => {
@@ -82,7 +83,7 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
             this.authenticationService.saveAuthToken(result.accessToken);
             this.isChangePasswordStage = true;
           },
-          error: (result: any): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: (): void => {
@@ -97,7 +98,7 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
       this.disableSubmitting();
       this.authenticationService.resetAndChangePassword(dto)
         .subscribe({
-          error: (result: any): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: (): void => {

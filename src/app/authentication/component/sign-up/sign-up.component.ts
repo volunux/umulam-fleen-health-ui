@@ -7,6 +7,7 @@ import {OtpVerificationComponent} from "../otp-verification/otp-verification.com
 import {SignUpResponse} from "../../response/sign-up.response";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
+import {ErrorResponse} from "../../../base/response/error-response";
 
 @Component({
   selector: 'app-sign-up',
@@ -56,7 +57,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
             this.isPreVerificationStage = true;
             this.authenticationService.setAuthToken(result);
           },
-          error: (result): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: (): void => {

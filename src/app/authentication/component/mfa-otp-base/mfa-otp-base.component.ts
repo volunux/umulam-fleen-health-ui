@@ -7,6 +7,7 @@ import {VerificationType} from "../../../shared/enum/authentication";
 import {FormControl, Validators} from "@angular/forms";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
+import {ErrorResponse} from "../../../base/response/error-response";
 
 @Component({
   selector: 'app-mfa-otp-base',
@@ -37,7 +38,7 @@ export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
       const verificationDto: ResendVerificationCodeDto = this.toResendVerificationCodeDto();
       this.serviceResendOtp(verificationDto)
         .subscribe({
-          error: (result: any): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: (): void => {

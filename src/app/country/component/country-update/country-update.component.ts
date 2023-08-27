@@ -5,14 +5,14 @@ import {Observable} from "rxjs";
 import {CountryService} from "../../service/country.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BaseUpdateComponent} from "../../../base/component/base-update/base-update.component";
-import {isFalsy, isTruthy} from "../../../shared/util/helpers";
+import {UpdateCountryDto} from "../../dto/country.dto";
 
 @Component({
   selector: 'app-country-update',
   templateUrl: './country-update.component.html',
   styleUrls: ['./country-update.component.css']
 })
-export class CountryUpdateComponent extends BaseUpdateComponent<CountryView> implements OnInit {
+export class CountryUpdateComponent extends BaseUpdateComponent<CountryView, UpdateCountryDto> implements OnInit {
 
   public constructor(private countryService: CountryService,
                      protected formBuilder: FormBuilder,
@@ -40,20 +40,12 @@ export class CountryUpdateComponent extends BaseUpdateComponent<CountryView> imp
     return this.countryService.findCountry(id);
   }
 
+  protected override $updateEntry(id: string | number, dto: UpdateCountryDto): Observable<CountryView> {
+    return this.countryService.updateCountry(id, dto);
+  }
+
   public updateCountry(): void {
-    if (isTruthy(this.updateCountryForm) && this.updateCountryForm.valid && isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
-      this.countryService.updateCountry(this.entryId, this.updateCountryForm.value)
-        .subscribe({
-          error: (result: any): void => {
-            this.handleError(result);
-          },
-          complete: async (): Promise<void> => {
-            this.enableSubmitting();
-            await this.goToEntries();
-          }
-      });
-    }
+    this.updateEntry();
   }
 
   get title(): AbstractControl | null | undefined {

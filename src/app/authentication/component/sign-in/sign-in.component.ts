@@ -13,6 +13,7 @@ import {
 } from "../../../shared/enum/authentication";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../onboarding-verification/change-password.component";
+import {ErrorResponse} from "../../../base/response/error-response";
 
 @Component({
   selector: 'app-sign-in',
@@ -73,7 +74,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
               this.setVerificationStage(result);
             }
           },
-          error: (result: any): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: (): void => {

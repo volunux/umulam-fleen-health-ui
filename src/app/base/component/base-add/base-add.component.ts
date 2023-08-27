@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {BaseFormComponent} from "../base-form/base-form.component";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {Observable} from "rxjs";
+import {ErrorResponse} from "../../response/error-response";
 
 export abstract class BaseAddComponent<D, R> extends BaseFormComponent {
 
@@ -12,6 +13,8 @@ export abstract class BaseAddComponent<D, R> extends BaseFormComponent {
   }
 
   protected abstract initForm(): void;
+
+  protected abstract $saveEntry(dto: D): Observable<R>;
 
   protected async goToEntries(errorMessage?: string): Promise<void> {
     const currentUrlSegments: string[] = this.router.url.split('/');
@@ -27,7 +30,7 @@ export abstract class BaseAddComponent<D, R> extends BaseFormComponent {
       this.disableSubmitting();
       this.$saveEntry(this.fleenHealthForm.value)
         .subscribe({
-          error: (result: any): void => {
+          error: (result: ErrorResponse): void => {
             this.handleError(result);
           },
           complete: async (): Promise<void> => {
@@ -37,7 +40,5 @@ export abstract class BaseAddComponent<D, R> extends BaseFormComponent {
       });
     }
   }
-
-  protected abstract $saveEntry(dto: D): Observable<R>;
 
 }
