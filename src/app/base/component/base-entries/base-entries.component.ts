@@ -21,6 +21,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   private totalEntries: number = 0;
   protected searchParams: AnyProp = {};
   protected searchFilter: SearchFilter[] = [];
+  protected formBuilder;
 
   protected constructor(protected router: Router, protected route: ActivatedRoute, protected location: Location) {
     super();

@@ -14,12 +14,14 @@ import {LocalStorageService} from "./base/service/local-storage.service";
 import {AuthorizationInterceptor} from "./base/interceptor/authorization.interceptor";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { BaseUpdateComponent } from './base/component/base-update/base-update.component';
+import { BaseAddComponent } from './base/component/base-add/base-add.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FleenHeatlhComponent,
     BaseUpdateComponent,
+    BaseAddComponent,
   ],
   imports: [
     BrowserModule,

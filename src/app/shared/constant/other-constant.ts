@@ -7,3 +7,4 @@ export const AUTHORIZATION_BEARER: string = "Bearer {}";
 export const AUTHORIZATION_TOKEN_KEY: string = "AUTH_TOKEN";
 export const REFRESH_AUTHORIZATION_TOKEN_KEY: string = "REFRESH_TOKEN";
 export const DEFAULT_PAGE_SIZE: number = 10;
+export const ANY_EMPTY: any = {};

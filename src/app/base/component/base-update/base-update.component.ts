@@ -40,7 +40,7 @@ export abstract class BaseUpdateComponent<T> extends BaseFormComponent {
           await this.goToEntries(error.message)
           return;
         }
-      });
+    });
   }
 
   protected async goToEntries(errorMessage?: string): Promise<void> {

@@ -8,7 +8,7 @@ import {SearchResultView} from "../../shared/view/search-result.view";
 import {AnyProp} from "../../shared/type/base";
 import {DeleteIdsDto} from "../../shared/type/other";
 import {DeleteResponse} from "../../shared/response/delete.response";
-import {UpdateCountryDto} from "../dto/country.dto";
+import {AddCountryDto, UpdateCountryDto} from "../dto/country.dto";
 
 @Injectable()
 export class CountryService {
@@ -28,6 +28,14 @@ export class CountryService {
   public findCountry(id: number | string): Observable<CountryView> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'detail', +id]);
     return this.httpService.get(req)
+      .pipe(
+        map(data => new CountryView(data))
+      );
+  }
+
+  public saveCountry(body: AddCountryDto): Observable<CountryView> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'save'], null, { ...body });
+    return this.httpService.post(req)
       .pipe(
         map(data => new CountryView(data))
       );
