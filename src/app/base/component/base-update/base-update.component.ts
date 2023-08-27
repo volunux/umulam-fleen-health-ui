@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 export abstract class BaseUpdateComponent<T> extends BaseFormComponent {
 
   public entryView!: T;
+  protected entryId: number | string = 0;
 
   protected constructor(protected router: Router,
                         protected route: ActivatedRoute) {
@@ -23,6 +24,7 @@ export abstract class BaseUpdateComponent<T> extends BaseFormComponent {
         await this.goToEntries();
         return;
       }
+      this.entryId = id;
       this.getEntry(id);
     });
   }

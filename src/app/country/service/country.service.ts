@@ -8,6 +8,7 @@ import {SearchResultView} from "../../shared/view/search-result.view";
 import {AnyProp} from "../../shared/type/base";
 import {DeleteIdsDto} from "../../shared/type/other";
 import {DeleteResponse} from "../../shared/response/delete.response";
+import {UpdateCountryDto} from "../dto/country.dto";
 
 @Injectable()
 export class CountryService {
@@ -32,8 +33,16 @@ export class CountryService {
       );
   }
 
-  public deleteCountries(dto: DeleteIdsDto): Observable<DeleteResponse> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-many'], {}, dto)
+  public updateCountry(id: number | string, body: UpdateCountryDto): Observable<CountryView> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'detail', +id], body);
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new CountryView(data))
+      );
+  }
+
+  public deleteCountries(body: DeleteIdsDto): Observable<DeleteResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-many'], {}, body)
     return this.httpService.deleteMany(req)
       .pipe(
         map(data => new DeleteResponse(data))

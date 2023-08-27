@@ -1,1 +1,22 @@
-<p>country-update works!</p>
+
+<form [formGroup]="updateCountryForm" (ngSubmit)="updateCountry()" method="post" enctype="application/x-www-form-urlencoded" class="sign-in-form">
+  <div class="form-error-message">
+    {{errorMessage}}
+  </div>
+
+  <div class="form-group">
+    <label for="title">Email Address</label>
+    <input type="email" formControlName="title" id="title"/>
+    <app-validation-error [control]="title" [control-label]="'Title'" ></app-validation-error>
+  </div>
+
+  <div class="form-group">
+    <label for="code">code</label>
+    <input type="code" formControlName="code" id="code"/>
+    <app-validation-error [control]="code" [control-label]="'Code'"></app-validation-error>
+  </div>
+
+  <button type="submit" [disabled]="isSubmitting">Submit</button>
+
+</form>
+

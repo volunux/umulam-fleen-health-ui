@@ -32,7 +32,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   public isMfaVerificationStage: boolean = false;
   public isChangePasswordStage: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(protected formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
   }
 

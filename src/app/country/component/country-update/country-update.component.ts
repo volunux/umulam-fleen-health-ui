@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CountryView} from "../../view/country.view";
 import {Observable} from "rxjs";
 import {CountryService} from "../../service/country.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BaseUpdateComponent} from "../../../base/component/base-update/base-update.component";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 
 @Component({
   selector: 'app-country-update',
@@ -38,4 +39,33 @@ export class CountryUpdateComponent extends BaseUpdateComponent<CountryView> imp
   protected override getServiceEntry(id: number | string): Observable<CountryView> {
     return this.countryService.findCountry(id);
   }
+
+  public updateCountry(): void {
+    if (isTruthy(this.updateCountryForm) && this.updateCountryForm.valid && isFalsy(this.isSubmitting)) {
+      this.disableSubmitting();
+      this.countryService.updateCountry(this.entryId, this.updateCountryForm.value)
+        .subscribe({
+          error: (result: any): void => {
+            this.handleError(result);
+          },
+          complete: async (): Promise<void> => {
+            this.enableSubmitting();
+            await this.goToEntries();
+          }
+      });
+    }
+  }
+
+  get title(): AbstractControl | null | undefined {
+    return this.fleenHealthForm?.get('title');
+  }
+
+  get code(): AbstractControl | null | undefined {
+    return this.fleenHealthForm?.get('code');
+  }
+
+  get updateCountryForm(): FormGroup {
+    return this.fleenHealthForm;
+  }
+
 }

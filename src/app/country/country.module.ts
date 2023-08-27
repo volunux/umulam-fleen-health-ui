@@ -11,6 +11,7 @@ import {CountryDashboardComponent} from './component/country-dashboard/country-d
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {CountryService} from "./service/country.service";
+import {AuthenticationModule} from "../authentication/authentication.module";
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {CountryService} from "./service/country.service";
     CommonModule,
     ReactiveFormsModule,
     CountryRoutingModule,
-    SharedModule
+    SharedModule,
+    AuthenticationModule
   ],
   providers: [
     CountryService
