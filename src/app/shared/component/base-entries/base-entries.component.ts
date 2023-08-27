@@ -98,7 +98,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
     return this.currentPage + 1;
   }
 
-  private getEntries(): void {
+  protected getEntries(): void {
     const params: AnyProp = this.prepareSearchParams();
     this.findEntries(params)
       .subscribe({

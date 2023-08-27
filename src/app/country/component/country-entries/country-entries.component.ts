@@ -27,7 +27,9 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
     super(router, route);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getEntries();
+  }
 
   override findEntries(params: AnyProp): Observable<SearchResultView<CountryView>> {
     return this.countryService.findCountries(params);
