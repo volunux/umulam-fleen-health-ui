@@ -7,8 +7,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class EntriesDeleteAllComponent {
 
-  @Output('delete-all') protected deleteAll: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input('is-entries-available') protected isEntriesAvailable: boolean = false;
+  @Output('delete-all') public deleteAll: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input('is-entries-available') public isEntriesAvailable: boolean = false;
 
   public confirmDeleteAll(): void {
     this.deleteAll.emit(true);
