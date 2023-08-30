@@ -13,6 +13,11 @@ import {AuthorizationInterceptor} from "./base/interceptor/authorization.interce
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
+import {JwtService} from "./base/service/jwt.service";
+import {LoggerService} from "./base/service/logger.service";
+import {AuthGuard} from "./base/guard/auth.guard";
+import {AuthenticationService} from "./authentication/service/authentication.service";
+import {SessionStorageService} from "./base/service/session-storage.service";
 
 @NgModule({
   declarations: [
@@ -31,7 +36,12 @@ import {ReactiveFormsModule} from "@angular/forms";
     {provide: TitleStrategy, useClass: TemplatePageTitleStrategy},
     {provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true},
-    LocalStorageService
+    AuthenticationService,
+    LocalStorageService,
+    SessionStorageService,
+    JwtService,
+    LoggerService,
+    AuthGuard,
   ],
   exports: [],
   bootstrap: [AppComponent]

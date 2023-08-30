@@ -9,3 +9,4 @@ export const REFRESH_AUTHORIZATION_TOKEN_KEY: string = 'REFRESH_TOKEN';
 export const DEFAULT_PAGE_SIZE: number = 10;
 export const ANY_EMPTY: any = {};
 export const AUTHENTICATION_STATUS_KEY: string = 'authenticationStatus'
+export const USER_DESTINATION_PAGE_KEY: string = 'USER_STATUS_PAGE';

@@ -2,9 +2,7 @@ import {Injectable} from '@angular/core';
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
 import {isTruthy} from "../../shared/util/helpers";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class LocalStorageService {
 
   constructor() { }

@@ -6,9 +6,7 @@ import {LocalStorageService} from "./local-storage.service";
 import {isTruthy} from "../../shared/util/helpers";
 import {ANY_EMPTY} from "../../shared/constant/other-constant";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class JwtService {
 
   constructor(private logger: LoggerService,

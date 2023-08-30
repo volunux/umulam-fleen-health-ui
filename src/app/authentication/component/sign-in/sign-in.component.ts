@@ -15,6 +15,8 @@ import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.com
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {Router} from "@angular/router";
+import {SessionStorageService} from "../../../base/service/session-storage.service";
+import {USER_DESTINATION_PAGE_KEY} from "../../../shared/constant/other-constant";
 
 @Component({
   selector: 'app-sign-in',
@@ -35,6 +37,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   public isChangePasswordStage: boolean = false;
 
   constructor(protected authenticationService: AuthenticationService,
+              protected sessionStorageService: SessionStorageService,
               protected formBuilder: FormBuilder,
               protected router: Router) {
     super();
@@ -78,8 +81,11 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
             this.phoneNumber = result.phoneNumber;
             this.authenticationService.setAuthToken(result);
             this.isVerificationStage = true;
-            if (result.authenticationStatus == AuthenticationStatus.IN_PROGRESS) {
+            if (result.authenticationStatus === AuthenticationStatus.IN_PROGRESS) {
               this.setVerificationStage(result);
+            }
+            if (result.authenticationStatus === AuthenticationStatus.COMPLETED) {
+              this.gotoUserDestinationPage();
             }
           },
           error: (result: ErrorResponse): void => {
@@ -115,6 +121,15 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   protected override getRouter(): Router {
     return this.router;
+  }
+
+  private gotoUserDestinationPage(): void {
+    this.router.navigateByUrl(this.getUserDestinationPage())
+      .then((m: boolean) => m);
+  }
+
+  private getUserDestinationPage(): string {
+    return this.sessionStorageService.getObject(USER_DESTINATION_PAGE_KEY) || '';
   }
 
 }

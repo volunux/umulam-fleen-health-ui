@@ -28,13 +28,11 @@ import {JwtService} from "../../base/service/jwt.service";
 import {AnyProp} from "../../shared/type/base";
 import {AuthenticationStatus} from "../../shared/enum/authentication";
 import {hasAtLeastAProperty} from "../../shared/util/helpers";
+import {AUTHENTICATION_ENTRY_POINT} from "../../shared/constant/base-config";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthenticationService {
 
-  private readonly AUTHENTICATION_ENTRY_POINT: string = '/auth/sign-in';
   private readonly BASE_PATH: string = "auth";
   private readonly VERIFICATION_BASE_PATH: string = "verification";
 
@@ -146,7 +144,7 @@ export class AuthenticationService {
   }
 
   public startAuthentication(router: Router): void {
-    router.navigate([this.AUTHENTICATION_ENTRY_POINT])
+    router.navigate([AUTHENTICATION_ENTRY_POINT])
       .then((r: boolean) => r);
   }
 
