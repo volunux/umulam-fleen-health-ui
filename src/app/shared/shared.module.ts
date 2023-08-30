@@ -8,6 +8,7 @@ import {SearchFormDeleteMenuComponent} from './component/search-form-delete-menu
 import {PaginationComponent} from './component/pagination/pagination.component';
 import {RowEntryOptionComponent} from './component/row-entry-option/row-entry-option.component';
 import {CommonModule} from "@angular/common";
+import { EntriesDeleteAllComponent } from './component/entries-delete-all/entries-delete-all.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {CommonModule} from "@angular/common";
     SearchFormDeleteMenuComponent,
     PaginationComponent,
     RowEntryOptionComponent,
+    EntriesDeleteAllComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import {CommonModule} from "@angular/common";
     SearchFormDeleteMenuComponent,
     PaginationComponent,
     RowEntryOptionComponent,
+    EntriesDeleteAllComponent,
   ]
 })
 export class SharedModule { }

@@ -3,6 +3,7 @@ import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCas
 import {AnyProp} from "../../../shared/type/base";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
 import {ErrorResponse} from "../../response/error-response";
+import {Router} from "@angular/router";
 
 export abstract class BaseFormComponent {
 
@@ -13,6 +14,8 @@ export abstract class BaseFormComponent {
   public isSubmitting: boolean = false;
   protected abstract formBuilder: FormBuilder;
   public isFormReady: boolean = false;
+
+  abstract getRouter(): Router;
 
   private getAllPropertyKeys(obj: any): string[] {
     const keys: string[] = [];
@@ -115,6 +118,16 @@ export abstract class BaseFormComponent {
 
   public formReady(): void {
     this.isFormReady = true;
+  }
+
+  protected async goToEntries(errorMessage?: string): Promise<void> {
+    const currentUrlSegments: string[] = this.getRouter().url.split('/');
+    currentUrlSegments.pop();
+    currentUrlSegments.pop();
+
+    const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
+    await this.getRouter().navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } })
+      .then((m: boolean) => m);
   }
 
 }

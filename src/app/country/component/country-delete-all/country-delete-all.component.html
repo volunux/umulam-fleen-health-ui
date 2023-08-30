@@ -1,1 +1,3 @@
-<p>country-delete-all works!</p>
+<p>{{errorMessage}}</p>
+
+<app-entries-delete-all [is-entries-available]="isEntriesAvailable" (delete-all)="deleteAll()" ></app-entries-delete-all>

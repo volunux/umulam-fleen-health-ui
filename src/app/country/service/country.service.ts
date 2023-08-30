@@ -9,6 +9,7 @@ import {AnyProp} from "../../shared/type/base";
 import {DeleteIdsDto} from "../../shared/type/other";
 import {DeleteResponse} from "../../shared/response/delete.response";
 import {AddCountryDto, UpdateCountryDto} from "../dto/country.dto";
+import {CountAllResponse} from "../../shared/response/count-all.response";
 
 @Injectable()
 export class CountryService {
@@ -54,6 +55,22 @@ export class CountryService {
     return this.httpService.deleteMany(req)
       .pipe(
         map(data => new DeleteResponse(data))
+      );
+  }
+
+  public deleteAllCountries(): Observable<DeleteResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-all']);
+    return this.httpService.deleteMany(req)
+      .pipe(
+        map(data => new DeleteResponse(data))
+      );
+  }
+
+  public countAllCountries(): Observable<CountAllResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'count-all']);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new CountAllResponse(data))
       );
   }
 }

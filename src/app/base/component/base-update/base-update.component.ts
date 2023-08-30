@@ -62,13 +62,5 @@ export abstract class BaseUpdateComponent<T, D> extends BaseFormComponent {
     }
   }
 
-  protected async goToEntries(errorMessage?: string): Promise<void> {
-    const currentUrlSegments: string[] = this.router.url.split('/');
-    currentUrlSegments.pop();
-    currentUrlSegments.pop();
 
-    const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
-    await this.router.navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } })
-      .then((m: boolean) => m);
-  }
 }
