@@ -5,14 +5,14 @@
   </div>
 
   <div class="form-group">
-    <label for="title">Email Address</label>
-    <input type="email" formControlName="title" id="title"/>
+    <label for="title">Title</label>
+    <input type="text" formControlName="title" id="title"/>
     <app-validation-error [control]="title" [control-label]="'Title'" ></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="code">code</label>
-    <input type="code" formControlName="code" id="code"/>
+    <input type="text" formControlName="code" id="code"/>
     <app-validation-error [control]="code" [control-label]="'Code'"></app-validation-error>
   </div>
 
