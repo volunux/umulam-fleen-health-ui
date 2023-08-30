@@ -16,7 +16,6 @@ import {ChangePasswordComponent} from "../change-password/change-password.compon
 import {ErrorResponse} from "../../../base/response/error-response";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "../../../base/service/session-storage.service";
-import {USER_DESTINATION_PAGE_KEY} from "../../../shared/constant/other-constant";
 
 @Component({
   selector: 'app-sign-in',
@@ -50,6 +49,10 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
       this.authenticationService.clearAuthTokens();
     }
     this.initForm();
+  }
+
+  protected override getSessionStorageService(): SessionStorageService {
+    return this.sessionStorageService;
   }
 
   override getFormBuilder(): FormBuilder {
@@ -122,14 +125,4 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   protected override getRouter(): Router {
     return this.router;
   }
-
-  private gotoUserDestinationPage(): void {
-    this.router.navigateByUrl(this.getUserDestinationPage())
-      .then((m: boolean) => m);
-  }
-
-  private getUserDestinationPage(): string {
-    return this.sessionStorageService.getObject(USER_DESTINATION_PAGE_KEY) || '';
-  }
-
 }

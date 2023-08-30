@@ -3,13 +3,18 @@ import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {AuthenticationService} from "../../service/authentication.service";
 import {Observable, of} from "rxjs";
-import {AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication";
+import {AuthenticationStatus, AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
+import {SignInUpResponse} from "../../response/sign-in-up.response";
+import {USER_DESTINATION_PAGE_KEY} from "../../../shared/constant/other-constant";
+import {SessionStorageService} from "../../../base/service/session-storage.service";
 
 export abstract class AuthBaseComponent extends BaseFormComponent {
+
+  protected abstract getSessionStorageService(): SessionStorageService;
 
   public handleVerificationCode(verification: AuthVerificationDto): void {
     if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
@@ -19,8 +24,11 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
       this.completeSignUpOrValidateMfaOrOnboarding(verification)
         .subscribe({
-          next: (result: any): void => {
+          next: (result: SignInUpResponse): void => {
             this.getAuthenticationService().setAuthToken(result);
+            if (result.authenticationStatus === AuthenticationStatus.COMPLETED) {
+              this.gotoUserDestinationPage();
+            }
           },
           error: (error: ErrorResponse): void => {
             this.setHandleVerificationCodeErrorMessage(type, error.message);
@@ -38,8 +46,11 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
       this.disableSubmitting();
       this.completeChangePassword(dto)
         .subscribe({
-          next: (result: any): void => {
+          next: (result: SignInUpResponse): void => {
             this.getAuthenticationService().setAuthToken(result);
+            if (result.authenticationStatus === AuthenticationStatus.COMPLETED) {
+              this.gotoUserDestinationPage();
+            }
           },
           error: (error: ErrorResponse): void => {
             if (isTruthy(this.getChangePasswordComponent())) {
@@ -100,5 +111,14 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
         this.getMfaVerificationComponent()?.setErrorMessage(message);
       }
     }
+  }
+
+  protected gotoUserDestinationPage(): void {
+    this.getRouter().navigateByUrl(this.getUserDestinationPage())
+      .then((m: boolean) => m);
+  }
+
+  private getUserDestinationPage(): string {
+    return this.getSessionStorageService().getObject(USER_DESTINATION_PAGE_KEY) || '';
   }
 }
