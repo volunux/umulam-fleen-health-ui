@@ -12,6 +12,7 @@ export abstract class BaseFormComponent {
   private readonly ERROR_MESSAGES_NAME: string = "errors";
   public isSubmitting: boolean = false;
   protected abstract formBuilder: FormBuilder;
+  public isFormReady: boolean = false;
 
   private getAllPropertyKeys(obj: any): string[] {
     const keys: string[] = [];
@@ -110,6 +111,10 @@ export abstract class BaseFormComponent {
 
   public resetErrorMessage(): void {
     this.errorMessage = '';
+  }
+
+  public formReady(): void {
+    this.isFormReady = true;
   }
 
 }

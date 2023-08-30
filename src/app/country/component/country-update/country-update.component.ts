@@ -36,6 +36,7 @@ export class CountryUpdateComponent extends BaseUpdateComponent<CountryView, Upd
         [Validators.required, Validators.minLength(2), Validators.maxLength(5)]
       ],
     });
+    this.formReady();
   }
 
   protected override getServiceEntry(id: number | string): Observable<CountryView> {
