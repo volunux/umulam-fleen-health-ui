@@ -62,5 +62,8 @@ export abstract class BaseUpdateComponent<T, D> extends BaseFormComponent {
     }
   }
 
+  protected override getRouter(): Router {
+    return this.router;
+  }
 
 }

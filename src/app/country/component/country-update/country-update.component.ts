@@ -23,7 +23,7 @@ export class CountryUpdateComponent extends BaseUpdateComponent<CountryView, Upd
     super(router, route);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initEntry();
   }
 

@@ -15,7 +15,7 @@ export abstract class BaseFormComponent {
   protected abstract formBuilder: FormBuilder;
   public isFormReady: boolean = false;
 
-  abstract getRouter(): Router;
+  protected abstract getRouter(): Router;
 
   private getAllPropertyKeys(obj: any): string[] {
     const keys: string[] = [];
@@ -120,10 +120,12 @@ export abstract class BaseFormComponent {
     this.isFormReady = true;
   }
 
-  protected async goToEntries(errorMessage?: string): Promise<void> {
+  protected async goToEntries(errorMessage?: string, urlSegmentToRemove: number = 2): Promise<void> {
     const currentUrlSegments: string[] = this.getRouter().url.split('/');
-    currentUrlSegments.pop();
-    currentUrlSegments.pop();
+    for (let index: number = 0; index < urlSegmentToRemove; index++) {
+      currentUrlSegments.pop();
+      currentUrlSegments.pop();
+    }
 
     const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
     await this.getRouter().navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } })

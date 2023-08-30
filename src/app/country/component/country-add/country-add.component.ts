@@ -21,7 +21,7 @@ export class CountryAddComponent extends BaseAddComponent<AddCountryDto, Country
     super(router, formBuilder);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initForm();
   }
 

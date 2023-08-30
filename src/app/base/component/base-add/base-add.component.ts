@@ -16,13 +16,12 @@ export abstract class BaseAddComponent<D, R> extends BaseFormComponent {
 
   protected abstract $saveEntry(dto: D): Observable<R>;
 
-  protected async goToEntries(errorMessage?: string): Promise<void> {
-    const currentUrlSegments: string[] = this.router.url.split('/');
-    currentUrlSegments.pop();
+  protected override getRouter(): Router {
+    return this.router;
+  }
 
-    const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
-    await this.router.navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } })
-      .then((m: boolean) => m);
+  protected override async goToEntries(errorMessage?: string): Promise<void> {
+    await super.goToEntries(errorMessage, 1);
   }
 
   protected saveEntry(): void {
