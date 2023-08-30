@@ -9,6 +9,7 @@ export class EntriesDeleteAllComponent {
 
   @Output('delete-all') public deleteAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input('is-entries-available') public isEntriesAvailable: boolean = false;
+  @Input('is-submitting') public isSubmitting: boolean = false;
 
   public confirmDeleteAll(): void {
     this.deleteAll.emit(true);

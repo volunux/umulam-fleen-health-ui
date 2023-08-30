@@ -120,7 +120,7 @@ export abstract class BaseFormComponent {
     this.isFormReady = true;
   }
 
-  protected async goToEntries(errorMessage?: string, urlSegmentToRemove: number = 2): Promise<void> {
+  protected async goToEntries(errorMessage?: string | null, urlSegmentToRemove: number = 2): Promise<void> {
     const currentUrlSegments: string[] = this.getRouter().url.split('/');
     for (let index: number = 0; index < urlSegmentToRemove; index++) {
       currentUrlSegments.pop();
