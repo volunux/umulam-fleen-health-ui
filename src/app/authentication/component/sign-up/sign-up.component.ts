@@ -8,8 +8,8 @@ import {SignUpResponse} from "../../response/sign-up.response";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
-import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
+import {SessionStorageService} from "../../../base/service/session-storage.service";
 
 @Component({
   selector: 'app-sign-up',
@@ -21,7 +21,10 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
   @ViewChild(OtpVerificationComponent) otpVerificationComponent!: OtpVerificationComponent;
   protected isPreVerificationStage: boolean = false;
 
-  constructor(protected formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService,
+              protected formBuilder: FormBuilder,
+              protected router: Router,
+              protected sessionStorageService: SessionStorageService) {
     super();
   }
 
@@ -29,8 +32,12 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
     this.initForm();
   }
 
+  protected override getSessionStorageService(): SessionStorageService {
+    return this.sessionStorageService;
+  }
+
   protected override getRouter(): Router {
-    return ANY_EMPTY;
+    return this.router;
   }
 
   override getAuthenticationService(): AuthenticationService {
