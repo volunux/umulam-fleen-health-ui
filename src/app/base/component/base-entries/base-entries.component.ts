@@ -9,6 +9,7 @@ import {BaseFormComponent} from "../base-form/base-form.component";
 import {DeleteIdsDto} from "../../../shared/type/other";
 import {SearchFilter} from "../../../shared/type/search";
 import {Location} from "@angular/common";
+import {DEFAULT_PAGE_NO_KEY} from "../../../shared/constant/enum-constant";
 
 export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
@@ -159,7 +160,9 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   protected startComponent(): void {
     this.route.queryParams.subscribe((params: Params): void => {
-      const page = params['page'];
+      const page = params[DEFAULT_PAGE_NO_KEY];
+      this.searchParams = { ...params };
+      this.deleteKeyIfExists(this.searchParams, DEFAULT_PAGE_NO_KEY);
       if (page !== undefined && !isNaN(page)) {
         this.currentPage = +page;
       }
@@ -178,5 +181,9 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
         this.errorMessage = state?.['error'];
       }
     }
+  }
+
+  protected deleteKeyIfExists(params: AnyProp, key: string): void {
+    delete params[key];
   }
 }
