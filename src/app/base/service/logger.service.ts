@@ -7,7 +7,11 @@ export class LoggerService {
 
   constructor() { }
 
-  public log(data: any) {
+  public log(data: any): void {
     console.log(data);
+  }
+
+  public error(data: any): void {
+    console.error(data);
   }
 }

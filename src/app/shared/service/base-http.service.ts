@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {LoggerService} from "./logger.service";
+import {LoggerService} from "../../base/service/logger.service";
 import {API_BASE_PATH, API_HOST_URL, HTTP_REQUEST_RETRY_TIMES} from "../constant/base-config";
 import {isObject, isTruthy} from "../util/helpers";
 import {AnyArray, AnyProp} from "../type/base";

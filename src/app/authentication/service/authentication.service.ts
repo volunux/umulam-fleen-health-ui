@@ -10,7 +10,11 @@ import {
   ResetPasswordDto
 } from "../../shared/type/authentication";
 import {LocalStorageService} from "../../base/service/local-storage.service";
-import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
+import {
+  AUTHENTICATION_STATUS_KEY,
+  AUTHORIZATION_TOKEN_KEY,
+  REFRESH_AUTHORIZATION_TOKEN_KEY
+} from "../../shared/constant/other-constant";
 import {SignInResponse} from "../response/sign-in.response";
 import {SignUpResponse} from "../response/sign-up.response";
 import {SignInUpResponse} from "../response/sign-in-up.response";
@@ -20,6 +24,11 @@ import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 import {Router} from "@angular/router";
 import {EntityExistsResponse} from "../../shared/response/entity-exists.response";
 import {SignInDto, SignUpDto} from "../type/authentication";
+import {BASE_PATH} from "../../shared/constant/base-config";
+import {JwtService} from "../../base/service/jwt.service";
+import {AnyProp} from "../../shared/type/base";
+import {AuthenticationStatus} from "../../shared/enum/authentication";
+import {hasAtLeastAProperty} from "../../shared/util/helpers";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +40,9 @@ export class AuthenticationService {
   private readonly VERIFICATION_BASE_PATH: string = "verification";
 
   constructor(private httpService: HttpClientService,
-              private localStorageService: LocalStorageService) { }
+              private localStorageService: LocalStorageService,
+              private location: Location,
+              private jwtService: JwtService) { }
 
   public isEmailExists(emailAddress: string): Observable<EntityExistsResponse> {
     const req: BaseRequest = this.httpService.toRequest(['email-address', 'exists'], { emailAddress });
@@ -139,6 +150,32 @@ export class AuthenticationService {
   public startAuthentication(router: Router): void {
     router.navigate([this.AUTHENTICATION_ENTRY_POINT])
       .then((r: boolean) => r);
+  }
+
+  public isAuthenticated(): boolean {
+    return this.jwtService.isTokenValid(this.localStorageService.getAuthorizationToken());
+  }
+
+  public goHome(): void {
+    this.location.replace(BASE_PATH);
+  }
+
+  public isAuthenticationStatusCompleted(): boolean {
+    console.log('The JWT claims is ' + this.getJwtClaims());
+    console.log('Status is ::');
+    console.log((this.isAuthenticated()
+      && this.getJwtClaims() !== null
+      && hasAtLeastAProperty(this.getJwtClaims())
+      && (this.getJwtClaims[AUTHENTICATION_STATUS_KEY]) === AuthenticationStatus.COMPLETED));
+    
+    return this.isAuthenticated()
+      && this.getJwtClaims() !== null
+      && hasAtLeastAProperty(this.getJwtClaims())
+      && (this.getJwtClaims[AUTHENTICATION_STATUS_KEY]) === AuthenticationStatus.COMPLETED;
+  }
+
+  private getJwtClaims(): AnyProp | null {
+    return this.jwtService.getClaims();
   }
 
 }

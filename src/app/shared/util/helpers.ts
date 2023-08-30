@@ -44,7 +44,6 @@ export function isObject(value: any): boolean {
   return isTruthy(value) && typeof value === 'object';
 }
 
-
 export function toCamelCase(input: string): string {
   const words: string[] = input.split(/[\s_-]+/);
   const camelCaseWords: string[] = words.map((word:string, index: number): string =>
@@ -106,4 +105,8 @@ export function createBetweenDateObj(value: string, keys: [string, string] = ['s
 
 export function propExists(obj: AnyProp, key: string): boolean {
   return isObject(obj) && obj.hasOwnProperty(key);
+}
+
+export function hasAtLeastAProperty(obj: any): boolean {
+  return isObject(obj) && Object.keys(obj).length > 0;
 }

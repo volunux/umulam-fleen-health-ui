@@ -36,11 +36,17 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   public isChangePasswordStage: boolean = false;
 
   constructor(protected authenticationService: AuthenticationService,
-              protected formBuilder: FormBuilder) {
+              protected formBuilder: FormBuilder,
+              protected router: Router) {
     super();
   }
 
   public ngOnInit(): void {
+    if (this.authenticationService.isAuthenticationStatusCompleted()) {
+      this.authenticationService.goHome();
+    } else {
+      this.authenticationService.clearAuthTokens();
+    }
     this.initForm();
   }
 
