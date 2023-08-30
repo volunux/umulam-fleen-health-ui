@@ -21,7 +21,9 @@ import {Router} from "@angular/router";
 import {EntityExistsResponse} from "../../shared/response/entity-exists.response";
 import {SignInDto, SignUpDto} from "../type/authentication";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
 
   private readonly AUTHENTICATION_ENTRY_POINT: string = '/auth/sign-in';

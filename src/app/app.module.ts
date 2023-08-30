@@ -3,16 +3,16 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {AuthenticationModule} from "./authentication/authentication.module";
 import {FleenHeatlhComponent} from './base/component/fleen-heatlh/fleen-heatlh.component';
 import {TemplatePageTitleStrategy} from "./base/strategy/template-page-title.strategy";
 import {TitleStrategy} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {SharedModule} from "./shared/shared.module";
 import {ContentTypeInterceptor} from "./base/interceptor/content-type.interceptor";
 import {LocalStorageService} from "./base/service/local-storage.service";
 import {AuthorizationInterceptor} from "./base/interceptor/authorization.interceptor";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {CommonModule} from "@angular/common";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,12 +20,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     FleenHeatlhComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    AuthenticationModule,
     AppRoutingModule,
-    SharedModule
   ],
   providers: [
     {provide: TitleStrategy, useClass: TemplatePageTitleStrategy},

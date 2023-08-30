@@ -8,7 +8,9 @@ import {catchError, map, Observable, retry, tap, throwError} from "rxjs";
 import {toBody, toCamelCaseKeys, toSnakeCase} from "../transformer/transformer";
 import {ErrorResponse} from "../../base/response/error-response";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BaseHttpService {
 
   protected HOST_URL: string = API_HOST_URL;

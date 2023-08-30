@@ -5,7 +5,9 @@ import {BaseRequest} from "../type/http";
 import {BaseHttpService} from "./base-http.service";
 import {Observable} from "rxjs";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HttpClientService extends BaseHttpService {
 
   constructor(protected httpClient: HttpClient, logger: LoggerService) {

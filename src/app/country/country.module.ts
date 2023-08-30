@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {CountryBaseComponent} from './component/country-base/country-base.component';
 import {CountryEntriesComponent} from './component/country-entries/country-entries.component';
 import {CountryAddComponent} from './component/country-add/country-add.component';
@@ -8,10 +7,8 @@ import {CountryDetailComponent} from './component/country-detail/country-detail.
 import {CountryDeleteAllComponent} from './component/country-delete-all/country-delete-all.component';
 import {CountryRoutingModule} from "./routing/country-routing.module";
 import {CountryDashboardComponent} from './component/country-dashboard/country-dashboard.component';
-import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {CountryService} from "./service/country.service";
-import {AuthenticationModule} from "../authentication/authentication.module";
 
 
 @NgModule({
@@ -25,11 +22,8 @@ import {AuthenticationModule} from "../authentication/authentication.module";
     CountryDashboardComponent
   ],
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    CountryRoutingModule,
     SharedModule,
-    AuthenticationModule
+    CountryRoutingModule,
   ],
   providers: [
     CountryService

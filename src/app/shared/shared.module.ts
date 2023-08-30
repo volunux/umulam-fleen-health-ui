@@ -1,7 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ValidationErrorComponent} from './component/validation-error/validation-error.component';
-import {HttpClientModule} from "@angular/common/http";
 import {HttpClientService} from "./service/http-client.service";
 import {LoggerService} from "./service/logger.service";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -9,6 +7,7 @@ import {BaseHttpService} from "./service/base-http.service";
 import {SearchFormDeleteMenuComponent} from './component/search-form-delete-menu/search-form-delete-menu.component';
 import {PaginationComponent} from './component/pagination/pagination.component';
 import {RowEntryOptionComponent} from './component/row-entry-option/row-entry-option.component';
+import {CommonModule} from "@angular/common";
 
 
 @NgModule({
@@ -20,7 +19,6 @@ import {RowEntryOptionComponent} from './component/row-entry-option/row-entry-op
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
     ReactiveFormsModule
   ],
   providers: [
@@ -29,6 +27,8 @@ import {RowEntryOptionComponent} from './component/row-entry-option/row-entry-op
     LoggerService
   ],
   exports: [
+    CommonModule,
+    ReactiveFormsModule,
     ValidationErrorComponent,
     SearchFormDeleteMenuComponent,
     PaginationComponent,
