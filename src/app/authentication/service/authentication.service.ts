@@ -24,7 +24,6 @@ import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 import {Router} from "@angular/router";
 import {EntityExistsResponse} from "../../shared/response/entity-exists.response";
 import {SignInDto, SignUpDto} from "../type/authentication";
-import {BASE_PATH} from "../../shared/constant/base-config";
 import {JwtService} from "../../base/service/jwt.service";
 import {AnyProp} from "../../shared/type/base";
 import {AuthenticationStatus} from "../../shared/enum/authentication";
@@ -41,7 +40,6 @@ export class AuthenticationService {
 
   constructor(private httpService: HttpClientService,
               private localStorageService: LocalStorageService,
-              private location: Location,
               private jwtService: JwtService) { }
 
   public isEmailExists(emailAddress: string): Observable<EntityExistsResponse> {
@@ -156,26 +154,15 @@ export class AuthenticationService {
     return this.jwtService.isTokenValid(this.localStorageService.getAuthorizationToken());
   }
 
-  public goHome(): void {
-    this.location.replace(BASE_PATH);
-  }
-
   public isAuthenticationStatusCompleted(): boolean {
-    console.log('The JWT claims is ' + this.getJwtClaims());
-    console.log('Status is ::');
-    console.log((this.isAuthenticated()
-      && this.getJwtClaims() !== null
-      && hasAtLeastAProperty(this.getJwtClaims())
-      && (this.getJwtClaims[AUTHENTICATION_STATUS_KEY]) === AuthenticationStatus.COMPLETED));
-    
     return this.isAuthenticated()
       && this.getJwtClaims() !== null
       && hasAtLeastAProperty(this.getJwtClaims())
-      && (this.getJwtClaims[AUTHENTICATION_STATUS_KEY]) === AuthenticationStatus.COMPLETED;
+      && (this.getJwtClaims()[AUTHENTICATION_STATUS_KEY]) === AuthenticationStatus.COMPLETED;
   }
 
-  private getJwtClaims(): AnyProp | null {
-    return this.jwtService.getClaims();
+  private getJwtClaims(): AnyProp {
+    return this.jwtService.getAuthClaims();
   }
 
 }

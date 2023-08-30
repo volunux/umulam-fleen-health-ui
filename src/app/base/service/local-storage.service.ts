@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AUTHORIZATION_TOKEN_KEY, REFRESH_AUTHORIZATION_TOKEN_KEY} from "../../shared/constant/other-constant";
+import {isTruthy} from "../../shared/util/helpers";
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +10,13 @@ export class LocalStorageService {
   constructor() { }
 
   public getAuthorizationToken(): string {
-    return this.hasObject(AUTHORIZATION_TOKEN_KEY)
+    return this.hasObject(AUTHORIZATION_TOKEN_KEY) && isTruthy(this.getObject(AUTHORIZATION_TOKEN_KEY))
       ? this.getObject(AUTHORIZATION_TOKEN_KEY) as string
       : "";
   }
 
   public getAuthorizationRefreshToken(): string {
-    return this.hasObject(REFRESH_AUTHORIZATION_TOKEN_KEY)
+    return this.hasObject(REFRESH_AUTHORIZATION_TOKEN_KEY) && isTruthy(this.getObject(REFRESH_AUTHORIZATION_TOKEN_KEY))
       ? this.getObject(REFRESH_AUTHORIZATION_TOKEN_KEY) as string
       : "";
   }

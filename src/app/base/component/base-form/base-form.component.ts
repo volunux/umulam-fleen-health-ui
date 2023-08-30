@@ -4,6 +4,7 @@ import {AnyProp} from "../../../shared/type/base";
 import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
 import {ErrorResponse} from "../../response/error-response";
 import {Router} from "@angular/router";
+import {BASE_PATH} from "../../../shared/constant/base-config";
 
 export abstract class BaseFormComponent {
 
@@ -130,6 +131,10 @@ export abstract class BaseFormComponent {
     const newRoute: string = [...currentUrlSegments, 'entries'].join('/');
     await this.getRouter().navigate([newRoute], { state: { error: errorMessage ? errorMessage : '' } })
       .then((m: boolean) => m);
+  }
+
+  protected async goHome(): Promise<void> {
+    await this.getRouter().navigate([BASE_PATH]);
   }
 
 }

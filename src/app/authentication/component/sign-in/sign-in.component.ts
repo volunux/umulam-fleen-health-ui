@@ -15,7 +15,6 @@ import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.com
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {Router} from "@angular/router";
-import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 
 @Component({
   selector: 'app-sign-in',
@@ -41,9 +40,9 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
     super();
   }
 
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
     if (this.authenticationService.isAuthenticationStatusCompleted()) {
-      this.authenticationService.goHome();
+      await this.goHome();
     } else {
       this.authenticationService.clearAuthTokens();
     }
@@ -115,7 +114,7 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   }
 
   protected override getRouter(): Router {
-    return ANY_EMPTY;
+    return this.router;
   }
 
 }
