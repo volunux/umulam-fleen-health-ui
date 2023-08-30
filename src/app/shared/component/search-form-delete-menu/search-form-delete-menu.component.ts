@@ -71,6 +71,7 @@ export class SearchFormDeleteMenuComponent extends BaseFormComponent implements 
     if (propExists(this.searchParams, BETWEEN_DATE_SEARCH_KEY)) {
       const twoDates: AnyProp = createBetweenDateObj(this.searchParams[BETWEEN_DATE_SEARCH_KEY]);
       this.searchParams = { ...(this.searchParams), ...twoDates };
+      delete this.searchParams[BETWEEN_DATE_SEARCH_KEY];
     }
   }
 }

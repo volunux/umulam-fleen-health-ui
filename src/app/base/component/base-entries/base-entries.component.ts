@@ -104,7 +104,6 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
     this.findEntries(params)
       .subscribe({
         next: (result: SearchResultView<T>): void => {
-
           this.initResult(result);
         },
         error: (): void => {
@@ -117,8 +116,9 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
     });
   }
 
-  public search(dto: SearchDto): void {
+  public async search(dto: SearchDto): Promise<void> {
     this.searchParams = dto;
+    await this.updateUrlWithPage(this.searchParams);
     this.getEntries();
   }
 
@@ -149,10 +149,10 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
     return idx + 1;
   }
 
-  private async updateUrlWithPage(): Promise<void> {
+  private async updateUrlWithPage(params: AnyProp = {}): Promise<void> {
     await this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: {page: this.currentPage},
+      queryParams: { page: this.currentPage, ...params },
       queryParamsHandling: 'merge',
     })
   }
@@ -160,7 +160,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
   protected startComponent(): void {
     this.route.queryParams.subscribe((params: Params): void => {
       const page = params['page'];
-      if (page !== undefined && isNaN(page)) {
+      if (page !== undefined && !isNaN(page)) {
         this.currentPage = +page;
       }
       this.getEntries();
