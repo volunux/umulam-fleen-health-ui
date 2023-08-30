@@ -34,6 +34,7 @@ export class CountryAddComponent extends BaseAddComponent<AddCountryDto, Country
         [Validators.required, Validators.minLength(2), Validators.maxLength(5)]
       ],
     });
+    this.formReady();
   }
 
   public saveCountry(): void {
