@@ -8,6 +8,8 @@ import {SignUpResponse} from "../../response/sign-up.response";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sign-up',
@@ -23,8 +25,12 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
     super();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initForm();
+  }
+
+  protected override getRouter(): Router {
+    return ANY_EMPTY;
   }
 
   override getAuthenticationService(): AuthenticationService {

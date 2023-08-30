@@ -33,6 +33,10 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   abstract deleteEntries(dto: DeleteIdsDto): Observable<any>;
 
+  protected override getRouter(): Router {
+    return this.router;
+  }
+
   public trackByFn(index: number, item: any): any {
     return item.id;
   }

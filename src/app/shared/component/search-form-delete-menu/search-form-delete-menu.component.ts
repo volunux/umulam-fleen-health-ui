@@ -7,6 +7,8 @@ import {BETWEEN_DATE_SEARCH_KEY} from "../../constant/enum-constant";
 import {SearchDto} from "../../interface/base";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {SearchFilter, SearchParamDto} from "../../type/search";
+import {ANY_EMPTY} from "../../constant/other-constant";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-search-form-delete-menu',
@@ -73,5 +75,9 @@ export class SearchFormDeleteMenuComponent extends BaseFormComponent implements 
       this.searchParams = { ...(this.searchParams), ...twoDates };
       delete this.searchParams[BETWEEN_DATE_SEARCH_KEY];
     }
+  }
+
+  protected override getRouter(): Router {
+    return ANY_EMPTY;
   }
 }

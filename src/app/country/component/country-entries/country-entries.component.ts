@@ -28,7 +28,7 @@ export class CountryEntriesComponent extends BaseEntriesComponent<CountryView> i
     super(router, route, location);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.startComponent();
   }
 

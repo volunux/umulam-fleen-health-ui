@@ -8,6 +8,8 @@ import {FormControl, Validators} from "@angular/forms";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {ErrorResponse} from "../../../base/response/error-response";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-mfa-otp-base',
@@ -27,6 +29,10 @@ export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
     this.otp.addValidators([
       Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)
     ]);
+  }
+
+  protected override getRouter(): Router {
+    return ANY_EMPTY;
   }
 
   protected serviceResendOtp(resendVerificationDto: ResendVerificationCodeDto): Observable<any> {

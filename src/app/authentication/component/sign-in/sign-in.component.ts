@@ -14,6 +14,8 @@ import {
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
+import {Router} from "@angular/router";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 
 @Component({
   selector: 'app-sign-in',
@@ -33,11 +35,12 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
   public isMfaVerificationStage: boolean = false;
   public isChangePasswordStage: boolean = false;
 
-  constructor(protected formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(protected authenticationService: AuthenticationService,
+              protected formBuilder: FormBuilder) {
     super();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initForm();
   }
 
@@ -103,6 +106,10 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
       this.isChangePasswordStage = true;
       this.changePasswordType = ChangePasswordType.ONBOARDING;
     }
+  }
+
+  protected override getRouter(): Router {
+    return ANY_EMPTY;
   }
 
 }
