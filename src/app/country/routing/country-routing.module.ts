@@ -8,9 +8,11 @@ import {CountryDetailComponent} from "../component/country-detail/country-detail
 import {CountryDeleteAllComponent} from "../component/country-delete-all/country-delete-all.component";
 import {CountryBaseComponent} from "../component/country-base/country-base.component";
 import {CountryDashboardComponent} from "../component/country-dashboard/country-dashboard.component";
+import {AuthGuard} from "../../base/guard/auth.guard";
 
 const routes: Routes = [
   { path: '',
+    canActivate: [AuthGuard],
     component: CountryBaseComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
