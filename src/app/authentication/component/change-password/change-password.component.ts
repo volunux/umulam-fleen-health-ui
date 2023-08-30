@@ -5,6 +5,8 @@ import {passwordValidator} from "../../../shared/validator/validator";
 import {PASSWORD_PATTERNS} from "../../../shared/util/format-pattern";
 import {ChangePasswordDto} from "../../../shared/type/authentication";
 import {ChangePasswordType} from "../../../shared/enum/authentication";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-change-password',
@@ -20,15 +22,19 @@ export class ChangePasswordComponent extends BaseFormComponent implements OnInit
     super();
   }
 
+  public ngOnInit(): void {
+    this.initForm();
+  }
+
+  protected override getRouter(): Router {
+    return ANY_EMPTY;
+  }
+
   public submit(): void {
     if (this.fleenHealthForm.valid) {
       const { password, confirmPassword } = this.fleenHealthForm.value;
       this.changePassword.emit({password, confirmPassword, type: this.changePasswordType });
     }
-  }
-
-  ngOnInit(): void {
-    this.initForm();
   }
 
   protected initForm(): void {

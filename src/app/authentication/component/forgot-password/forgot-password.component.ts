@@ -34,7 +34,8 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
   public phoneNumber: string | undefined;
   protected formBuilder;
 
-  public constructor(private authenticationService: AuthenticationService, private router: Router) {
+  public constructor(protected authenticationService: AuthenticationService,
+                     protected router: Router) {
     super();
   }
 
@@ -45,6 +46,10 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
     this.verificationCode.addValidators([
       Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)
     ]);
+  }
+
+  protected override getRouter(): Router {
+    return this.router;
   }
 
   public submit(event: Event): void {

@@ -34,7 +34,7 @@ export class CountryDeleteAllComponent extends BaseEntriesDeleteAllComponent imp
     return this.countryService.deleteAllCountries();
   }
 
-  override getRouter(): Router {
+  protected override getRouter(): Router {
     return this.router;
   }
 
