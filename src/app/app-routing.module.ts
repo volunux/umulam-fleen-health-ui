@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: "", component: AppComponent },
   { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
   { path: 'country', loadChildren: () => import('./country/country.module').then(m => m.CountryModule) },
+  { path: 'profile', loadChildren: () => import('./member/member.module').then(m => m.MemberModule) },
   { path: "**", component: FleenHeatlhComponent }
 ];
 
