@@ -1,8 +1,8 @@
 <ng-container *ngIf="isFormReady">
 
-  <form [formGroup]="memberUpdateForm" (ngSubmit)="updateDetails()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+  <form [formGroup]="emailAddressUpdateForm" (ngSubmit)="updateEmailAddress()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
     <div class="form-error-message">
-      {{errorMessage}}
+      {{emailAddressFormErrorMessage}}
     </div>
 
     <div class="form-group">
@@ -15,9 +15,9 @@
 
   </form>
 
-    <form [formGroup]="memberUpdateForm" (ngSubmit)="updateDetails()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+    <form [formGroup]="phoneNumberUpdateForm" (ngSubmit)="updatePhoneNumber()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
       <div class="form-error-message">
-        {{errorMessage}}
+        {{phoneNumberFormErrorMessage}}
       </div>
 
       <div class="form-group">
