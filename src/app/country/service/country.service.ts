@@ -16,7 +16,7 @@ export class CountryService {
 
   private readonly BASE_PATH: string = "country";
 
-  constructor(private httpService: HttpClientService) { }
+  public constructor(private httpService: HttpClientService) { }
 
   public findCountries(params: AnyProp): Observable<SearchResultView<CountryView>> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'entries'], params);
