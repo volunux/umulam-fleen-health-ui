@@ -8,12 +8,13 @@ import {UpdateMemberDetailsResponse} from "../response/update-member-details.res
 import {
   ConfirmUpdateEmailAddressDto,
   ConfirmUpdatePhoneNumberDto,
-  UpdateEmailAddressOrPhoneNumberDto
+  UpdateEmailAddressOrPhoneNumberDto, UpdateProfilePhotoDto
 } from "../dto/member.dto";
 import {
   SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse
 } from "../response/send-update-email-address-or-phone-number-verification-code.response";
 import {UpdateEmailAddressOrPhoneNumberResponse} from "../response/update-email-address-or-phone-number.response";
+import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 
 @Injectable()
 export class MemberService {
@@ -67,6 +68,14 @@ export class MemberService {
     return this.httpService.update(req)
       .pipe(
         map(data => new UpdateEmailAddressOrPhoneNumberResponse(data))
+      );
+  }
+
+  public updateProfilePhoto(body: UpdateProfilePhotoDto): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update-profile-photo'], null, { ...body });
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
       );
   }
 }

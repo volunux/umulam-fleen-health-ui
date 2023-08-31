@@ -21,3 +21,7 @@ export type ConfirmUpdatePhoneNumberDto = {
   phoneNumber: string;
   code: string;
 }
+
+export type UpdateProfilePhotoDto = {
+  profilePhoto: string;
+}
