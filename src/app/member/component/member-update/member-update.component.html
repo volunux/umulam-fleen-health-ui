@@ -36,19 +36,8 @@
 
     <div class="form-group">
       <label for="address">Address</label>
-      <textarea type="password" formControlName="password" id="password"></textarea>
-      <app-validation-error [control]="password" [control-label]="'Password'"></app-validation-error>
-    </div>
-
-    <div class="form-group">
-      <label for="confirm_password">Confirm Password</label>
-      <input type="password" formControlName="confirmPassword" id="confirm_password"/>
-      <app-validation-error [control]="confirmPassword" [control-label]="'Confirm Password'"></app-validation-error>
-    </div>
-
-    <div class="form-group">
-      <input type="hidden" formControlName="verificationType" value="EMAIL"/>
-      <app-validation-error [control]="verificationType" [control-label]="'Verification Type'"></app-validation-error>
+      <textarea formControlName="address" id="address"></textarea>
+      <app-validation-error [control]="address" [control-label]="'Password'"></app-validation-error>
     </div>
 
     <button type="submit" [disabled]="isSubmitting">Submit</button>

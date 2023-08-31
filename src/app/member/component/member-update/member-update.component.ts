@@ -1,19 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {MemberService} from "../../service/member.service";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ANY_EMPTY, MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {Router} from "@angular/router";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
 import {ErrorResponse} from "../../../base/response/error-response";
-import {DEFAULT_FORM_CONTROL_VALUE, GENDER} from "../../../shared/constant/enum-constant";
-import {
-  ageLimitValidator,
-  dateOfBirthValidator,
-  enumTypeValidator,
-  pastDateValidator
-} from "../../../shared/validator/validator";
-import {DATE} from "../../../shared/util/format-pattern";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
+import {UpdateMemberDetailsResponse} from "../../response/update-member-details.response";
 
 @Component({
   selector: 'app-member-update',
@@ -25,7 +18,8 @@ export class MemberUpdateComponent extends BaseFormComponent implements OnInit {
   protected entryView!: GetMemberUpdateDetailsResponse;
 
   public constructor(protected memberService: MemberService,
-                     protected formBuilder: FormBuilder) {
+                     protected formBuilder: FormBuilder,
+                     protected router: Router) {
     super();
   }
 
@@ -38,55 +32,37 @@ export class MemberUpdateComponent extends BaseFormComponent implements OnInit {
         error: (error: ErrorResponse): void => {
           this.handleError(error);
         }
-      });
-  }
-
-  public initForm(): void {
-    this.fleenHealthForm = this.formBuilder.group({
-      firstName: [this.entryView.firstName,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
-      ],
-      lastName: [this.entryView.lastName,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
-      ],
-      dateOfBirth: [this.entryView.dateOfBirth,
-        [Validators.required, dateOfBirthValidator(DATE), pastDateValidator, ageLimitValidator(MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT)]
-      ],
-      gender: [this.entryView.gender,
-        [Validators.required, enumTypeValidator(GENDER)]
-      ],
-      address: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, Validators.minLength(10), Validators.maxLength(500)]
-      ],
     });
   }
 
+  public submit(): void {
+    if (isTruthy(this.memberUpdateForm) && this.memberUpdateForm.valid && isFalsy(this.isSubmitting)) {
+      this.memberService.updateDetails(this.memberUpdateForm.value)
+        .subscribe({
+          next: (result: UpdateMemberDetailsResponse): void => {
+
+          },
+          error: (error: ErrorResponse): void => {
+            this.handleError(error);
+          },
+          complete: (): void => {
+            this.goToDashboard();
+          }
+      });
+    }
+  }
+
   protected override getRouter(): Router {
-    return ANY_EMPTY;
+    return this.router;
   }
 
   get memberUpdateForm(): FormGroup {
     return this.fleenHealthForm;
   }
 
-  get firstName(): AbstractControl | null | undefined {
-    return this.memberUpdateForm.get('firstName');
-  }
-
-  get lastName(): AbstractControl | null | undefined {
-    return this.memberUpdateForm.get('lastName');
-  }
-
-  get gender(): AbstractControl | null | undefined {
-    return this.memberUpdateForm.get('gender');
-  }
-
-  get dateOfBirth(): AbstractControl | null | undefined {
-    return this.memberUpdateForm.get('dateOfBirth');
-  }
-
-  get address(): AbstractControl | null | undefined {
-    return this.memberUpdateForm.get('address');
+  private goToDashboard(): void {
+    this.router.navigate(['..', 'dashboard'])
+      .then(m => m);
   }
 
 }
