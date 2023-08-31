@@ -9,7 +9,6 @@ import {withDefault} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Router} from "@angular/router";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
-import {UpdateEmailAddressOrPhoneNumberResponse} from "../../response/update-email-address-or-phone-number.response";
 
 @Component({
   selector: 'app-member-update-email-phone',
@@ -23,6 +22,8 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public phoneNumberUpdateForm!: FormGroup;
   public emailAddressFormErrorMessage: string = '';
   public phoneNumberFormErrorMessage: string = '';
+  public emailAddressUpdateSuccess: boolean = false;
+  public phoneNumberUpdateSuccess: boolean = false;
 
   public constructor(protected memberService: MemberService,
                      protected router: Router,
@@ -82,11 +83,11 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public updateEmailAddress(): void {
     this.memberService.confirmUpdateEmailAddress(this.emailAddressUpdateForm.value)
       .subscribe({
-        next: (result: UpdateEmailAddressOrPhoneNumberResponse): void => {
-
-        },
         error: (error: ErrorResponse): void => {
           this.emailAddressFormErrorMessage = error?.message || '';
+        },
+        complete: (): void => {
+          this.emailAddressUpdateSuccess = true;
         }
     });
   }
@@ -94,11 +95,11 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public updatePhoneNumber(): void {
     this.memberService.confirmUpdatePhoneNumber(this.phoneNumberUpdateForm.value)
       .subscribe({
-        next: (result: UpdateEmailAddressOrPhoneNumberResponse): void => {
-
-        },
         error: (error: ErrorResponse): void => {
           this.phoneNumberFormErrorMessage = error?.message || '';
+        },
+        complete: (): void => {
+          this.phoneNumberUpdateSuccess = true;
         }
     });
   }
