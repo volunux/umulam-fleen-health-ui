@@ -3,12 +3,14 @@ import {HttpClientService} from "../../shared/service/http-client.service";
 import {map, Observable} from "rxjs";
 import {BaseRequest} from "../../shared/type/http";
 import {GetMemberUpdateDetailsResponse} from "../response/get-member-update-details.response";
-import {UpdateMemberDetailsDto} from "../dto/update-member-details.dto";
 import {UpdateMemberDetailsResponse} from "../response/update-member-details.response";
 import {
   ConfirmUpdateEmailAddressDto,
   ConfirmUpdatePhoneNumberDto,
-  UpdateEmailAddressOrPhoneNumberDto, UpdatePasswordDto, UpdateProfilePhotoDto
+  UpdateEmailAddressOrPhoneNumberDto,
+  UpdateMemberDetailsDto,
+  UpdatePasswordDto,
+  UpdateProfilePhotoDto
 } from "../dto/member.dto";
 import {
   SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse
@@ -93,6 +95,14 @@ export class MemberService {
     return this.httpService.delete(req)
       .pipe(
         map(data => new DeleteResponse(data))
+      );
+  }
+
+  public signOut(): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'sign-out']);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
       );
   }
 }
