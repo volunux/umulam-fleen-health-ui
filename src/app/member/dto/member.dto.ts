@@ -11,3 +11,13 @@ export type UpdateMemberDetailsDto = {
   gender: string;
   dateOfBirth: string;
 }
+
+export type ConfirmUpdateEmailAddressDto = {
+  emailAddress: string;
+  code: string;
+}
+
+export type ConfirmUpdatePhoneNumberDto = {
+  phoneNumber: string;
+  code: string;
+}

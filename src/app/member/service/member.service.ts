@@ -5,10 +5,15 @@ import {BaseRequest} from "../../shared/type/http";
 import {GetMemberUpdateDetailsResponse} from "../response/get-member-update-details.response";
 import {UpdateMemberDetailsDto} from "../dto/update-member-details.dto";
 import {UpdateMemberDetailsResponse} from "../response/update-member-details.response";
-import {UpdateEmailAddressOrPhoneNumberDto} from "../dto/member.dto";
+import {
+  ConfirmUpdateEmailAddressDto,
+  ConfirmUpdatePhoneNumberDto,
+  UpdateEmailAddressOrPhoneNumberDto
+} from "../dto/member.dto";
 import {
   SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse
 } from "../response/send-update-email-address-or-phone-number-verification-code.response";
+import {UpdateEmailAddressOrPhoneNumberResponse} from "../response/update-email-address-or-phone-number.response";
 
 @Injectable()
 export class MemberService {
@@ -46,6 +51,22 @@ export class MemberService {
     return this.httpService.post(req)
       .pipe(
         map(data => new SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse(data))
+      );
+  }
+
+  public confirmUpdateEmailAddress(body: ConfirmUpdateEmailAddressDto): Observable<UpdateEmailAddressOrPhoneNumberResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'confirm-update-email-address'], null, { ...body });
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new UpdateEmailAddressOrPhoneNumberResponse(data))
+      );
+  }
+
+  public confirmUpdatePhoneNumber(body: ConfirmUpdatePhoneNumberDto): Observable<UpdateEmailAddressOrPhoneNumberResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'confirm-update-phone-number'], null, { ...body });
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new UpdateEmailAddressOrPhoneNumberResponse(data))
       );
   }
 }
