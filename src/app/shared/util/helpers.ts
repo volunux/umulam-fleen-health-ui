@@ -1,6 +1,7 @@
 import {SearchResultView} from "../view/search-result.view";
 import {AnyProp} from "../type/base";
 import {Newable} from "../interface/base";
+import {DEFAULT_FORM_CONTROL_VALUE} from "../constant/enum-constant";
 
 
 export function capitalizeMany(inputArray: string[]): string[] {
@@ -123,4 +124,11 @@ export function toISODate(date: Date): string {
     return ''.concat(year).concat('-').concat(month).concat('-').concat(day);
   }
   return '';
+}
+
+export function withDefault(value: string, defaultValue: string = DEFAULT_FORM_CONTROL_VALUE): string {
+  if (isTruthy(value)) {
+    return value;
+  }
+  return defaultValue;
 }
