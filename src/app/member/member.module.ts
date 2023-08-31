@@ -11,6 +11,9 @@ import {MemberUpdatePasswordComponent} from './component/member-update-password/
 import {MemberService} from "./service/member.service";
 import {MemberBaseComponent} from './component/member-base/member-base.component';
 import {MemberDashboardComponent} from './component/member-dashboard/member-dashboard.component';
+import {AuthenticationModule} from "../authentication/authentication.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import {MemberDashboardComponent} from './component/member-dashboard/member-dash
   ],
   imports: [
     CommonModule,
-    MemberRoutingModule
+    MemberRoutingModule,
+    AuthenticationModule,
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [
     MemberService
