@@ -1,1 +1,10 @@
-<p>member-detail works!</p>
+<h2> Profile Details </h2>
+
+<ng-container *ngIf="memberView">
+  <p> First Name {{memberView.firstName}} </p>
+  <p> Last Name {{memberView.lastName}} </p>
+  <p> Email Address {{memberView.emailAddress}} </p>
+  <p> Phone Number {{memberView.phoneNumber}} </p>
+  <p> Gender {{memberView.gender}} </p>
+  <p> Date of Birth {{memberView.dateOfBirth | date: 'longdate }} </p>
+</ng-container>

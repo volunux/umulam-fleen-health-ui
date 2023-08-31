@@ -18,13 +18,11 @@ import {LoggerService} from "./base/service/logger.service";
 import {AuthGuard} from "./base/guard/auth.guard";
 import {AuthenticationService} from "./authentication/service/authentication.service";
 import {SessionStorageService} from "./base/service/session-storage.service";
-import { BaseComponent } from './base/component/base/base.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FleenHeatlhComponent,
-    BaseComponent,
   ],
   imports: [
     CommonModule,

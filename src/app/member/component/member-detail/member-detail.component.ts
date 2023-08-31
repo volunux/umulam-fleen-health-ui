@@ -11,7 +11,7 @@ import {BaseComponent} from "../../../base/component/base/base.component";
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent extends BaseComponent implements OnInit {
-  protected entryView!: GetMemberUpdateDetailsResponse;
+  protected memberView!: GetMemberUpdateDetailsResponse;
 
   public constructor(protected memberService: MemberService,
                      protected router: Router) {
@@ -22,7 +22,7 @@ export class MemberDetailComponent extends BaseComponent implements OnInit {
     this.memberService.getDetails()
       .subscribe({
         next: (result: GetMemberUpdateDetailsResponse): void => {
-          this.entryView = result;
+          this.memberView = result;
         },
         error: (error: ErrorResponse): void => {
           this.handleError(error);
