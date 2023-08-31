@@ -5,7 +5,6 @@ import {Router} from "@angular/router";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
-import {UpdateMemberDetailsResponse} from "../../response/update-member-details.response";
 import {MemberUpdateBaseComponent} from "./member-update-base.component";
 
 @Component({
@@ -38,9 +37,6 @@ export class MemberUpdateComponent extends MemberUpdateBaseComponent implements 
     if (isTruthy(this.memberUpdateForm) && this.memberUpdateForm.valid && isFalsy(this.isSubmitting)) {
       this.memberService.updateDetails(this.memberUpdateForm.value)
         .subscribe({
-          next: (result: UpdateMemberDetailsResponse): void => {
-
-          },
           error: (error: ErrorResponse): void => {
             this.handleError(error);
           },
@@ -56,8 +52,8 @@ export class MemberUpdateComponent extends MemberUpdateBaseComponent implements 
   }
 
   private goToDashboard(): void {
-    this.router.navigate(['..', 'dashboard'])
-      .then(m => m);
+    this.router.navigate(['/profile/dashboard'])
+      .then((m: boolean) => m);
   }
 
 }
