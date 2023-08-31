@@ -5,6 +5,6 @@
   <p> Last Name {{memberView.lastName}} </p>
   <p> Email Address {{memberView.emailAddress}} </p>
   <p> Phone Number {{memberView.phoneNumber}} </p>
-  <p> Gender {{memberView.gender}} </p>
-  <p> Date of Birth {{memberView.dateOfBirth | date: 'longdate }} </p>
+  <p> Gender {{memberView.gender | titlecase }} </p>
+  <p> Date of Birth {{memberView.dateOfBirth | date: 'longDate' }} </p>
 </ng-container>
