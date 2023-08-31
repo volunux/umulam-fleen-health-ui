@@ -25,3 +25,9 @@ export type ConfirmUpdatePhoneNumberDto = {
 export type UpdateProfilePhotoDto = {
   profilePhoto: string;
 }
+
+export type UpdatePasswordDto = {
+  oldPassword: string;
+  password: string;
+  confirmPassword: string;
+}

@@ -8,13 +8,14 @@ import {UpdateMemberDetailsResponse} from "../response/update-member-details.res
 import {
   ConfirmUpdateEmailAddressDto,
   ConfirmUpdatePhoneNumberDto,
-  UpdateEmailAddressOrPhoneNumberDto, UpdateProfilePhotoDto
+  UpdateEmailAddressOrPhoneNumberDto, UpdatePasswordDto, UpdateProfilePhotoDto
 } from "../dto/member.dto";
 import {
   SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse
 } from "../response/send-update-email-address-or-phone-number-verification-code.response";
 import {UpdateEmailAddressOrPhoneNumberResponse} from "../response/update-email-address-or-phone-number.response";
 import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
+import {DeleteResponse} from "../../shared/response/delete.response";
 
 @Injectable()
 export class MemberService {
@@ -76,6 +77,22 @@ export class MemberService {
     return this.httpService.update(req)
       .pipe(
         map(data => new FleenHealthResponse(data))
+      );
+  }
+
+  public updatePassword(body: UpdatePasswordDto): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update-password'], null, { ...body });
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
+      );
+  }
+
+  public removeProfilePhoto(): Observable<DeleteResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'delete-profile-photo']);
+    return this.httpService.delete(req)
+      .pipe(
+        map(data => new DeleteResponse(data))
       );
   }
 }
