@@ -14,6 +14,7 @@ import {MemberDashboardComponent} from './component/member-dashboard/member-dash
 import {AuthenticationModule} from "../authentication/authentication.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
+import { MemberUpdateEmailPhoneComponent } from './component/member-update-email-phone/member-update-email-phone.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {SharedModule} from "../shared/shared.module";
     MemberUpdateProfilePhotoComponent,
     MemberUpdatePasswordComponent,
     MemberBaseComponent,
-    MemberDashboardComponent
+    MemberDashboardComponent,
+    MemberUpdateEmailPhoneComponent
   ],
   imports: [
     CommonModule,
