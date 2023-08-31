@@ -33,6 +33,7 @@ export abstract class MemberUpdateBaseComponent extends BaseFormComponent {
         [Validators.required, Validators.minLength(10), Validators.maxLength(500)]
       ],
     });
+    this.formReady();
   }
 
   get memberUpdateForm(): FormGroup {

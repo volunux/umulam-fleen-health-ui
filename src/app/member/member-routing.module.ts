@@ -4,6 +4,7 @@ import {AuthGuard} from "../base/guard/auth.guard";
 import {MemberBaseComponent} from "./component/member-base/member-base.component";
 import {MemberDashboardComponent} from "./component/member-dashboard/member-dashboard.component";
 import {MemberDetailComponent} from "./component/member-detail/member-detail.component";
+import {MemberUpdateComponent} from "./component/member-update/member-update.component";
 
 const routes: Routes = [
   { path: '',
@@ -11,8 +12,9 @@ const routes: Routes = [
     component: MemberBaseComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: MemberDashboardComponent, title: 'Member Dashboard' },
-      { path: 'get-detail', component: MemberDetailComponent, title: 'Member Detail' }
+      { path: 'dashboard', component: MemberDashboardComponent, title: 'Profile Dashboard' },
+      { path: 'get-detail', component: MemberDetailComponent, title: 'Profile Detail' },
+      { path: 'update-detail', component: MemberUpdateComponent, title: 'Profile Update' }
     ]
   }
 ];

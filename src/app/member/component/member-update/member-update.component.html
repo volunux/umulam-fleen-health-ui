@@ -1,6 +1,6 @@
 <ng-container *ngIf="isFormReady">
 
-  <form [formGroup]="memberUpdateForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+  <form [formGroup]="memberUpdateForm" (ngSubmit)="updateDetails()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
     <div class="form-error-message">
       {{errorMessage}}
     </div>
