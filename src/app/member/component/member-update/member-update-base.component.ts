@@ -10,6 +10,7 @@ import {DATE} from "../../../shared/util/format-pattern";
 import {MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT} from "../../../shared/constant/other-constant";
 import {DEFAULT_FORM_CONTROL_VALUE, GENDER} from "../../../shared/constant/enum-constant";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
+import {toIsoDate} from "../../../shared/util/helpers";
 
 export abstract class MemberUpdateBaseComponent extends BaseFormComponent {
 
@@ -23,7 +24,7 @@ export abstract class MemberUpdateBaseComponent extends BaseFormComponent {
       lastName: [this.entryView.lastName,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]
       ],
-      dateOfBirth: [this.entryView.dateOfBirth,
+      dateOfBirth: [toIsoDate(this.entryView.dateOfBirth),
         [Validators.required, dateOfBirthValidator(DATE), pastDateValidator, ageLimitValidator(MINIMUM_AGE_ELIGIBILITY_FOR_ACCOUNT)]
       ],
       gender: [this.entryView.gender,

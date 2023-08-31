@@ -110,3 +110,16 @@ export function propExists(obj: AnyProp, key: string): boolean {
 export function hasAtLeastAProperty(obj: any): boolean {
   return isObject(obj) && Object.keys(obj).length > 0;
 }
+
+export function toIsoDate(date: Date): string {
+  if (isTruthy(date) && isObject(date)) {
+    let day: string;
+    let month: string;
+    let year: string;
+    day = date.toLocaleDateString('default', { day: '2-digit'});
+    month = date.toLocaleDateString('default', { day: '2-digit' });
+    year = date.toLocaleDateString('default', { year: 'numeric' });
+    return day + '-' + month + '-' + year;
+  }
+  return '';
+}
