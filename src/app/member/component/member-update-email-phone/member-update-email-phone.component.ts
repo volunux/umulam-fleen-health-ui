@@ -5,11 +5,12 @@ import {PHONE_NUMBER, VERIFICATION_CODE} from "../../../shared/util/format-patte
 import {MemberService} from "../../service/member.service";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
 import {ErrorResponse} from "../../../base/response/error-response";
-import {isFalsy, withDefault} from "../../../shared/util/helpers";
+import {isFalsy, isTruthy, withDefault} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Router} from "@angular/router";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
 import {VerificationType} from "../../../shared/enum/authentication";
+import {ConfirmUpdateEmailAddressDto, ConfirmUpdatePhoneNumberDto} from "../../dto/member.dto";
 
 @Component({
   selector: 'app-member-update-email-phone',
@@ -28,6 +29,8 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public phoneVerificationCodeSent: boolean = false;
   public emailVerificationCodeSent: boolean = false;
   public isSendingVerificationCode: boolean = false;
+  public EMAIL_VERIFICATION_CODE_CONTROL_KEY: string = 'emailVerificationCode';
+  public PHONE_VERIFICATION_CODE_CONTROL_KEY: string = 'phoneVerificationCode';
 
   public constructor(protected memberService: MemberService,
                      protected router: Router,
@@ -67,7 +70,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
       emailAddress: [withDefault(this.entryView.emailAddress),
         [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)]
       ],
-      code: [DEFAULT_FORM_CONTROL_VALUE,
+      [(this.EMAIL_VERIFICATION_CODE_CONTROL_KEY)]: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)]
       ]
     });
@@ -78,34 +81,46 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
       phoneNumber: [withDefault(this.entryView.phoneNumber),
         [Validators.required, Validators.minLength(4), Validators.maxLength(15), phoneNumberValidator(PHONE_NUMBER)]
       ],
-      code: [DEFAULT_FORM_CONTROL_VALUE,
+      [(this.PHONE_VERIFICATION_CODE_CONTROL_KEY)]: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)]
       ]
     });
   }
 
   public updateEmailAddress(): void {
-    this.memberService.confirmUpdateEmailAddress(this.emailAddressUpdateForm.value)
-      .subscribe({
-        error: (error: ErrorResponse): void => {
-          this.handleEmailFormError(error);
-        },
-        complete: (): void => {
-          this.emailAddressUpdateSuccess = true;
-        }
-    });
+    if (isTruthy(this.emailAddressUpdateForm) && this.emailAddressUpdateForm.valid && isFalsy(this.isSubmitting)) {
+      this.disableAll();
+      const body: ConfirmUpdateEmailAddressDto = this.emailAddressUpdateForm.value;
+      this.memberService.confirmUpdateEmailAddress({ ...body, code: body[(this.EMAIL_VERIFICATION_CODE_CONTROL_KEY)] })
+        .subscribe({
+          error: (error: ErrorResponse): void => {
+            this.handleEmailFormError(error);
+            this.enableAll();
+          },
+          complete: (): void => {
+            this.emailAddressUpdateSuccess = true;
+            this.enableAll();
+          }
+      });
+    }
   }
 
   public updatePhoneNumber(): void {
-    this.memberService.confirmUpdatePhoneNumber(this.phoneNumberUpdateForm.value)
-      .subscribe({
-        error: (error: ErrorResponse): void => {
-          this.handlePhoneFormError(error);
-        },
-        complete: (): void => {
-          this.phoneNumberUpdateSuccess = true;
-        }
-    });
+    if (isTruthy(this.phoneNumberUpdateForm) && this.phoneNumberUpdateForm.valid && isFalsy(this.isSubmitting)) {
+      this.disableAll();
+      const body: ConfirmUpdatePhoneNumberDto = this.phoneNumberUpdateForm.value;
+      this.memberService.confirmUpdatePhoneNumber({ ...body, code: body[(this.PHONE_VERIFICATION_CODE_CONTROL_KEY)] })
+        .subscribe({
+          error: (error: ErrorResponse): void => {
+            this.handlePhoneFormError(error);
+            this.enableAll();
+          },
+          complete: (): void => {
+            this.phoneNumberUpdateSuccess = true;
+            this.enableAll();
+          }
+        });
+    }
   }
 
   public sendVerificationCode(verificationType: VerificationType): void {
@@ -185,11 +200,11 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   }
 
   get emailVerificationCode(): AbstractControl | null | undefined {
-    return this.emailAddressUpdateForm?.get('code');
+    return this.emailAddressUpdateForm?.get('emailVerificationCode');
   }
 
   get phoneVerificationCode(): AbstractControl | null | undefined {
-    return this.phoneNumberUpdateForm?.get('code');
+    return this.phoneNumberUpdateForm?.get('phoneVerificationCode');
   }
 
   protected readonly VerificationType = VerificationType;
