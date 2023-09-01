@@ -111,9 +111,8 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public sendVerificationCode(verificationType: VerificationType): void {
 
     if (isFalsy(this.isSubmitting) && isFalsy(this.isSendingVerificationCode)) {
-      this.disableVerificationCodeSent(verificationType);
-      this.disableSubmitting();
-      this.disableSendingVerificationCode();
+      this.resetVerificationCodeSent(verificationType);
+      this.disableAll();
 
       if (verificationType === VerificationType.EMAIL && isFalsy(this.emailAddressUpdateForm) && this.emailAddressUpdateForm.invalid) {
         return;
@@ -129,8 +128,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
             } else if (verificationType === VerificationType.PHONE) {
               this.handlePhoneFormError(error);
             }
-            this.enableSubmitting();
-            this.enableSendingVerificationCode();
+            this.enableAll();
           },
           complete: (): void => {
             if (verificationType === VerificationType.EMAIL) {
@@ -152,7 +150,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     this.emailAddressFormErrorMessage = error?.message || '';
   }
 
-  public disableVerificationCodeSent(verificationType: VerificationType): void {
+  public resetVerificationCodeSent(verificationType: VerificationType): void {
     if (verificationType === VerificationType.EMAIL) {
       this.emailVerificationCodeSent = false;
     } else if (verificationType === VerificationType.PHONE) {
@@ -160,12 +158,22 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     }
   }
 
-  public disableSendingVerificationCode(): void {
+  private disableSendingVerificationCode(): void {
     this.isSendingVerificationCode = true;
   }
 
-  public enableSendingVerificationCode(): void {
+  private enableSendingVerificationCode(): void {
     this.isSendingVerificationCode = false;
+  }
+
+  private enableAll(): void {
+    this.enableSubmitting();
+    this.enableSendingVerificationCode();
+  }
+
+  private disableAll(): void {
+    this.disableSubmitting();
+    this.disableSendingVerificationCode();
   }
 
   get emailAddress(): AbstractControl | null | undefined {
