@@ -17,7 +17,7 @@
       <app-validation-error [control]="phoneVerificationCode" [control-label]="'Verification code'"></app-validation-error>
     </div>
 
-    <button (click)="sendVerificationCode(VerificationType.EMAIL)">Send Code</button>
+    <button (click)="sendVerificationCode(VerificationType.EMAIL)" [disabled]="isSendingVerificationCode">Send Code</button>
 
     <button type="submit" [disabled]="isSubmitting">Submit</button>
   </form>
@@ -39,7 +39,7 @@
         <app-validation-error [control]="emailVerificationCode" [control-label]="'Verification code'"></app-validation-error>
       </div>
 
-      <button (click)="sendVerificationCode(VerificationType.PHONE)">Send Code</button>
+      <button (click)="sendVerificationCode(VerificationType.PHONE)" [disabled]="isSendingVerificationCode">Send Code</button>
 
       <button type="submit" [disabled]="isSubmitting">Submit</button>
     </form>

@@ -5,7 +5,7 @@ import {PHONE_NUMBER, VERIFICATION_CODE} from "../../../shared/util/format-patte
 import {MemberService} from "../../service/member.service";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
 import {ErrorResponse} from "../../../base/response/error-response";
-import {withDefault} from "../../../shared/util/helpers";
+import {isFalsy, withDefault} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Router} from "@angular/router";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
@@ -27,6 +27,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public phoneNumberUpdateSuccess: boolean = false;
   public phoneVerificationCodeSent: boolean = false;
   public emailVerificationCodeSent: boolean = false;
+  public isSendingVerificationCode: boolean = false;
 
   public constructor(protected memberService: MemberService,
                      protected router: Router,
@@ -108,24 +109,39 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   }
 
   public sendVerificationCode(verificationType: VerificationType): void {
-    this.disableVerificationCodeSent(verificationType);
-    this.memberService.sendUpdatePhoneNumberCode({ verificationType })
-      .subscribe({
-        error: (error: ErrorResponse): void => {
-          if (verificationType === VerificationType.EMAIL) {
-            this.handleEmailFormError(error);
-          } else if (verificationType === VerificationType.PHONE) {
-            this.handlePhoneFormError(error);
+
+    if (isFalsy(this.isSubmitting) && isFalsy(this.isSendingVerificationCode)) {
+      this.disableVerificationCodeSent(verificationType);
+      this.disableSubmitting();
+      this.disableSendingVerificationCode();
+
+      if (verificationType === VerificationType.EMAIL && isFalsy(this.emailAddressUpdateForm) && this.emailAddressUpdateForm.invalid) {
+        return;
+      } else if (verificationType === VerificationType.PHONE && isFalsy(this.phoneNumberUpdateForm) && this.phoneNumberUpdateForm.invalid) {
+        return;
+      }
+
+      this.memberService.sendUpdatePhoneNumberCode({ verificationType })
+        .subscribe({
+          error: (error: ErrorResponse): void => {
+            if (verificationType === VerificationType.EMAIL) {
+              this.handleEmailFormError(error);
+            } else if (verificationType === VerificationType.PHONE) {
+              this.handlePhoneFormError(error);
+            }
+            this.enableSubmitting();
+            this.enableSendingVerificationCode();
+          },
+          complete: (): void => {
+            if (verificationType === VerificationType.EMAIL) {
+              this.emailVerificationCodeSent = true;
+            } else if (verificationType === VerificationType.PHONE) {
+              this.phoneVerificationCodeSent = true;
+            }
           }
-        },
-        complete: (): void => {
-          if (verificationType === VerificationType.EMAIL) {
-            this.emailVerificationCodeSent = true;
-          } else if (verificationType === VerificationType.PHONE) {
-            this.phoneVerificationCodeSent = true;
-          }
-        }
-    });
+        });
+    }
+
   }
 
   public handlePhoneFormError(error: ErrorResponse): void {
@@ -142,6 +158,14 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     } else if (verificationType === VerificationType.PHONE) {
       this.phoneVerificationCodeSent = false;
     }
+  }
+
+  public disableSendingVerificationCode(): void {
+    this.isSendingVerificationCode = true;
+  }
+
+  public enableSendingVerificationCode(): void {
+    this.isSendingVerificationCode = false;
   }
 
   get emailAddress(): AbstractControl | null | undefined {
