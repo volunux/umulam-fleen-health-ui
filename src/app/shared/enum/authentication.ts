@@ -4,7 +4,7 @@ export enum AuthenticationStatus {
 }
 
 export enum MfaType {
-  SMS = 'SMS',
+  PHONE = 'PHONE',
   EMAIL = 'EMAIL',
   AUTHENTICATOR = 'AUTHENTICATOR',
   NONE = 'NONE'

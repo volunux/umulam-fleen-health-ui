@@ -146,7 +146,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
         return;
       }
 
-      this.memberService.sendUpdatePhoneNumberCode({ verificationType })
+      this.memberService.sendUpdateEmailPhoneNumberCode({ verificationType })
         .pipe(
           finalize((): void => {
             this.enableAll();

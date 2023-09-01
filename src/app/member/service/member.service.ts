@@ -50,7 +50,7 @@ export class MemberService {
       );
   }
 
-  public sendUpdatePhoneNumberCode(body: UpdateEmailAddressOrPhoneNumberDto): Observable<SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse> {
+  public sendUpdateEmailPhoneNumberCode(body: UpdateEmailAddressOrPhoneNumberDto): Observable<SendUpdateEmailAddressOrPhoneNumberVerificationCodeResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'send-update-email-address-phone-number-code'], null, { ...body });
     return this.httpService.post(req)
       .pipe(
