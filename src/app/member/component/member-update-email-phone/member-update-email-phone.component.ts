@@ -129,9 +129,9 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
       this.resetVerificationCodeSent(verificationType);
       this.disableAll();
 
-      if (verificationType === VerificationType.EMAIL && isFalsy(this.emailAddressUpdateForm) && this.emailAddressUpdateForm.invalid) {
+      if (verificationType === VerificationType.EMAIL && isTruthy(this.emailAddressUpdateForm) && isTruthy(this.emailAddress) && this.emailAddress?.invalid) {
         return;
-      } else if (verificationType === VerificationType.PHONE && isFalsy(this.phoneNumberUpdateForm) && this.phoneNumberUpdateForm.invalid) {
+      } else if (verificationType === VerificationType.PHONE && isTruthy(this.phoneNumberUpdateForm) && isTruthy(this.phoneNumber) && this.phoneNumber?.invalid) {
         return;
       }
 
