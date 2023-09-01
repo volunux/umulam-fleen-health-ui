@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
 import {VerificationType} from "../../../shared/enum/authentication";
 import {ConfirmUpdateEmailAddressDto, ConfirmUpdatePhoneNumberDto} from "../../dto/member.dto";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-member-update-email-phone',
@@ -90,16 +91,21 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public updateEmailAddress(): void {
     if (isTruthy(this.emailAddressUpdateForm) && this.emailAddressUpdateForm.valid && isFalsy(this.isSubmitting)) {
       this.disableAll();
+      this.resetEmailFormErrorMessage();
+
       const body: ConfirmUpdateEmailAddressDto = this.emailAddressUpdateForm.value;
       this.memberService.confirmUpdateEmailAddress({ ...body, code: body[(this.EMAIL_VERIFICATION_CODE_CONTROL_KEY)] })
+        .pipe(
+          finalize((): void => {
+            this.enableAll();
+          })
+        )
         .subscribe({
           error: (error: ErrorResponse): void => {
             this.handleEmailFormError(error);
-            this.enableAll();
           },
           complete: (): void => {
             this.emailAddressUpdateSuccess = true;
-            this.enableAll();
           }
       });
     }
@@ -108,16 +114,21 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public updatePhoneNumber(): void {
     if (isTruthy(this.phoneNumberUpdateForm) && this.phoneNumberUpdateForm.valid && isFalsy(this.isSubmitting)) {
       this.disableAll();
+      this.resetPhoneFormErrorMessage();
+
       const body: ConfirmUpdatePhoneNumberDto = this.phoneNumberUpdateForm.value;
       this.memberService.confirmUpdatePhoneNumber({ ...body, code: body[(this.PHONE_VERIFICATION_CODE_CONTROL_KEY)] })
+        .pipe(
+          finalize((): void => {
+            this.enableAll();
+          })
+        )
         .subscribe({
           error: (error: ErrorResponse): void => {
             this.handlePhoneFormError(error);
-            this.enableAll();
           },
           complete: (): void => {
             this.phoneNumberUpdateSuccess = true;
-            this.enableAll();
           }
         });
     }
@@ -136,25 +147,20 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
       }
 
       this.memberService.sendUpdatePhoneNumberCode({ verificationType })
+        .pipe(
+          finalize((): void => {
+            this.enableAll();
+          })
+        )
         .subscribe({
           error: (error: ErrorResponse): void => {
-            if (verificationType === VerificationType.EMAIL) {
-              this.handleEmailFormError(error);
-            } else if (verificationType === VerificationType.PHONE) {
-              this.handlePhoneFormError(error);
-            }
-            this.enableAll();
+            this.handleFormError(error, verificationType);
           },
           complete: (): void => {
-            if (verificationType === VerificationType.EMAIL) {
-              this.emailVerificationCodeSent = true;
-            } else if (verificationType === VerificationType.PHONE) {
-              this.phoneVerificationCodeSent = true;
-            }
+            this.handleVerificationCodeSent(verificationType);
           }
-        });
+      });
     }
-
   }
 
   public handlePhoneFormError(error: ErrorResponse): void {
@@ -165,12 +171,36 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     this.emailAddressFormErrorMessage = error?.message || '';
   }
 
+  private handleFormError(error: ErrorResponse, verificationType: VerificationType): void {
+    if (verificationType === VerificationType.EMAIL) {
+      this.handleEmailFormError(error);
+    } else if (verificationType === VerificationType.PHONE) {
+      this.handlePhoneFormError(error);
+    }
+  }
+
+  public handleVerificationCodeSent(verificationType: VerificationType): void {
+    if (verificationType === VerificationType.EMAIL) {
+      this.emailVerificationCodeSent = true;
+    } else if (verificationType === VerificationType.PHONE) {
+      this.phoneVerificationCodeSent = true;
+    }
+  }
+
   public resetVerificationCodeSent(verificationType: VerificationType): void {
     if (verificationType === VerificationType.EMAIL) {
       this.emailVerificationCodeSent = false;
     } else if (verificationType === VerificationType.PHONE) {
       this.phoneVerificationCodeSent = false;
     }
+  }
+
+  public resetEmailFormErrorMessage(): void {
+    this.emailAddressFormErrorMessage = '';
+  }
+
+  public resetPhoneFormErrorMessage(): void {
+    this.phoneNumberFormErrorMessage = '';
   }
 
   private disableSendingVerificationCode(): void {
