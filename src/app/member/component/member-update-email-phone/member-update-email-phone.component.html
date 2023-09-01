@@ -13,7 +13,7 @@
 
     <div class="form-group">
       <label for="phone_verification_code">Verification Code:</label>
-      <input type="text" [formControl]="phoneVerificationCode" id="phone_verification_code"/>
+      <input type="text" formControlName="phoneVerificationCode" id="phone_verification_code"/>
       <app-validation-error [control]="phoneVerificationCode" [control-label]="'Verification code'"></app-validation-error>
     </div>
 
@@ -35,7 +35,7 @@
 
       <div class="form-group">
         <label for="email_verification_code">Verification Code:</label>
-        <input type="text" [formControl]="emailVerificationCode" id="email_verification_code"/>
+        <input type="text" formControlName="emailVerificationCode" id="email_verification_code"/>
         <app-validation-error [control]="emailVerificationCode" [control-label]="'Verification code'"></app-validation-error>
       </div>
 

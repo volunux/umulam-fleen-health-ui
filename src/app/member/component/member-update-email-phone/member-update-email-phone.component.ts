@@ -145,19 +145,19 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   }
 
   get emailAddress(): AbstractControl | null | undefined {
-    return this.emailAddressUpdateForm.get('emailAddress');
+    return this.emailAddressUpdateForm?.get('emailAddress');
   }
 
   get phoneNumber(): AbstractControl | null | undefined {
-    return this.phoneNumberUpdateForm.get('phoneNumber');
+    return this.phoneNumberUpdateForm?.get('phoneNumber');
   }
 
   get emailVerificationCode(): AbstractControl | null | undefined {
-    return this.emailAddressUpdateForm.get('code');
+    return this.emailAddressUpdateForm?.get('code');
   }
 
   get phoneVerificationCode(): AbstractControl | null | undefined {
-    return this.phoneNumberUpdateForm.get('code');
+    return this.phoneNumberUpdateForm?.get('code');
   }
 
   protected readonly VerificationType = VerificationType;
