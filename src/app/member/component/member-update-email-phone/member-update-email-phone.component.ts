@@ -9,6 +9,7 @@ import {withDefault} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Router} from "@angular/router";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
+import {VerificationType} from "../../../shared/enum/authentication";
 
 @Component({
   selector: 'app-member-update-email-phone',
@@ -24,6 +25,8 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
   public phoneNumberFormErrorMessage: string = '';
   public emailAddressUpdateSuccess: boolean = false;
   public phoneNumberUpdateSuccess: boolean = false;
+  public phoneVerificationCodeSent: boolean = false;
+  public emailVerificationCodeSent: boolean = false;
 
   public constructor(protected memberService: MemberService,
                      protected router: Router,
@@ -84,7 +87,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     this.memberService.confirmUpdateEmailAddress(this.emailAddressUpdateForm.value)
       .subscribe({
         error: (error: ErrorResponse): void => {
-          this.emailAddressFormErrorMessage = error?.message || '';
+          this.handleEmailFormError(error);
         },
         complete: (): void => {
           this.emailAddressUpdateSuccess = true;
@@ -96,12 +99,49 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     this.memberService.confirmUpdatePhoneNumber(this.phoneNumberUpdateForm.value)
       .subscribe({
         error: (error: ErrorResponse): void => {
-          this.phoneNumberFormErrorMessage = error?.message || '';
+          this.handlePhoneFormError(error);
         },
         complete: (): void => {
           this.phoneNumberUpdateSuccess = true;
         }
     });
+  }
+
+  public sendVerificationCode(verificationType: VerificationType): void {
+    this.disableVerificationCodeSent(verificationType);
+    this.memberService.sendUpdatePhoneNumberCode({ verificationType })
+      .subscribe({
+        error: (error: ErrorResponse): void => {
+          if (verificationType === VerificationType.EMAIL) {
+            this.handleEmailFormError(error);
+          } else if (verificationType === VerificationType.PHONE) {
+            this.handlePhoneFormError(error);
+          }
+        },
+        complete: (): void => {
+          if (verificationType === VerificationType.EMAIL) {
+            this.emailVerificationCodeSent = true;
+          } else if (verificationType === VerificationType.PHONE) {
+            this.phoneVerificationCodeSent = true;
+          }
+        }
+    });
+  }
+
+  public handlePhoneFormError(error: ErrorResponse): void {
+    this.phoneNumberFormErrorMessage = error?.message || '';
+  }
+
+  public handleEmailFormError(error: ErrorResponse): void {
+    this.emailAddressFormErrorMessage = error?.message || '';
+  }
+
+  public disableVerificationCodeSent(verificationType: VerificationType): void {
+    if (verificationType === VerificationType.EMAIL) {
+      this.emailVerificationCodeSent = false;
+    } else if (verificationType === VerificationType.PHONE) {
+      this.phoneVerificationCodeSent = false;
+    }
   }
 
   get emailAddress(): AbstractControl | null | undefined {
@@ -112,4 +152,13 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
     return this.phoneNumberUpdateForm.get('phoneNumber');
   }
 
+  get emailVerificationCode(): AbstractControl | null | undefined {
+    return this.emailAddressUpdateForm.get('code');
+  }
+
+  get phoneVerificationCode(): AbstractControl | null | undefined {
+    return this.phoneNumberUpdateForm.get('code');
+  }
+
+  protected readonly VerificationType = VerificationType;
 }
