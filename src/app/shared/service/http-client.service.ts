@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {LoggerService} from "../../base/service/logger.service";
-import {BaseRequest} from "../type/http";
+import {BaseRequest, ExchangeRequest} from "../type/http";
 import {BaseHttpService} from "./base-http.service";
 import {Observable} from "rxjs";
 
@@ -20,6 +20,10 @@ export class HttpClientService extends BaseHttpService {
     return this.pipeline(request);
   }
 
+  public exchange(req: ExchangeRequest): Observable<any> {
+    const { body, headers } = req;
+    return this.httpClient.request(req.method as string, req.uri, { body, headers });
+  }
 
   public get(req: BaseRequest): Observable<any> {
     const request: Observable<Object> = this.httpClient.get(this.buildUri(req));

@@ -4,7 +4,7 @@ import {BaseFormComponent} from "../../../base/component/base-form/base-form.com
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Observable, of} from "rxjs";
 import {VerificationType} from "../../../shared/enum/authentication";
-import {FormControl, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {ErrorResponse} from "../../../base/response/error-response";
@@ -17,7 +17,7 @@ import {Router} from "@angular/router";
   styles: ['']
 })
 export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
-  protected override formBuilder;
+  protected override formBuilder!: FormBuilder;
 
   public otp: FormControl = new FormControl<string>('');
   public verificationType: VerificationType = VerificationType.EMAIL;

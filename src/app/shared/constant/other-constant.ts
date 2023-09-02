@@ -10,3 +10,5 @@ export const DEFAULT_PAGE_SIZE: number = 10;
 export const ANY_EMPTY: any = {};
 export const AUTHENTICATION_STATUS_KEY: string = 'authenticationStatus'
 export const USER_DESTINATION_PAGE_KEY: string = 'USER_STATUS_PAGE';
+export const DEFAULT_UPLOAD_MAX_FILE_SIZE: number = 10; // 10 is in megabyte which is equal to 1024 * 1024 * 10;
+export const X_CANCEL_REQUEST_HEADER_KEY: string = 'X-Cancel-Request';
