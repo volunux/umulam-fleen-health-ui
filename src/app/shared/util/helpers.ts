@@ -136,3 +136,11 @@ export function withDefault(value: string, defaultValue: string = DEFAULT_FORM_C
   }
   return defaultValue;
 }
+
+export function getAllowableExtensions(fileTypes: string[]): string[] {
+  let fileExtensions: string[] = [];
+  for (const filetype of fileTypes) {
+    fileExtensions.push(filetype.split('/')[1]);
+  }
+  return fileExtensions;
+}

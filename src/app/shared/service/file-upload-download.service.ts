@@ -8,9 +8,7 @@ import {HttpHeaders} from "@angular/common/http";
 import {AbstractControl} from "@angular/forms";
 import {FileConstraints} from "../type/other";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class FileUploadDownloadService {
 
   constructor(protected httpService: HttpClientService) { }
@@ -37,14 +35,6 @@ export class FileUploadDownloadService {
 
   public isFileTypeValid(allowedFileTypes: string[], type: string): boolean {
     return allowedFileTypes.includes(type);
-  }
-
-  public getAllowableExtensions(fileTypes: string[]): string[] {
-    let fileExtensions: string[] = [];
-    for (const filetype of fileTypes) {
-      fileExtensions.push(filetype.split('/')[1]);
-    }
-    return fileExtensions;
   }
 
   public createAndBuildFormData(files: FileList): FormData {

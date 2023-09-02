@@ -38,6 +38,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
     let files: FileList | null = input?.files;
     if (nonNull(files) && this.fileService.isFilesPresent(files) && nonNull(control) && nonNull(constraints)) {
       this.fileService.validateFileControl(this.fileService.getFirst(files), control, constraints);
+      // this.memberService.updateProfilePhoto()
     }
     console.log(control);
   }

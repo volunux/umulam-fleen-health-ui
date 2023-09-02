@@ -9,6 +9,8 @@ import {PaginationComponent} from './component/pagination/pagination.component';
 import {RowEntryOptionComponent} from './component/row-entry-option/row-entry-option.component';
 import {CommonModule} from "@angular/common";
 import { EntriesDeleteAllComponent } from './component/entries-delete-all/entries-delete-all.component';
+import {FileUploadDownloadService} from "./service/file-upload-download.service";
+import {SignedUrlService} from "./service/signed-url.service";
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import { EntriesDeleteAllComponent } from './component/entries-delete-all/entrie
   providers: [
     BaseHttpService,
     HttpClientService,
-    LoggerService
+    LoggerService,
+    FileUploadDownloadService,
+    SignedUrlService
   ],
   exports: [
     CommonModule,

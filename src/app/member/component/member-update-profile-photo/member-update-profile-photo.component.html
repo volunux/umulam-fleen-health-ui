@@ -6,7 +6,7 @@
   <form>
     <label for="profile_photo">Profile Photo</label>
     <input type="file" [formControl]="profilePhoto" id="profile_photo" (input)="upload(photoElem, profilePhoto, photoConstraints)" #photoElem/>
-    <app-validation-error [control]="profilePhoto" [control-label]="'Profile Photo'" [options]="photoConstraints"></app-validation-error>
+    <app-validation-error [control]="profilePhoto" [control-label]="'Profile Photo'" [control-options]="photoConstraints"></app-validation-error>
     <button (click)="0">Update</button>
     <button (click)="0">Delete</button>
   </form>

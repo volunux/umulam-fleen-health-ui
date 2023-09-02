@@ -12,20 +12,20 @@ export class ValidationErrorComponent {
 
   @Input() public control: AbstractControl | undefined | null;
   @Input('control-label') public controlLabel: string = "This field";
-  @Input() public options: AnyProp = {};
+  @Input('control-options') public controlOptions: AnyProp = {};
 
   get errors(): any[] {
     if (this.control && this.control.invalid && (this.control.dirty || this.control.touched)) {
-      return this.getValidationErrorMessages(this.control as AbstractControl, this.controlLabel);
+      return this.getValidationErrorMessages(this.control as AbstractControl, this.controlLabel, this.controlOptions);
     }
     return [];
   }
 
-  private getValidationErrorMessages(control: AbstractControl, controlLabel: string): string[] {
+  private getValidationErrorMessages(control: AbstractControl, controlLabel: string, controlOptions: any): string[] {
     const errors: any[] = [];
     for (const errorKey in control.errors) {
       if (control.errors.hasOwnProperty(errorKey) && validationErrorMessages.hasOwnProperty(errorKey)) {
-        errors.push(validationErrorMessages[errorKey](control, controlLabel));
+        errors.push(validationErrorMessages[errorKey](control, controlLabel, controlOptions));
       }
     }
     return [...errors];
