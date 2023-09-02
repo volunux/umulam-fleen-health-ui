@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
-import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {ANY_EMPTY, DEFAULT_ERROR_MESSAGE} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormControl} from "@angular/forms";
 import {MemberService} from "../../service/member.service";
@@ -9,9 +9,10 @@ import {FileConstraints} from "../../../shared/type/other";
 import {FileUploadDownloadService} from "../../../shared/service/file-upload-download.service";
 import {nonNull} from "../../../shared/util/helpers";
 import {SignedUrlService} from "../../../shared/service/signed-url.service";
-import {catchError, Observable, switchMap, throwError} from "rxjs";
+import {catchError, Observable, Subscription, switchMap, tap, throwError} from "rxjs";
 import {ExchangeRequest} from "../../../shared/type/http";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
+import {HttpEventType, HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-member-update-profile-photo',
@@ -50,17 +51,37 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
     console.log(control);
   }
 
+  public cancelRequest$!: Subscription;
+
+  public cancelUpload(element: HTMLInputElement): void {
+    this.cancelRequest$.unsubscribe();
+    this.fileService.clearInputFiles(element);
+  }
+
   private generateSignedUrlAndUploadFile(fileName: string, files: FileList): void {
-    this.signedUrlService.generateForProfilePhoto(fileName)
+    this.cancelRequest$ = this.signedUrlService.generateForProfilePhoto(fileName)
       .pipe(
         switchMap((result: SignedUrlResponse): Observable<any> => {
           console.log(result);
-          const req: ExchangeRequest = this.fileService.toFileUploadRequest(result.signedUrl);
-          req.body = this.fileService.createAndBuildFormData(files);
+          const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
+          console.log(req);
           const { request: uploadRequest, abort } = this.fileService.uploadFile(req);
           console.log(uploadRequest);
           console.log(abort);
           return uploadRequest;
+        }),
+        tap((event) => {
+          console.log(event);
+          if (event.type === HttpEventType.UploadProgress) {
+            // Handle upload progress
+            const percentage = Math.round((event.loaded / event.total!) * 100);
+            console.log(`Upload progress: ${percentage}%`);
+            // You can update the progress in your UI here
+          } else if (event instanceof HttpResponse) {
+            // Handle successful upload
+            console.log('Upload successful:', event);
+            // Update your UI or perform further actions for success
+          }
         }),
         catchError((error: any): Observable<any> => throwError(error))
       ).subscribe({
@@ -68,6 +89,8 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
         console.log(result);
       },
       error: (error): void => {
+        error.message = error.message || DEFAULT_ERROR_MESSAGE;
+        this.handleError(error);
         console.log(error);
       }
     })

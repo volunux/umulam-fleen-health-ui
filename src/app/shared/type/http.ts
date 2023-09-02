@@ -17,7 +17,9 @@ export type ExchangeRequest = {
   pathParams?: (string | number | boolean | object | any)[],
   queryParams?: {[key: string] : any} | undefined,
   body?: any,
-  headers?: HttpHeaders
+  headers?: HttpHeaders | any,
+  reportProgress?: boolean,
+  observe?: string | any
 }
 
 export type FileUploadRequest = {

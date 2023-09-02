@@ -8,7 +8,11 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import {catchError, delay, EMPTY, Observable, of, switchMap, tap} from 'rxjs';
-import {AUTHORIZATION_BEARER, AUTHORIZATION_HEADER} from "../../shared/constant/other-constant";
+import {
+  AUTHORIZATION_BEARER,
+  AUTHORIZATION_HEADER,
+  CONTENT_TYPE_HEADER_KEY
+} from "../../shared/constant/other-constant";
 import {LocalStorageService} from "../service/local-storage.service";
 import {API_BASE_PATH, API_HOST_URL} from "../../shared/constant/base-config";
 import {Router} from "@angular/router";
@@ -21,13 +25,16 @@ import {isTruthy} from "../../shared/util/helpers";
 export class AuthorizationInterceptor implements HttpInterceptor {
 
   private readonly API_REFRESH_TOKEN_ENDPOINT: string = 'verification/refresh-token';
-  private readonly EXCLUDED_URLS: string[] = [
+  private readonly WHITELIST: string[] = [
     '/auth/sign-in',
     '/auth/sign-up',
     '/auth/forgot-password',
     '/auth/verify-reset-password-code',
-    '/email-address',
-    // 's3.aamazonaws.com'
+    '/email-address'
+  ];
+
+  public readonly EXTERNAL_WHITELIST: string[] = [
+    's3.amazonaws.com'
   ];
 
   public constructor(private localStorageService: LocalStorageService,
@@ -37,7 +44,9 @@ export class AuthorizationInterceptor implements HttpInterceptor {
                      private location: Location) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.isExcluded(request.url) || this.orContainUrl(request.url)) {
+    console.log('Content type is ' + (<string>request.headers.get(CONTENT_TYPE_HEADER_KEY)));
+    console.log('Request url is : ' + request.url);
+    if (this.isWhitelisted(request.url) || this.isWhitelistedExt(request.url)) {
       return next.handle(request).pipe(
         delay(3000)
       );
@@ -118,19 +127,13 @@ export class AuthorizationInterceptor implements HttpInterceptor {
     return '';
   }
 
-  private isExcluded(url: string): boolean {
+  private isWhitelisted(url: string): boolean {
     url = this.getRequestPath(url);
-    return this.EXCLUDED_URLS.some((excludedUrl: string) => url.startsWith(excludedUrl));
+    return this.WHITELIST.some((excludedUrl: string) => url.startsWith(excludedUrl));
   }
 
-  private orContainUrl(url: string): boolean {
-    console.log(url);
-    let status = this.EXCLUDED_URLS.some((excludedUrl: string): boolean => {
-      console.log('url is : ' + url + ' and compared url is : ' + excludedUrl + ' and status is ' + url.includes(excludedUrl));
-      return url.includes(excludedUrl)
-    });
-    console.log(status);
-    return this.EXCLUDED_URLS.some((excludedUrl: string): boolean => url.indexOf(excludedUrl) > -1);
+  private isWhitelistedExt(url: string): boolean {
+    return this.EXTERNAL_WHITELIST.some((excludedUrl: string): boolean => url.includes(excludedUrl));
   }
 
   private getRequestPath(url: string): string {

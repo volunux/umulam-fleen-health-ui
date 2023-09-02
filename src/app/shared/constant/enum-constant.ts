@@ -1,9 +1,10 @@
 import {FileConstraints} from "../type/other";
+import {CONTENT_TYPE_APPLICATION_JSON, CONTENT_TYPE_APPLICATION_OCTET} from "./other-constant";
 
 export const PROFESSIONAL_TYPES: string[] = ['PROFESSIONAL', 'USER'];
 export const GENDER: string[] = ['MALE', 'FEMALE', 'OTHER'];
 export const VERIFICATION_TYPES: string[] = ['EMAIL', 'PHONE'];
-export const SUPPORTED_CONTENT_TYPES: string[] = ['application/json', 'application/x-www-form-urlencoded'];
+export const SUPPORTED_CONTENT_TYPES: string[] = [CONTENT_TYPE_APPLICATION_JSON, CONTENT_TYPE_APPLICATION_OCTET];
 export const NO_INPUT_KEY: string = 'NONE';
 export const DATE_TYPE: string = 'Date';
 export const BETWEEN_DATE_TYPE: string = 'BetweenDate';
@@ -19,7 +20,7 @@ export const DEFAULT_PAGE_NO_KEY: string = 'page';
 export const DEFAULT_IMAGE_TYPES: string[] = ['image/jpeg', 'image/png'];
 
 export const DEFAULT_IMAGE_CONSTRAINT: FileConstraints = {
-  maxFileSize: 1,
+  maxFileSize: 5,
   allowableTypes: DEFAULT_IMAGE_TYPES,
   fileSizeUnit: 'MB'
 }

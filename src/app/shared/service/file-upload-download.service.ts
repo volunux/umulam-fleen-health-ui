@@ -3,8 +3,7 @@ import {isFalsy, isObject, isTruthy, nonNull} from "../util/helpers";
 import {
   CONTENT_TYPE_APPLICATION_OCTET,
   CONTENT_TYPE_HEADER_KEY,
-  DEFAULT_UPLOAD_MAX_FILE_SIZE,
-  X_CANCEL_REQUEST_HEADER_KEY
+  DEFAULT_UPLOAD_MAX_FILE_SIZE
 } from "../constant/other-constant";
 import {HttpClientService} from "./http-client.service";
 import {Observable, Subject} from "rxjs";
@@ -44,7 +43,10 @@ export class FileUploadDownloadService {
 
   public createAndBuildFormData(files: FileList): FormData {
     const formData: FormData = new FormData();
-    return this.buildFormData(formData, files);
+    if (this.isFilesPresent(files)) {
+      return this.buildFormData(formData, files);
+    }
+    return formData;
   }
 
   public buildFormData(formData: FormData, files: FileList): FormData {
@@ -63,13 +65,17 @@ export class FileUploadDownloadService {
 
   public uploadFile(req: ExchangeRequest): FileUploadRequest {
     let { headers } = req;
-    let cancelRequest: Subject<void> | any;
+    let cancelRequest: Subject<void> = this.cancelRequestSubject;
 
-    if (!nonNull(headers)) {
-      headers = new HttpHeaders();
-      headers.append(CONTENT_TYPE_HEADER_KEY, CONTENT_TYPE_APPLICATION_OCTET);
-      cancelRequest = this.addCancelRequestHeaders(headers);
+    if (isFalsy(headers)) {
+      console.log('was falsy');
+      headers = new HttpHeaders()
+        .set(CONTENT_TYPE_HEADER_KEY, CONTENT_TYPE_APPLICATION_OCTET)
+        // .set(X_CANCEL_REQUEST_HEADER_KEY, cancelRequest as any);
     }
+
+    req.headers = headers;
+    console.log(headers);
 
     const request: Observable<any> = this.httpService.exchange(req);
     return {
@@ -78,11 +84,6 @@ export class FileUploadDownloadService {
       }
   }
 
-  public addCancelRequestHeaders(headers: HttpHeaders): Subject<void> {
-    const cancelRequest: any = this.cancelRequestSubject as any;
-    headers.append(X_CANCEL_REQUEST_HEADER_KEY, cancelRequest);
-    return cancelRequest;
-  }
 
   get cancelRequestSubject(): Subject<void> {
     return new Subject<void>();
@@ -111,12 +112,14 @@ export class FileUploadDownloadService {
     return false;
   }
 
-  public toFileUploadRequest(uri: string, method: RequestMethod = 'PUT'): ExchangeRequest {
-    const headers: HttpHeaders = new HttpHeaders();
+  public toFileUploadRequest(files: FileList, uri: string, method: RequestMethod = 'PUT'): ExchangeRequest {
+    const body: FormData = this.createAndBuildFormData(files);
     return {
       uri,
       method,
-      headers
+      body,
+      reportProgress: true,
+      observe: 'events'
     }
   }
 }
