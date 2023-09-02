@@ -6,8 +6,8 @@ import {
   DEFAULT_UPLOAD_MAX_FILE_SIZE
 } from "../constant/other-constant";
 import {HttpClientService} from "./http-client.service";
-import {Observable, Subject} from "rxjs";
-import {ExchangeRequest, FileUploadRequest, RequestMethod} from "../type/http";
+import {Observable} from "rxjs";
+import {ExchangeRequest, RequestMethod} from "../type/http";
 import {HttpHeaders} from "@angular/common/http";
 import {AbstractControl} from "@angular/forms";
 import {FileConstraints} from "../type/other";
@@ -63,51 +63,35 @@ export class FileUploadDownloadService {
     }
   }
 
-  public uploadFile(req: ExchangeRequest): FileUploadRequest {
+  public uploadFile(req: ExchangeRequest): Observable<any> {
     let { headers } = req;
-    let cancelRequest: Subject<void> = this.cancelRequestSubject;
-
     if (isFalsy(headers)) {
-      console.log('was falsy');
       headers = new HttpHeaders()
         .set(CONTENT_TYPE_HEADER_KEY, CONTENT_TYPE_APPLICATION_OCTET)
-        // .set(X_CANCEL_REQUEST_HEADER_KEY, cancelRequest as any);
     }
-
     req.headers = headers;
-    console.log(headers);
-
-    const request: Observable<any> = this.httpService.exchange(req);
-    return {
-        request: request,
-        abort: cancelRequest
-      }
+    return this.httpService.exchange(req);
   }
 
-
-  get cancelRequestSubject(): Subject<void> {
-    return new Subject<void>();
-  }
 
   public validationPassed(file: File | null | any, control: AbstractControl, validators: FileConstraints): boolean {
     if (nonNull(file)) {
       const { maxFileSize, allowableTypes } = validators;
       if (this.isFileEmpty(file)) {
         control.setErrors({ fileEmpty: true });
-        return false;
       }
 
       if (!(this.isFileSizeValid(file, maxFileSize))) {
         control.setErrors({ fileSize: true });
-        return false;
       }
 
       if (!(this.isFileTypeValid(allowableTypes, file.type))) {
         control.setErrors({ fileType: true });
-        return false;
       }
 
-      return true;
+      if (nonNull(control.errors)) {
+        return true;
+      }
     }
     return false;
   }

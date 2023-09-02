@@ -48,7 +48,6 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
         this.generateSignedUrlAndUploadFile(file.name, files as any);
       }
     }
-    console.log(control);
   }
 
   public cancelRequest$!: Subscription;
@@ -62,13 +61,8 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
     this.cancelRequest$ = this.signedUrlService.generateForProfilePhoto(fileName)
       .pipe(
         switchMap((result: SignedUrlResponse): Observable<any> => {
-          console.log(result);
           const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
-          console.log(req);
-          const { request: uploadRequest, abort } = this.fileService.uploadFile(req);
-          console.log(uploadRequest);
-          console.log(abort);
-          return uploadRequest;
+          return this.fileService.uploadFile(req);
         }),
         tap((event) => {
           console.log(event);
