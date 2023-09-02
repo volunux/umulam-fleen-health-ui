@@ -1,9 +1,14 @@
 import {Injectable} from '@angular/core';
 import {isFalsy, isObject, isTruthy, nonNull} from "../util/helpers";
-import {DEFAULT_UPLOAD_MAX_FILE_SIZE, X_CANCEL_REQUEST_HEADER_KEY} from "../constant/other-constant";
+import {
+  CONTENT_TYPE_APPLICATION_OCTET,
+  CONTENT_TYPE_HEADER_KEY,
+  DEFAULT_UPLOAD_MAX_FILE_SIZE,
+  X_CANCEL_REQUEST_HEADER_KEY
+} from "../constant/other-constant";
 import {HttpClientService} from "./http-client.service";
-import {Observable, of, Subject} from "rxjs";
-import {ExchangeRequest, FileUploadRequest} from "../type/http";
+import {Observable, Subject} from "rxjs";
+import {ExchangeRequest, FileUploadRequest, RequestMethod} from "../type/http";
 import {HttpHeaders} from "@angular/common/http";
 import {AbstractControl} from "@angular/forms";
 import {FileConstraints} from "../type/other";
@@ -56,16 +61,21 @@ export class FileUploadDownloadService {
     }
   }
 
-  public uploadFile(req: ExchangeRequest): Observable<FileUploadRequest> {
-    const headers: HttpHeaders = new HttpHeaders();
-    const cancelRequest: Subject<void> = this.addCancelRequestHeaders(headers);
+  public uploadFile(req: ExchangeRequest): FileUploadRequest {
+    let { headers } = req;
+    let cancelRequest: Subject<void> | any;
+
+    if (!nonNull(headers)) {
+      headers = new HttpHeaders();
+      headers.append(CONTENT_TYPE_HEADER_KEY, CONTENT_TYPE_APPLICATION_OCTET);
+      cancelRequest = this.addCancelRequestHeaders(headers);
+    }
+
     const request: Observable<any> = this.httpService.exchange(req);
-    return of(
-      {
+    return {
         request: request,
         abort: cancelRequest
       }
-    );
   }
 
   public addCancelRequestHeaders(headers: HttpHeaders): Subject<void> {
@@ -78,30 +88,35 @@ export class FileUploadDownloadService {
     return new Subject<void>();
   }
 
-  public validateFileControl(file: File | null | any, control: AbstractControl, validators: FileConstraints): boolean {
-    console.log(file);
-    console.log(validators);
+  public validationPassed(file: File | null | any, control: AbstractControl, validators: FileConstraints): boolean {
     if (nonNull(file)) {
       const { maxFileSize, allowableTypes } = validators;
       if (this.isFileEmpty(file)) {
         control.setErrors({ fileEmpty: true });
-        // return false;
+        return false;
       }
-
-      console.log(this.isFileSizeValid(file, maxFileSize));
 
       if (!(this.isFileSizeValid(file, maxFileSize))) {
         control.setErrors({ fileSize: true });
-        // return false;
+        return false;
       }
 
       if (!(this.isFileTypeValid(allowableTypes, file.type))) {
         control.setErrors({ fileType: true });
-        // return false;
+        return false;
       }
 
       return true;
     }
     return false;
+  }
+
+  public toFileUploadRequest(uri: string, method: RequestMethod = 'PUT'): ExchangeRequest {
+    const headers: HttpHeaders = new HttpHeaders();
+    return {
+      uri,
+      method,
+      headers
+    }
   }
 }

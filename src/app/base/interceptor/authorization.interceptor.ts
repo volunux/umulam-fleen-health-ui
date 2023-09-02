@@ -27,6 +27,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
     '/auth/forgot-password',
     '/auth/verify-reset-password-code',
     '/email-address',
+    // 's3.aamazonaws.com'
   ];
 
   public constructor(private localStorageService: LocalStorageService,
@@ -36,7 +37,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
                      private location: Location) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.isExcluded(request.url)) {
+    if (this.isExcluded(request.url) || this.orContainUrl(request.url)) {
       return next.handle(request).pipe(
         delay(3000)
       );
@@ -119,7 +120,17 @@ export class AuthorizationInterceptor implements HttpInterceptor {
 
   private isExcluded(url: string): boolean {
     url = this.getRequestPath(url);
-    return this.EXCLUDED_URLS.some(excludedUrl => url.startsWith(excludedUrl));
+    return this.EXCLUDED_URLS.some((excludedUrl: string) => url.startsWith(excludedUrl));
+  }
+
+  private orContainUrl(url: string): boolean {
+    console.log(url);
+    let status = this.EXCLUDED_URLS.some((excludedUrl: string): boolean => {
+      console.log('url is : ' + url + ' and compared url is : ' + excludedUrl + ' and status is ' + url.includes(excludedUrl));
+      return url.includes(excludedUrl)
+    });
+    console.log(status);
+    return this.EXCLUDED_URLS.some((excludedUrl: string): boolean => url.indexOf(excludedUrl) > -1);
   }
 
   private getRequestPath(url: string): string {
