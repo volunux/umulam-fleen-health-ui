@@ -53,7 +53,6 @@ export class FileUploadDownloadService {
     Array
       .from(files)
       .forEach((file: File, index: number) => formData.append(index.toString(), file));
-
     return formData;
   }
 
@@ -68,8 +67,8 @@ export class FileUploadDownloadService {
     if (isFalsy(headers)) {
       headers = new HttpHeaders()
         .set(CONTENT_TYPE_HEADER_KEY, CONTENT_TYPE_APPLICATION_OCTET)
+      req.headers = headers;
     }
-    req.headers = headers;
     return this.httpService.exchange(req);
   }
 
@@ -102,8 +101,7 @@ export class FileUploadDownloadService {
       uri,
       method,
       body,
-      reportProgress: true,
-      observe: 'events'
+      reportProgress: true,  observe: 'events'
     }
   }
 }
