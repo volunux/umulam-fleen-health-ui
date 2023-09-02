@@ -89,10 +89,10 @@ export class FileUploadDownloadService {
       }
 
       if (nonNull(control.errors)) {
-        return true;
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   public toFileUploadRequest(files: FileList, uri: string, method: RequestMethod = 'PUT'): ExchangeRequest {

@@ -13,6 +13,7 @@ import {catchError, Observable, Subscription, switchMap, tap, throwError} from "
 import {ExchangeRequest} from "../../../shared/type/http";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
 import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {statusText} from "../../../shared/util/file-upload-download-messages";
 
 @Component({
   selector: 'app-member-update-profile-photo',
@@ -22,6 +23,7 @@ import {HttpEventType, HttpResponse} from "@angular/common/http";
 export class MemberUpdateProfilePhotoComponent extends BaseFormComponent implements OnInit {
 
   protected override formBuilder!: FormBuilder;
+  public uploadMessage: string = '';
 
   public profilePhoto: FormControl = new FormControl<string>('');
   public photoConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
@@ -55,6 +57,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
   public cancelUpload(element: HTMLInputElement): void {
     this.cancelRequest$.unsubscribe();
     this.fileService.clearInputFiles(element);
+    this.uploadMessage = statusText['fileUpload']['abort'];
   }
 
   private generateSignedUrlAndUploadFile(fileName: string, files: FileList): void {
@@ -64,17 +67,12 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
           const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
           return this.fileService.uploadFile(req);
         }),
-        tap((event) => {
-          console.log(event);
+        tap((event: any): void => {
           if (event.type === HttpEventType.UploadProgress) {
-            // Handle upload progress
-            const percentage = Math.round((event.loaded / event.total!) * 100);
-            console.log(`Upload progress: ${percentage}%`);
-            // You can update the progress in your UI here
+            const percentage: number = Math.round((event.loaded / event.total!) * 100);
+            this.uploadMessage = statusText['fileUpload']['inProgress'](percentage);
           } else if (event instanceof HttpResponse) {
-            // Handle successful upload
-            console.log('Upload successful:', event);
-            // Update your UI or perform further actions for success
+            this.uploadMessage = statusText['fileUpload']['success'];
           }
         }),
         catchError((error: any): Observable<any> => throwError(error))
@@ -85,8 +83,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
       error: (error): void => {
         error.message = error.message || DEFAULT_ERROR_MESSAGE;
         this.handleError(error);
-        console.log(error);
       }
-    })
+    });
   }
 }

@@ -35,7 +35,7 @@ import {SessionStorageService} from "./base/service/session-storage.service";
   providers: [
     {provide: TitleStrategy, useClass: TemplatePageTitleStrategy},
     {provide: HTTP_INTERCEPTORS, useClass: AuthorizationInterceptor, multi: true},
-    // {provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ContentTypeInterceptor, multi: true},
     AuthenticationService,
     LocalStorageService,
     SessionStorageService,
