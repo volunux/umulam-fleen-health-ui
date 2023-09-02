@@ -28,7 +28,7 @@ export class CountryService {
 
   public findCountry(id: number | string): Observable<CountryView> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'detail', +id]);
-    return this.httpService.get(req)
+    return this.httpService.getOne(req)
       .pipe(
         map(data => new CountryView(data))
       );

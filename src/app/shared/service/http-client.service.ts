@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {LoggerService} from "../../base/service/logger.service";
 import {BaseRequest, ExchangeRequest} from "../type/http";
 import {BaseHttpService} from "./base-http.service";
-import {Observable, tap} from "rxjs";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +21,7 @@ export class HttpClientService extends BaseHttpService {
   }
 
   public exchange(req: ExchangeRequest): Observable<any> {
-    const { body, headers, reportProgress } = req;
-    console.log(req);
     return this.httpClient.request(req.method as string, req.uri, { ...req })
-      .pipe(tap((event) => console.log(event)));
   }
 
   public get(req: BaseRequest): Observable<any> {
@@ -61,4 +58,3 @@ export class HttpClientService extends BaseHttpService {
   }
 
 }
-
