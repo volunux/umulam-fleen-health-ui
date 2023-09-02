@@ -7,12 +7,8 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import {catchError, delay, EMPTY, Observable, of, switchMap, tap} from 'rxjs';
-import {
-  AUTHORIZATION_BEARER,
-  AUTHORIZATION_HEADER,
-  CONTENT_TYPE_HEADER_KEY
-} from "../../shared/constant/other-constant";
+import {catchError, EMPTY, Observable, of, switchMap, tap} from 'rxjs';
+import {AUTHORIZATION_BEARER, AUTHORIZATION_HEADER} from "../../shared/constant/other-constant";
 import {LocalStorageService} from "../service/local-storage.service";
 import {API_BASE_PATH, API_HOST_URL} from "../../shared/constant/base-config";
 import {Router} from "@angular/router";
@@ -44,19 +40,14 @@ export class AuthorizationInterceptor implements HttpInterceptor {
                      private location: Location) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('Content type is ' + (<string>request.headers.get(CONTENT_TYPE_HEADER_KEY)));
-    console.log('Request url is : ' + request.url);
     if (this.isWhitelisted(request.url) || this.isWhitelistedExt(request.url)) {
-      return next.handle(request).pipe(
-        delay(3000)
-      );
+      return next.handle(request);
     }
 
     const authToken: string = this.getAccessToken();
     if (isTruthy(authToken)) {
       const authRequest: HttpRequest<any> = request.clone({ setHeaders: { [AUTHORIZATION_HEADER]: this.getAccessToken() } });
       return next.handle(authRequest).pipe(
-        delay(3000),
         catchError((response: HttpErrorResponse): Observable<any> => {
           const { error } = response;
           if (error.status === 401) {
@@ -79,7 +70,6 @@ export class AuthorizationInterceptor implements HttpInterceptor {
       });
 
       return next.handle(refreshRequest).pipe(
-        delay(3000),
         tap((value: HttpEvent<any>): void => {
           if (value instanceof HttpResponse) {
             const { body } = value as HttpResponse<any>;
