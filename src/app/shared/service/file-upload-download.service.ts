@@ -104,4 +104,17 @@ export class FileUploadDownloadService {
       reportProgress: true,  observe: 'events'
     }
   }
+
+  public extractS3BaseUrl(signedUrl: string | null): string | null {
+    if (nonNull(signedUrl)) {
+      const lastQuestionMarkIndex: number = signedUrl!.indexOf('?');
+
+      if (lastQuestionMarkIndex !== -1) {
+        return signedUrl!.substring(0, lastQuestionMarkIndex);
+      } else {
+        return signedUrl!;
+      }
+    }
+    return null;
+  }
 }

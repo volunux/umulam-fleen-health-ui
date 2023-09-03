@@ -9,11 +9,12 @@ import {FileConstraints} from "../../../shared/type/other";
 import {FileUploadDownloadService} from "../../../shared/service/file-upload-download.service";
 import {nonNull} from "../../../shared/util/helpers";
 import {SignedUrlService} from "../../../shared/service/signed-url.service";
-import {catchError, Observable, Subscription, switchMap, tap, throwError} from "rxjs";
+import {catchError, concatMap, Observable, of, Subscription, switchMap, tap, throwError} from "rxjs";
 import {ExchangeRequest} from "../../../shared/type/http";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
 import {HttpEventType, HttpResponse} from "@angular/common/http";
 import {statusText} from "../../../shared/util/file-upload-download-messages";
+import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
 
 @Component({
   selector: 'app-member-update-profile-photo',
@@ -61,9 +62,11 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
   }
 
   private generateSignedUrlAndUploadFile(fileName: string, files: FileList): void {
+    let signedUrl: string | null = null;
     this.cancelRequest$ = this.signedUrlService.generateForProfilePhoto(fileName)
       .pipe(
         switchMap((result: SignedUrlResponse): Observable<any> => {
+          signedUrl = result.signedUrl;
           const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
           return this.fileService.uploadFile(req);
         }),
@@ -75,9 +78,17 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
             this.uploadMessage = statusText['fileUpload']['success'];
           }
         }),
-        catchError((error: any): Observable<any> => throwError(error))
+        catchError((error: any): Observable<any> => throwError(error)),
+        concatMap((result: any): Observable<any> => {
+          if (nonNull(signedUrl)) {
+            return this.memberService.updateProfilePhoto({
+              profilePhoto: this.fileService.extractS3BaseUrl(signedUrl)!
+            });
+          }
+          return of(ANY_EMPTY);
+        })
       ).subscribe({
-      next: (result): void => {
+      next: (result: FleenHealthResponse): void => {
         console.log(result);
       },
       error: (error): void => {
