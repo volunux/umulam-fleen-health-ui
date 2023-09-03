@@ -11,7 +11,7 @@
     </ng-container>
     <app-validation-error [control]="profilePhoto" [control-label]="'Profile Photo'" [control-options]="photoConstraints"></app-validation-error>
     <button (click)="0">Update</button>
-    <button (click)="0">Delete</button>
+    <button type="button" (click)="deletePhoto()">Delete</button>
     <button type="button" (click)="cancelUpload(photoElem)">Cancel</button>
   </form>
 </div>

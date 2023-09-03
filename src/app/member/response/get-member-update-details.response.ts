@@ -7,6 +7,7 @@ export class GetMemberUpdateDetailsResponse {
   public gender: string;
   public dateOfBirth: Date;
   public address: string;
+  public profilePhoto: string;
 
   public constructor(data: GetMemberUpdateDetailsResponse) {
     this.firstName = data?.firstName;
@@ -16,5 +17,6 @@ export class GetMemberUpdateDetailsResponse {
     this.gender = data?.gender;
     this.dateOfBirth = data?.dateOfBirth ? new Date(data.dateOfBirth) : new Date();
     this.address = data?.address;
+    this.profilePhoto = data?.profilePhoto;
   }
 }

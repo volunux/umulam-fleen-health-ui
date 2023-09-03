@@ -9,12 +9,13 @@ import {FileConstraints} from "../../../shared/type/other";
 import {FileUploadDownloadService} from "../../../shared/service/file-upload-download.service";
 import {nonNull} from "../../../shared/util/helpers";
 import {SignedUrlService} from "../../../shared/service/signed-url.service";
-import {catchError, concatMap, Observable, of, Subscription, switchMap, tap, throwError} from "rxjs";
+import {catchError, Observable, Subscription, switchMap, tap, throwError} from "rxjs";
 import {ExchangeRequest} from "../../../shared/type/http";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
-import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {HttpEventType} from "@angular/common/http";
 import {statusText} from "../../../shared/util/file-upload-download-messages";
-import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
+import {ErrorResponse} from "../../../base/response/error-response";
+import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
 
 @Component({
   selector: 'app-member-update-profile-photo',
@@ -28,6 +29,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
 
   public profilePhoto: FormControl = new FormControl<string>('');
   public photoConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
+  private signedUrl: string | null = null;
 
   public constructor(protected memberService: MemberService,
                      protected fileService: FileUploadDownloadService,
@@ -40,7 +42,12 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
   }
 
   public ngOnInit(): void {
-
+    this.memberService.getDetails()
+      .subscribe({
+        next: (result: GetMemberUpdateDetailsResponse): void => {
+          this.signedUrl = result.profilePhoto
+        }
+      });
   }
 
   public upload(input: HTMLInputElement, control: AbstractControl, constraints: FileConstraints): void {
@@ -62,11 +69,10 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
   }
 
   private generateSignedUrlAndUploadFile(fileName: string, files: FileList): void {
-    let signedUrl: string | null = null;
     this.cancelRequest$ = this.signedUrlService.generateForProfilePhoto(fileName)
       .pipe(
-        switchMap((result: SignedUrlResponse): Observable<any> => {
-          signedUrl = result.signedUrl;
+        switchMap((result: SignedUrlResponse, index = 1): Observable<any> => {
+          this.signedUrl = result.signedUrl;
           const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
           return this.fileService.uploadFile(req);
         }),
@@ -74,27 +80,47 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
           if (event.type === HttpEventType.UploadProgress) {
             const percentage: number = Math.round((event.loaded / event.total!) * 100);
             this.uploadMessage = statusText['fileUpload']['inProgress'](percentage);
-          } else if (event instanceof HttpResponse) {
-            this.uploadMessage = statusText['fileUpload']['success'];
           }
         }),
-        catchError((error: any): Observable<any> => throwError(error)),
-        concatMap((result: any): Observable<any> => {
-          if (nonNull(signedUrl)) {
-            return this.memberService.updateProfilePhoto({
-              profilePhoto: this.fileService.extractS3BaseUrl(signedUrl)!
-            });
-          }
-          return of(ANY_EMPTY);
-        })
+        catchError((error: any): Observable<any> => throwError(error))
       ).subscribe({
-      next: (result: FleenHealthResponse): void => {
-        console.log(result);
-      },
-      error: (error): void => {
-        error.message = error.message || DEFAULT_ERROR_MESSAGE;
-        this.handleError(error);
-      }
+        error: (error): void => {
+          error.message = error.message || DEFAULT_ERROR_MESSAGE;
+          this.handleError(error);
+        },
+        complete: (): void => {
+          this.savePhoto(this.signedUrl as string)
+        }
     });
   }
+
+  private savePhoto(signedUrl: string): void {
+    if (nonNull(signedUrl)) {
+      this.memberService.updateProfilePhoto({
+        profilePhoto: this.fileService.extractS3BaseUrl(signedUrl)!
+      }).subscribe({
+        complete: (): void => {
+          this.uploadMessage = statusText['fileUpload']['success'];
+        },
+        error: (error: ErrorResponse): void => {
+          this.handleError(error);
+        },
+      });
+    }
+  }
+
+  public deletePhoto(): void {
+    if (nonNull(this.signedUrl)) {
+      this.memberService.removeProfilePhoto()
+        .subscribe({
+          error: (error: ErrorResponse): void => {
+            this.handleError(error);
+          },
+          complete: (): void => {
+            this.uploadMessage = statusText['deleteObject']['success'];
+          }
+      });
+    }
+  }
+
 }
