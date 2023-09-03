@@ -11,6 +11,7 @@ import {CommonModule} from "@angular/common";
 import { EntriesDeleteAllComponent } from './component/entries-delete-all/entries-delete-all.component';
 import {FileUploadDownloadService} from "./service/file-upload-download.service";
 import {SignedUrlService} from "./service/signed-url.service";
+import {S3Service} from "./service/s3.service";
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {SignedUrlService} from "./service/signed-url.service";
     HttpClientService,
     LoggerService,
     FileUploadDownloadService,
-    SignedUrlService
+    SignedUrlService,
+    S3Service
   ],
   exports: [
     CommonModule,

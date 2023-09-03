@@ -16,6 +16,7 @@ import {HttpEventType} from "@angular/common/http";
 import {statusText} from "../../../shared/util/file-upload-download-messages";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
+import {S3Service} from "../../../shared/service/s3.service";
 
 @Component({
   selector: 'app-member-update-profile-photo',
@@ -33,7 +34,8 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
 
   public constructor(protected memberService: MemberService,
                      protected fileService: FileUploadDownloadService,
-                     protected signedUrlService: SignedUrlService) {
+                     protected signedUrlService: SignedUrlService,
+                     protected s3Service: S3Service) {
     super();
   }
 
@@ -97,7 +99,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
   private savePhoto(signedUrl: string): void {
     if (nonNull(signedUrl)) {
       this.memberService.updateProfilePhoto({
-        profilePhoto: this.fileService.extractS3BaseUrl(signedUrl)!
+        profilePhoto: this.s3Service.extractBaseUrl(signedUrl)!
       }).subscribe({
         complete: (): void => {
           this.uploadMessage = statusText['fileUpload']['success'];
