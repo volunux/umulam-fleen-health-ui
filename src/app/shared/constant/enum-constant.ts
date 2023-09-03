@@ -20,7 +20,7 @@ export const DEFAULT_PAGE_NO_KEY: string = 'page';
 export const DEFAULT_IMAGE_TYPES: string[] = ['image/jpeg', 'image/png'];
 
 export const DEFAULT_IMAGE_CONSTRAINT: FileConstraints = {
-  maxFileSize: 5,
+  maxFileSize: 1,
   allowableTypes: DEFAULT_IMAGE_TYPES,
   fileSizeUnit: 'MB'
 }

@@ -12,6 +12,7 @@ import { EntriesDeleteAllComponent } from './component/entries-delete-all/entrie
 import {FileUploadDownloadService} from "./service/file-upload-download.service";
 import {SignedUrlService} from "./service/signed-url.service";
 import {S3Service} from "./service/s3.service";
+import { UploadFileComponent } from './component/upload-file/upload-file.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {S3Service} from "./service/s3.service";
     PaginationComponent,
     RowEntryOptionComponent,
     EntriesDeleteAllComponent,
+    UploadFileComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import {S3Service} from "./service/s3.service";
     PaginationComponent,
     RowEntryOptionComponent,
     EntriesDeleteAllComponent,
+    UploadFileComponent,
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,15 @@
+<div class="">
+
+  <form>
+    <label [for]="fileId">{{ controlLabel }}</label>
+    <input type="file" [formControl]="control" [id]="fileId" (input)="upload(elem, control, fileConstraints)" #elem/>
+    <ng-container *ngIf="uploadMessage">
+      <p>{{ uploadMessage }}</p>
+    </ng-container>
+    <app-validation-error [control]="control" [control-label]="controlLabel" [control-options]="fileConstraints"></app-validation-error>
+    <button (click)="0">Update</button>
+    <button type="button" (click)="deleteFile()">Delete</button>
+    <button type="button" (click)="cancelUpload(elem)">Cancel</button>
+  </form>
+</div>
+
