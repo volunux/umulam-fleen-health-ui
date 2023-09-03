@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl} from "@angular/forms";
 import {FileConstraints} from "../../type/other";
 import {DEFAULT_IMAGE_CONSTRAINT} from "../../constant/enum-constant";
@@ -25,16 +25,18 @@ export class UploadFileComponent extends BaseFormComponent {
   @Input('control') public control!: FormControl;
   @Input('control-label') public controlLabel: string = 'This field';
   @Input('file-constraints') public fileConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
-  @Input('file-label') public fileLabel!: string;
+  @Input('file-key') public fileKey!: string;
   @Input('file-id') public fileId!: string;
   @Input('signed-url-method') public generateSignedUrl$!: (...data: any[]) => Observable<any>;
   @Input('delete-file-method') public deleteFile$!: (...data: any[]) => Observable<any>;
   @Input('save-file-method') public saveFile$!: (...data: any[]) => Observable<any>;
   @Output('upload-details') public uploadDetails: EventEmitter<any> = new EventEmitter<any>();
   @Output('delete-details') public deleteDetails: EventEmitter<any> = new EventEmitter<any>();
-  private cancelRequest$!: Subscription;
-  public uploadMessage: string = '';
   @Input('file-url') public fileNameOrUrl: string | any = '';
+  @ViewChild('elem', { static: false }) inputElement!: ElementRef;
+  public uploadMessage: string = '';
+  private cancelRequest$!: Subscription;
+
 
   public constructor(protected fileService: FileUploadDownloadService) {
     super();
@@ -77,8 +79,9 @@ export class UploadFileComponent extends BaseFormComponent {
           this.handleError(error);
         },
         complete: (): void => {
+          this.saveFile(this.fileNameOrUrl);
           this.uploadDetails.emit({
-            [(this.fileLabel)]: this.fileNameOrUrl
+            [(this.fileKey)]: this.fileNameOrUrl
           });
         }
     });
@@ -88,6 +91,20 @@ export class UploadFileComponent extends BaseFormComponent {
     this.cancelRequest$.unsubscribe();
     this.fileService.clearInputFiles(element);
     this.uploadMessage = statusText.fileUpload.abort;
+  }
+
+  private saveFile(fileNameOrUrl: string): void {
+    if (nonNull(fileNameOrUrl)) {
+      this.saveFile$(fileNameOrUrl).subscribe({
+        complete: (): void => {
+          this.uploadMessage = statusText.fileUpload.success;
+        },
+        error: (): void => {
+          this.uploadMessage = statusText.fileUpload.error;
+          this.fileService.clearInputFiles(this.inputElement?.nativeElement);
+        },
+      });
+    }
   }
 
   public deleteFile(): void {
@@ -102,7 +119,7 @@ export class UploadFileComponent extends BaseFormComponent {
           complete: (): void => {
             this.uploadMessage = statusText.deleteObject.success;
             this.deleteDetails.emit({
-              [(this.fileLabel)]: this.fileNameOrUrl
+              [(this.fileKey)]: this.fileNameOrUrl
             });
           }
       });

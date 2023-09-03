@@ -1,22 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
-import {ANY_EMPTY, DEFAULT_ERROR_MESSAGE} from "../../../shared/constant/other-constant";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
-import {AbstractControl, FormBuilder, FormControl} from "@angular/forms";
+import {FormBuilder, FormControl} from "@angular/forms";
 import {MemberService} from "../../service/member.service";
 import {DEFAULT_IMAGE_CONSTRAINT} from "../../../shared/constant/enum-constant";
 import {FileConstraints} from "../../../shared/type/other";
-import {FileUploadDownloadService} from "../../../shared/service/file-upload-download.service";
 import {nonNull} from "../../../shared/util/helpers";
 import {SignedUrlService} from "../../../shared/service/signed-url.service";
-import {catchError, Observable, Subscription, switchMap, tap, throwError} from "rxjs";
-import {ExchangeRequest} from "../../../shared/type/http";
+import {Observable, of} from "rxjs";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
-import {HttpEventType} from "@angular/common/http";
-import {statusText} from "../../../shared/util/file-upload-download-messages";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
 import {S3Service} from "../../../shared/service/s3.service";
+import {DeleteResponse} from "../../../shared/response/delete.response";
 
 @Component({
   selector: 'app-member-update-profile-photo',
@@ -26,14 +23,11 @@ import {S3Service} from "../../../shared/service/s3.service";
 export class MemberUpdateProfilePhotoComponent extends BaseFormComponent implements OnInit {
 
   protected override formBuilder!: FormBuilder;
-  public uploadMessage: string = '';
-
+  public signedUrl: string | null = null;
   public profilePhoto: FormControl = new FormControl<string>('');
   public photoConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
-  public signedUrl: string | null = null;
 
   public constructor(protected memberService: MemberService,
-                     protected fileService: FileUploadDownloadService,
                      protected signedUrlService: SignedUrlService,
                      protected s3Service: S3Service) {
     super();
@@ -55,31 +49,25 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
     });
   }
 
-  private savePhoto(signedUrl: string): void {
+  private savePhoto(signedUrl: string): Observable<any> {
     if (nonNull(signedUrl)) {
-      this.memberService.updateProfilePhoto({
+      return this.memberService.updateProfilePhoto({
         profilePhoto: this.s3Service.extractBaseUrl(signedUrl)!
-      }).subscribe({
-        complete: (): void => {
-          this.uploadMessage = statusText.fileUpload.success;
-        },
-        error: (error: ErrorResponse): void => {
-          this.handleError(error);
-        },
       });
     }
+    return of(ANY_EMPTY);
   }
 
-  get signedUrlMethod(): Function {
-    return this.signedUrlService.generateForProfilePhoto;
+  get signedUrlMethod(): (...data: any[]) => Observable<SignedUrlResponse> {
+    return this.signedUrlService.generateForProfilePhoto.bind(this.signedUrlService);
   }
 
-  get saveFileMethod(): Function {
-    return this.savePhoto;
+  get saveFileMethod(): (...data: any[]) => Observable<any> {
+    return this.savePhoto.bind(this);
   }
 
-  get deleteFileMethod(): Function {
-    return this.memberService.removeProfilePhoto;
+  get deleteFileMethod(): (...data: any[]) => Observable<DeleteResponse> {
+    return this.memberService.removeProfilePhoto.bind(this.memberService);
   }
 
 }

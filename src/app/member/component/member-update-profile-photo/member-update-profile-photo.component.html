@@ -3,7 +3,7 @@
     {{errorMessage}}
   </div>
 
-  <app-upload-file [control-label]="'Profile Photo'" [control]="profilePhoto" [file-constraints]="photoConstraints" [file-id]="'profile_photo'" [file-label]="'Profile Photo'"
+  <app-upload-file [control-label]="'Profile Photo'" [control]="profilePhoto" [file-constraints]="photoConstraints" [file-id]="'profile_photo'" [file-key]="'profilePhoto'"
                    [file-url]="signedUrl" [signed-url-method]="signedUrlMethod" [save-file-method]="saveFileMethod" [delete-file-method]="deleteFileMethod"></app-upload-file>
 
 </div>

@@ -137,4 +137,8 @@ export abstract class BaseFormComponent {
     await this.getRouter().navigate([BASE_PATH]);
   }
 
+  get noOpFunction(): (...data: any[]) => void {
+    return (): void => { };
+  }
+
 }
