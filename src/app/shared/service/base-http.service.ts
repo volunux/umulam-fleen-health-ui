@@ -28,7 +28,7 @@ export class BaseHttpService {
   protected getQueryString(params?: AnyProp) {
     return isObject(params)
       ? `?`.concat((new URLSearchParams(params)).toString())
-      : "?";
+      : "";
   }
 
   protected buildUri(req: BaseRequest): string {

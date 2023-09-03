@@ -48,8 +48,11 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
       .subscribe({
         next: (result: GetMemberUpdateDetailsResponse): void => {
           this.signedUrl = result.profilePhoto
+        },
+        error: (error: ErrorResponse): void => {
+          this.handleError(error);
         }
-      });
+    });
   }
 
   public upload(input: HTMLInputElement, control: AbstractControl, constraints: FileConstraints): void {
@@ -67,13 +70,13 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
   public cancelUpload(element: HTMLInputElement): void {
     this.cancelRequest$.unsubscribe();
     this.fileService.clearInputFiles(element);
-    this.uploadMessage = statusText['fileUpload']['abort'];
+    this.uploadMessage = statusText.fileUpload.abort;
   }
 
   private generateSignedUrlAndUploadFile(fileName: string, files: FileList): void {
     this.cancelRequest$ = this.signedUrlService.generateForProfilePhoto(fileName)
       .pipe(
-        switchMap((result: SignedUrlResponse, index = 1): Observable<any> => {
+        switchMap((result: SignedUrlResponse): Observable<any> => {
           this.signedUrl = result.signedUrl;
           const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
           return this.fileService.uploadFile(req);
@@ -81,7 +84,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
         tap((event: any): void => {
           if (event.type === HttpEventType.UploadProgress) {
             const percentage: number = Math.round((event.loaded / event.total!) * 100);
-            this.uploadMessage = statusText['fileUpload']['inProgress'](percentage);
+            this.uploadMessage = statusText.fileUpload.inProgress(percentage);
           }
         }),
         catchError((error: any): Observable<any> => throwError(error))
@@ -102,7 +105,7 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
         profilePhoto: this.s3Service.extractBaseUrl(signedUrl)!
       }).subscribe({
         complete: (): void => {
-          this.uploadMessage = statusText['fileUpload']['success'];
+          this.uploadMessage = statusText.fileUpload.success;
         },
         error: (error: ErrorResponse): void => {
           this.handleError(error);
@@ -113,13 +116,15 @@ export class MemberUpdateProfilePhotoComponent extends BaseFormComponent impleme
 
   public deletePhoto(): void {
     if (nonNull(this.signedUrl)) {
+      this.uploadMessage = statusText.deleteObject.inProgress;
       this.memberService.removeProfilePhoto()
         .subscribe({
           error: (error: ErrorResponse): void => {
+            error.message = statusText.deleteObject.error;
             this.handleError(error);
           },
           complete: (): void => {
-            this.uploadMessage = statusText['deleteObject']['success'];
+            this.uploadMessage = statusText.deleteObject.success;
           }
       });
     }

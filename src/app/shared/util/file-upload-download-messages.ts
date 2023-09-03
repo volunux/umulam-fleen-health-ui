@@ -1,6 +1,6 @@
-import {AnyProp} from "../type/base";
+import {StatusText} from "../type/status-text";
 
-export const statusText: AnyProp = {
+export const statusText: StatusText = {
   'error': 'An error has occurred.',
   'timeout': 'Request has timed out',
   'filesize': {
