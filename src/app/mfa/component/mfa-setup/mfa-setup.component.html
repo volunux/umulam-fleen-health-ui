@@ -15,6 +15,14 @@
     <app-validation-error [control]="mfaType" [control-label]="'Mfa Type'"></app-validation-error>
   </div>
 
+  <ng-container *ngIf="isVerificationStage">
+    <p *ngIf="isVerificationCodeSent">Code has been sent</p>
+    <label for="verification_code">Verification Code:</label>
+    <input type="text" formControlName="code" id="verification_code"/>
+    <app-validation-error [control]="code" [control-label]="'Verification code'"></app-validation-error>
+    <button (click)="resendVerificationCode()" [disabled]="isSubmitting"> Resend Verification Code </button>
+  </ng-container>
+
   <button type="submit" [disabled]="isSubmitting">Submit</button>
 
 </form>
