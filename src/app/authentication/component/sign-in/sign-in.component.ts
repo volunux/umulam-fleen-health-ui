@@ -8,7 +8,6 @@ import {SignInResponse} from "../../response/sign-in.response";
 import {
   AuthenticationStatus,
   ChangePasswordType,
-  MfaType,
   NextAuthentication
 } from "../../../shared/enum/authentication.enum";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
@@ -16,6 +15,7 @@ import {ChangePasswordComponent} from "../../../shared/change-password/change-pa
 import {ErrorResponse} from "../../../base/response/error-response";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "../../../base/service/session-storage.service";
+import {MfaType} from "../../../mfa/enum/mfa.enum";
 
 @Component({
   selector: 'app-sign-in',
