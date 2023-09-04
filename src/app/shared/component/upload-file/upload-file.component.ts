@@ -3,7 +3,7 @@ import {AbstractControl, FormBuilder, FormControl} from "@angular/forms";
 import {FileConstraints} from "../../type/other";
 import {DEFAULT_IMAGE_CONSTRAINT} from "../../constant/enum-constant";
 import {FileUploadDownloadService} from "../../service/file-upload-download.service";
-import {nonNull} from "../../util/helpers";
+import {isTruthy, nonNull} from "../../util/helpers";
 import {catchError, Observable, Subscription, switchMap, tap, throwError} from "rxjs";
 import {SignedUrlResponse} from "../../response/signed-url.response";
 import {ExchangeRequest} from "../../type/http";
@@ -32,7 +32,7 @@ export class UploadFileComponent extends BaseFormComponent {
   @Input('save-file-method') public saveFile$!: (...data: any[]) => Observable<any>;
   @Output('upload-details') public uploadDetails: EventEmitter<any> = new EventEmitter<any>();
   @Output('delete-details') public deleteDetails: EventEmitter<any> = new EventEmitter<any>();
-  @Input('file-url') public fileNameOrUrl: string | any = '';
+  @Input('file-url') public fileNameOrUrl: string | null = '';
   @ViewChild('elem', { static: false }) inputElement!: ElementRef;
   public uploadMessage: string = '';
   private cancelRequest$!: Subscription;
@@ -93,7 +93,7 @@ export class UploadFileComponent extends BaseFormComponent {
     this.uploadMessage = statusText.fileUpload.abort;
   }
 
-  private saveFile(fileNameOrUrl: string): void {
+  private saveFile(fileNameOrUrl: string | null): void {
     if (nonNull(fileNameOrUrl)) {
       this.saveFile$(fileNameOrUrl).subscribe({
         complete: (): void => {
@@ -108,7 +108,7 @@ export class UploadFileComponent extends BaseFormComponent {
   }
 
   public deleteFile(): void {
-    if (nonNull(this.fileNameOrUrl)) {
+    if (isTruthy(this.fileNameOrUrl)) {
       this.uploadMessage = statusText.deleteObject.inProgress;
       this.deleteFile$(this.fileNameOrUrl)
         .subscribe({
@@ -117,6 +117,7 @@ export class UploadFileComponent extends BaseFormComponent {
             this.handleError(error);
           },
           complete: (): void => {
+            this.fileNameOrUrl = null;
             this.uploadMessage = statusText.deleteObject.success;
             this.deleteDetails.emit({
               [(this.fileKey)]: this.fileNameOrUrl
