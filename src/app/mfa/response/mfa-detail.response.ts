@@ -1,4 +1,4 @@
-import {MfaSetupStatus} from "../../shared/enum/mfa";
+import {MfaSetupStatus} from "../enum/mfa.enum";
 
 export class MfaDetailResponse {
 

@@ -3,7 +3,7 @@ import {AuthVerificationDto, ResendVerificationCodeDto} from "../../../shared/ty
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Observable, of} from "rxjs";
-import {VerificationType} from "../../../shared/enum/authentication";
+import {VerificationType} from "../../../shared/enum/authentication.enum";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {codeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";

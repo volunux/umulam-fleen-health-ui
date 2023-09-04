@@ -4,7 +4,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {passwordValidator} from "../validator/validator";
 import {PASSWORD_PATTERNS} from "../util/format-pattern";
 import {ChangePasswordDto} from "../type/authentication";
-import {ChangePasswordType} from "../enum/authentication";
+import {ChangePasswordType} from "../enum/authentication.enum";
 import {ANY_EMPTY} from "../constant/other-constant";
 import {Router} from "@angular/router";
 

@@ -3,12 +3,7 @@ export enum AuthenticationStatus {
   COMPLETED = 'COMPLETED'
 }
 
-export enum MfaType {
-  PHONE = 'PHONE',
-  EMAIL = 'EMAIL',
-  AUTHENTICATOR = 'AUTHENTICATOR',
-  NONE = 'NONE'
-}
+
 
 export enum NextAuthentication {
   PRE_VERIFICATION = 'PRE_VERIFICATION',

@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ChangePasswordDto} from "../../../shared/type/authentication";
-import {ChangePasswordType} from "../../../shared/enum/authentication";
+import {ChangePasswordType} from "../../../shared/enum/authentication.enum";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {passwordValidator} from "../../../shared/validator/validator";

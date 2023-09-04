@@ -9,7 +9,7 @@ import {isFalsy, isTruthy, withDefault} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Router} from "@angular/router";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
-import {VerificationType} from "../../../shared/enum/authentication";
+import {VerificationType} from "../../../shared/enum/authentication.enum";
 import {ConfirmUpdateEmailAddressDto, ConfirmUpdatePhoneNumberDto} from "../../dto/member.dto";
 import {finalize} from "rxjs";
 

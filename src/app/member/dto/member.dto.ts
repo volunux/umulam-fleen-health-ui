@@ -1,4 +1,4 @@
-import {VerificationType} from "../../shared/enum/authentication";
+import {VerificationType} from "../../shared/enum/authentication.enum";
 
 export type UpdateEmailAddressOrPhoneNumberDto = {
   verificationType: VerificationType;

@@ -1,4 +1,5 @@
-import {AuthVerificationType, ChangePasswordType, MfaType, VerificationType} from "../enum/authentication";
+import {AuthVerificationType, ChangePasswordType, VerificationType} from "../enum/authentication.enum";
+import {MfaType} from "../../mfa/enum/mfa.enum";
 
 export type AuthVerificationDto = {
   code: string;

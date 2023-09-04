@@ -7,6 +7,7 @@ import {MfaBaseComponent} from './component/mfa-base/mfa-base.component';
 import {MfaDashboardComponent} from './component/mfa-dashboard/mfa-dashboard.component';
 import {MfaStatusComponent} from './component/mfa-status/mfa-status.component';
 import {SharedModule} from "../shared/shared.module";
+import {MfaService} from "./service/mfa.service";
 
 
 @NgModule({
@@ -20,6 +21,9 @@ import {SharedModule} from "../shared/shared.module";
     SharedModule,
     CommonModule,
     MfaRoutingModule
+  ],
+  providers: [
+    MfaService
   ]
 })
 export class MfaModule { }

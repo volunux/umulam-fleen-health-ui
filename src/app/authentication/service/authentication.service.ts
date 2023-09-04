@@ -26,7 +26,7 @@ import {EntityExistsResponse} from "../../shared/response/entity-exists.response
 import {SignInDto, SignUpDto} from "../type/authentication";
 import {JwtService} from "../../base/service/jwt.service";
 import {AnyProp} from "../../shared/type/base";
-import {AuthenticationStatus} from "../../shared/enum/authentication";
+import {AuthenticationStatus} from "../../shared/enum/authentication.enum";
 import {hasAtLeastAProperty} from "../../shared/util/helpers";
 import {AUTHENTICATION_ENTRY_POINT} from "../../shared/constant/base-config";
 

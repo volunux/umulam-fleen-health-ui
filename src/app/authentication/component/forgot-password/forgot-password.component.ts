@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {FormControl, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../service/authentication.service";
-import {ChangePasswordType, VerificationType} from "../../../shared/enum/authentication";
+import {ChangePasswordType, VerificationType} from "../../../shared/enum/authentication.enum";
 import {isFalsy} from "../../../shared/util/helpers";
 import {ChangePasswordDto, ForgotPasswordDto, ResetPasswordDto} from "../../../shared/type/authentication";
 import {ForgotPasswordResponse} from "../../response/forgot-password.response";

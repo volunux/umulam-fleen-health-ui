@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {ResendVerificationCodeDto} from "../../../shared/type/authentication";
 import {AuthenticationService} from "../../service/authentication.service";
-import {AuthVerificationType, MfaType} from "../../../shared/enum/authentication";
+import {AuthVerificationType, MfaType} from "../../../shared/enum/authentication.enum";
 import {MfaOtpBaseComponent} from "../mfa-otp-base/mfa-otp-base.component";
 import {Observable} from "rxjs";
 

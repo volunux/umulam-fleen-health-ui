@@ -10,7 +10,7 @@ import {
   ChangePasswordType,
   MfaType,
   NextAuthentication
-} from "../../../shared/enum/authentication";
+} from "../../../shared/enum/authentication.enum";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../../../shared/change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";

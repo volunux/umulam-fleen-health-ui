@@ -3,7 +3,7 @@ import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {AuthenticationService} from "../../service/authentication.service";
 import {Observable, of} from "rxjs";
-import {AuthenticationStatus, AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication";
+import {AuthenticationStatus, AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication.enum";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
 import {ChangePasswordComponent} from "../../../shared/change-password/change-password.component";
