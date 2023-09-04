@@ -8,6 +8,7 @@ import {MfaDashboardComponent} from './component/mfa-dashboard/mfa-dashboard.com
 import {MfaStatusComponent} from './component/mfa-status/mfa-status.component';
 import {SharedModule} from "../shared/shared.module";
 import {MfaService} from "./service/mfa.service";
+import {AuthenticationModule} from "../authentication/authentication.module";
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {MfaService} from "./service/mfa.service";
   imports: [
     SharedModule,
     CommonModule,
-    MfaRoutingModule
+    MfaRoutingModule,
+    AuthenticationModule
   ],
   providers: [
     MfaService

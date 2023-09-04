@@ -1,1 +1,21 @@
-<p>mfa-setup works!</p>
+<form [formGroup]="mfaSetupForm" (ngSubmit)="setupMfa()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+  <div class="form-error-message">
+    {{errorMessage}}
+  </div>
+
+  <div class="form-group">
+    <input type ="radio" formControlName="mfaType" value="PHONE" id="mfa_type_phone"/>
+    <label for="mfa_type_phone">Phone</label>
+
+    <input type ="radio" formControlName="mfaType" value="EMAIL" id="mfa_type_email"/>
+    <label for="mfa_type_email">Email</label>
+
+    <input type ="radio" formControlName="mfaType" value="AUTHENTICATOR" id="mfa_type_authenticator"/>
+    <label for="mfa_type_authenticator">User</label><br/>
+    <app-validation-error [control]="mfaType" [control-label]="'Mfa Type'"></app-validation-error>
+  </div>
+
+  <button type="submit" [disabled]="isSubmitting">Submit</button>
+
+</form>
+
