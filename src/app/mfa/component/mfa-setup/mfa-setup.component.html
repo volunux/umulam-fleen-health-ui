@@ -11,7 +11,10 @@
     <label for="mfa_type_email">Email</label>
 
     <input type ="radio" formControlName="mfaType" value="AUTHENTICATOR" id="mfa_type_authenticator"/>
-    <label for="mfa_type_authenticator">User</label><br/>
+    <label for="mfa_type_authenticator">Authenticator</label><br/>
+
+    <input type ="radio" formControlName="mfaType" value="NONE" id="mfa_type_none"/>
+    <label for="mfa_type_none">None</label><br/>
     <app-validation-error [control]="mfaType" [control-label]="'Mfa Type'"></app-validation-error>
   </div>
 

@@ -25,4 +25,4 @@ export const DEFAULT_IMAGE_CONSTRAINT: FileConstraints = {
   fileSizeUnit: 'MB'
 }
 
-export const MFA_SETUP_TYPE: string[] = ['EMAIL', 'PHONE', 'AUTHENTICATOR'];
+export const MFA_SETUP_TYPE: string[] = ['EMAIL', 'PHONE', 'AUTHENTICATOR', 'NONE'];
