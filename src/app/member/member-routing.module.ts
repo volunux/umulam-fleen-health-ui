@@ -11,6 +11,7 @@ import {
 import {
   MemberUpdateProfilePhotoComponent
 } from "./component/member-update-profile-photo/member-update-profile-photo.component";
+import {MemberUpdatePasswordComponent} from "./component/member-update-password/member-update-password.component";
 
 const routes: Routes = [
   { path: '',
@@ -22,7 +23,8 @@ const routes: Routes = [
       { path: 'get-detail', component: MemberDetailComponent, title: 'Profile Detail' },
       { path: 'update-detail', component: MemberUpdateComponent, title: 'Profile Update' },
       { path: 'update-email-phone', component: MemberUpdateEmailPhoneComponent, title: 'Update Email & Phone' },
-      { path: 'update-profile-photo', component: MemberUpdateProfilePhotoComponent, title: 'Update Profile Photo' }
+      { path: 'update-profile-photo', component: MemberUpdateProfilePhotoComponent, title: 'Update Profile Photo' },
+      { path: 'update-password', component: MemberUpdatePasswordComponent, title: 'Update Password' }
     ]
   }
 ];

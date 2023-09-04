@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ChangePasswordDto} from "../../../shared/type/authentication";
 import {ChangePasswordType} from "../../../shared/enum/authentication";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
@@ -7,11 +7,12 @@ import {passwordValidator} from "../../../shared/validator/validator";
 import {PASSWORD_PATTERNS} from "../../../shared/util/format-pattern";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
-import {isFalsy} from "../../../shared/util/helpers";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {MemberService} from "../../service/member.service";
 import {UpdatePasswordDto} from "../../dto/member.dto";
 import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
 import {ErrorResponse} from "../../../base/response/error-response";
+import {ChangePasswordComponent} from "../../../shared/change-password/change-password.component";
 
 @Component({
   selector: 'app-member-update-password',
@@ -20,9 +21,11 @@ import {ErrorResponse} from "../../../base/response/error-response";
 })
 export class MemberUpdatePasswordComponent extends BaseFormComponent implements OnInit {
 
+  @ViewChild(ChangePasswordComponent) changePasswordComponent!: ChangePasswordComponent;
   protected formBuilder!: FormBuilder;
   public changePasswordType: ChangePasswordType = ChangePasswordType.UPDATE;
   public oldPassword: FormControl = new FormControl('');
+
   public statusMessage: string = '';
 
   public constructor(protected memberService: MemberService) {
@@ -48,7 +51,9 @@ export class MemberUpdatePasswordComponent extends BaseFormComponent implements 
             this.statusMessage = result.message;
           },
           error: (error: ErrorResponse): void => {
-            this.handleError(error);
+            if (isTruthy(this.getChangePasswordComponent())) {
+              this.getChangePasswordComponent()?.setErrorMessage(error.message);
+            }
           },
           complete: (): void => {
             this.enableSubmitting();
@@ -59,6 +64,10 @@ export class MemberUpdatePasswordComponent extends BaseFormComponent implements 
 
   private initForm(): void {
     this.oldPassword.addValidators([Validators.required, passwordValidator(PASSWORD_PATTERNS)]);
+  }
+
+  private getChangePasswordComponent(): ChangePasswordComponent {
+    return this.changePasswordComponent;
   }
 
 }

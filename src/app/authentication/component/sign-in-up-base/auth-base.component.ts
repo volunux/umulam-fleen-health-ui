@@ -16,6 +16,14 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   protected abstract getSessionStorageService(): SessionStorageService;
 
+  abstract getAuthenticationService(): AuthenticationService;
+
+  abstract getOtpComponent(): OtpVerificationComponent | null;
+
+  abstract getMfaVerificationComponent(): MfaVerificationComponent | null;
+
+  abstract getChangePasswordComponent(): ChangePasswordComponent | null;
+
   public handleVerificationCode(verification: AuthVerificationDto): void {
     if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
       const { type } = verification;
@@ -64,14 +72,6 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
       });
     }
   }
-
-  abstract getAuthenticationService(): AuthenticationService;
-
-  abstract getOtpComponent(): OtpVerificationComponent | null;
-
-  abstract getMfaVerificationComponent(): MfaVerificationComponent | null;
-
-  abstract getChangePasswordComponent(): ChangePasswordComponent | null;
 
   protected completeSignUpOrValidateMfaOrOnboarding(verification: AuthVerificationDto): Observable<any> {
     const { type } = verification;
