@@ -1,5 +1,9 @@
 <p>Hello World</p>
 
+<ng-container *ngIf="isAuthenticated">
+  <button type="button" (click)="logout()">Logout</button>
+</ng-container>
+
 <nav>
   <ul>
     <li><a routerLink="/sign-up" routerLinkActive="active">Sign Up</a></li>
