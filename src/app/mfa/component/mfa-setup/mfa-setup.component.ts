@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
@@ -12,6 +12,7 @@ import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {isFalsy} from "../../../shared/util/helpers";
 import {MfaDetailResponse} from "../../response/mfa-detail.response";
 import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
+import {MfaType} from "../../enum/mfa.enum";
 
 @Component({
   selector: 'app-mfa-setup',
@@ -20,15 +21,21 @@ import {FleenHealthResponse} from "../../../shared/response/fleen-health.respons
 })
 export class MfaSetupComponent extends BaseFormComponent implements OnInit {
 
+  @ViewChild('qrCodeImage', { static: false }) qrCodeImage!: ElementRef;
   public mfaStatus!: MfaStatusResponse;
   public mfaDetail!: MfaDetailResponse;
-  public isVerificationStage: boolean = false;
+  public isCodeVerification: boolean = false;
+  public isQrVerification: boolean = false;
   public statusMessage: string = '';
   public isVerificationCodeSent: boolean = false;
+  public NO_MFA: string = 'Multi Factor Authenticator Reset';
+  public qrCodeSecret: string = '';
+
 
   public constructor(
     protected formBuilder: FormBuilder,
-    protected mfaService: MfaService) {
+    protected mfaService: MfaService,
+    private renderer: Renderer2) {
     super();
   }
 
@@ -63,6 +70,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
         .subscribe({
           next: (result: MfaDetailResponse): void => {
             this.mfaDetail = result;
+            this.initVerificationType(result);
           },
           error: (error: ErrorResponse): void => {
             this.handleError(error);
@@ -113,6 +121,29 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
         Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)]
       )
     );
+  }
+
+  private initVerificationType(mfaDetail: MfaDetailResponse): void {
+    const { mfaType } = mfaDetail;
+    if (mfaType === MfaType.EMAIL || mfaType === MfaType.PHONE) {
+      this.isCodeVerification = true;
+    } else if (mfaType === MfaType.AUTHENTICATOR) {
+      this.isCodeVerification = true;
+      this.isQrVerification = true;
+      this.initAuthenticatorDetails(mfaDetail);
+    } else if (mfaType === MfaType.NONE) {
+      this.statusMessage = this.NO_MFA;
+    }
+  }
+
+  private initAuthenticatorDetails(mfaDetail: MfaDetailResponse): void {
+    const { qrCode, secret } = mfaDetail;
+    this.qrCodeSecret = secret;
+
+    const img = this.renderer.createElement('img');
+    this.renderer.setAttribute(img, 'src', qrCode);
+    const container = this.qrCodeImage.nativeElement;
+    this.renderer.appendChild(container, img);
   }
 
   get mfaSetupForm(): FormGroup {

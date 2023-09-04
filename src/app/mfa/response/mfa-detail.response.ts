@@ -1,11 +1,11 @@
-import {MfaSetupStatus} from "../enum/mfa.enum";
+import {MfaSetupStatus, MfaType} from "../enum/mfa.enum";
 
 export class MfaDetailResponse {
 
   public enabled: boolean;
   public secret: string;
   public qrCode: string;
-  public mfaType: string;
+  public mfaType: MfaType;
   public mfaSetupStatus: MfaSetupStatus;
   public emailAddress: string;
   public phoneNumber: string;

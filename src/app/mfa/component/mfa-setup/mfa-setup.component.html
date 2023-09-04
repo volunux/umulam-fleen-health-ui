@@ -15,12 +15,19 @@
     <app-validation-error [control]="mfaType" [control-label]="'Mfa Type'"></app-validation-error>
   </div>
 
-  <ng-container *ngIf="isVerificationStage">
+  <ng-container *ngIf="isQrVerification">
+    <p *ngIf="qrCodeSecret">{{ qrCodeSecret }}</p>
+    <div class="qr-code-box" #qrCodeImage></div>
+  </ng-container>
+
+  <ng-container *ngIf="isCodeVerification">
     <p *ngIf="isVerificationCodeSent">Code has been sent</p>
     <label for="verification_code">Verification Code:</label>
     <input type="text" formControlName="code" id="verification_code"/>
     <app-validation-error [control]="code" [control-label]="'Verification code'"></app-validation-error>
-    <button (click)="resendVerificationCode()" [disabled]="isSubmitting"> Resend Verification Code </button>
+    <ng-container *ngIf="!isQrVerification">
+      <button (click)="resendVerificationCode()" [disabled]="isSubmitting"> Resend Verification Code </button>
+    </ng-container>
   </ng-container>
 
   <button type="submit" [disabled]="isSubmitting">Submit</button>
