@@ -6,7 +6,7 @@ import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {SignUpResponse} from "../../response/sign-up.response";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
-import {ChangePasswordComponent} from "../change-password/change-password.component";
+import {ChangePasswordComponent} from "../../../shared/change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "../../../base/service/session-storage.service";

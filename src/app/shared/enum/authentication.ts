@@ -31,5 +31,6 @@ export enum AuthVerificationType {
 export enum ChangePasswordType {
   NONE = 'NONE',
   RESET = 'RESET',
-  ONBOARDING = 'ONBOARDING'
+  ONBOARDING = 'ONBOARDING',
+  UPDATE = 'UPDATE'
 }

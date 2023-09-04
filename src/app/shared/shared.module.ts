@@ -13,6 +13,7 @@ import {FileUploadDownloadService} from "./service/file-upload-download.service"
 import {SignedUrlService} from "./service/signed-url.service";
 import {S3Service} from "./service/s3.service";
 import { UploadFileComponent } from './component/upload-file/upload-file.component';
+import {ChangePasswordComponent} from "./change-password/change-password.component";
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { UploadFileComponent } from './component/upload-file/upload-file.compone
     RowEntryOptionComponent,
     EntriesDeleteAllComponent,
     UploadFileComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { UploadFileComponent } from './component/upload-file/upload-file.compone
     RowEntryOptionComponent,
     EntriesDeleteAllComponent,
     UploadFileComponent,
+    ChangePasswordComponent
   ]
 })
 export class SharedModule { }

@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
+import {BaseFormComponent} from "../../base/component/base-form/base-form.component";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {passwordValidator} from "../../../shared/validator/validator";
-import {PASSWORD_PATTERNS} from "../../../shared/util/format-pattern";
-import {ChangePasswordDto} from "../../../shared/type/authentication";
-import {ChangePasswordType} from "../../../shared/enum/authentication";
-import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {passwordValidator} from "../validator/validator";
+import {PASSWORD_PATTERNS} from "../util/format-pattern";
+import {ChangePasswordDto} from "../type/authentication";
+import {ChangePasswordType} from "../enum/authentication";
+import {ANY_EMPTY} from "../constant/other-constant";
 import {Router} from "@angular/router";
 
 @Component({
@@ -15,6 +15,7 @@ import {Router} from "@angular/router";
 })
 export class ChangePasswordComponent extends BaseFormComponent implements OnInit {
 
+  @Input('is-submitting') public override isSubmitting: boolean = false;
   @Input('change-password-type') public changePasswordType: ChangePasswordType = ChangePasswordType.NONE;
   @Output() public changePassword: EventEmitter<ChangePasswordDto> = new EventEmitter<ChangePasswordDto>();
 

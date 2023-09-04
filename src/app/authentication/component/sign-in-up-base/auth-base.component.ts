@@ -6,7 +6,7 @@ import {Observable, of} from "rxjs";
 import {AuthenticationStatus, AuthVerificationType, ChangePasswordType} from "../../../shared/enum/authentication";
 import {OtpVerificationComponent} from "../otp-verification/otp-verification.component";
 import {MfaVerificationComponent} from "../mfa-verification/mfa-verification.component";
-import {ChangePasswordComponent} from "../change-password/change-password.component";
+import {ChangePasswordComponent} from "../../../shared/change-password/change-password.component";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {SignInUpResponse} from "../../response/sign-in-up.response";
 import {USER_DESTINATION_PAGE_KEY} from "../../../shared/constant/other-constant";
