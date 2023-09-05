@@ -26,8 +26,6 @@ export class MemberUpdatePasswordComponent extends BaseFormComponent implements 
   public changePasswordType: ChangePasswordType = ChangePasswordType.UPDATE;
   public oldPassword: FormControl = new FormControl('');
 
-  public statusMessage: string = '';
-
   public constructor(protected memberService: MemberService) {
     super();
   }

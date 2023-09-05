@@ -55,4 +55,8 @@ export class MfaStatusComponent extends BaseFormComponent implements OnInit {
     return status ? this.mfaService.reEnable() : this.mfaService.disable();
   }
 
+  private updateMfaStatus(status: boolean): void {
+    this.mfaStatus.enabled = status;
+  }
+
 }
