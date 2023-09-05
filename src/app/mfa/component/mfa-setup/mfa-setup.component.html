@@ -1,9 +1,17 @@
-<form [formGroup]="mfaSetupForm" (ngSubmit)="setupMfa()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+
+
+
+
+<form *ngIf="isFormReady" [formGroup]="mfaSetupForm" (ngSubmit)="setupMfa()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
   <div class="form-error-message">
     {{errorMessage}}
   </div>
 
-  <div class="form-group">
+  <div class="form-error-message">
+    {{statusMessage}}
+  </div>
+
+  <div class="form-group" *ngIf="!isCodeVerification">
     <input type ="radio" formControlName="mfaType" value="PHONE" id="mfa_type_phone"/>
     <label for="mfa_type_phone">Phone</label>
 
@@ -18,10 +26,14 @@
     <app-validation-error [control]="mfaType" [control-label]="'Mfa Type'"></app-validation-error>
   </div>
 
-  <ng-container *ngIf="isQrVerification">
-    <p *ngIf="qrCodeSecret">{{ qrCodeSecret }}</p>
-    <div class="qr-code-box" #qrCodeImage></div>
-  </ng-container>
+
+
+    <div class="qr-box" #qrCodeImage>
+      <ng-container *ngIf="isQrVerification">
+        <p *ngIf="qrCodeSecret">{{ qrCodeSecret }}</p>
+
+      </ng-container>
+    </div>
 
   <ng-container *ngIf="isCodeVerification">
     <p *ngIf="isVerificationCodeSent">Code has been sent</p>
@@ -31,9 +43,10 @@
     <ng-container *ngIf="!isQrVerification">
       <button (click)="resendVerificationCode()" [disabled]="isSubmitting"> Resend Verification Code </button>
     </ng-container>
+    <button *ngIf="isCodeVerification && !isAllVerificationComplete" type="button" [disabled]="isSubmitting" (click)="confirmMfaSetup()">Confirm Setup</button>
   </ng-container>
 
-  <button type="submit" [disabled]="isSubmitting">Submit</button>
+  <button *ngIf="!isCodeVerification" type="submit" [disabled]="isSubmitting">Submit</button>
 
 </form>
 

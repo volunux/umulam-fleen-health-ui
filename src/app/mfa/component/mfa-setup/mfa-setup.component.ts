@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
@@ -9,7 +9,7 @@ import {ErrorResponse} from "../../../base/response/error-response";
 import {DEFAULT_FORM_CONTROL_VALUE, MFA_SETUP_TYPE} from "../../../shared/constant/enum-constant";
 import {codeValidator, enumTypeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
-import {isFalsy} from "../../../shared/util/helpers";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
 import {MfaDetailResponse} from "../../response/mfa-detail.response";
 import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
 import {MfaType} from "../../enum/mfa.enum";
@@ -30,6 +30,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
   public isVerificationCodeSent: boolean = false;
   public NO_MFA: string = 'Multi Factor Authenticator Reset to none';
   public qrCodeSecret: string = '';
+  public isAllVerificationComplete: boolean = false;
 
 
   public constructor(
@@ -44,6 +45,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
       .subscribe({
         next: (result: MfaStatusResponse): void => {
           this.mfaStatus = result;
+          this.initForm();
         },
         error: (error: ErrorResponse): void => {
           this.handleError(error);
@@ -61,6 +63,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
         [Validators.required, enumTypeValidator(MFA_SETUP_TYPE)]
       ]
     });
+    this.formReady();
   }
 
   public setupMfa(): void {
@@ -107,6 +110,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
         .subscribe({
           next: (result: FleenHealthResponse): void => {
             this.statusMessage = result.message;
+            this.isAllVerificationComplete = true;
           },
           error: (error: ErrorResponse): void => {
             this.handleError(error);
@@ -141,6 +145,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
     this.qrCodeSecret = secret;
 
     const img = this.renderer.createElement('img');
+    console.log(qrCode);
     this.renderer.setAttribute(img, 'src', qrCode);
     const container = this.qrCodeImage.nativeElement;
     this.renderer.appendChild(container, img);
