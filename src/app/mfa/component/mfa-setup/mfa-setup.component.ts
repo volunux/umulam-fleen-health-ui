@@ -28,7 +28,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
   public isQrVerification: boolean = false;
   public statusMessage: string = '';
   public isVerificationCodeSent: boolean = false;
-  public NO_MFA: string = 'Multi Factor Authenticator Reset';
+  public NO_MFA: string = 'Multi Factor Authenticator Reset to none';
   public qrCodeSecret: string = '';
 
 
