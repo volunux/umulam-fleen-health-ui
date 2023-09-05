@@ -8,7 +8,8 @@ import {BASE_PATH} from "../../../shared/constant/base-config";
 
 export abstract class BaseFormComponent {
 
-  protected errorMessage: string | undefined;
+  public errorMessage: string | undefined;
+  public statusMessage: string | undefined;
   protected fleenHealthForm: FormGroup = new FormGroup<any>({});
   private readonly ERROR_FIELD_NAME: string = "field_name";
   private readonly ERROR_MESSAGES_NAME: string = "errors";

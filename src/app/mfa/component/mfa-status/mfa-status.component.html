@@ -1,1 +1,13 @@
-<p>mfa-status works!</p>
+<div>
+  {{ errorMessage }}
+</div>
+
+<div>
+  {{ statusMessage }}
+</div>
+
+<p>Multi Factor Authentication Status {{ mfaStatus.enabled ? 'Enabled' : 'Disabled }}</p>
+
+<button *ngIf="!mfaStatus.enabled" (click)="reEnableOrDisableMfa(true)">Enable</button>
+
+<button *ngIf="mfaStatus.enabled" (click)="reEnableOrDisableMfa(false)">Disable</button>

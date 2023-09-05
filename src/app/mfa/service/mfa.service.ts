@@ -38,7 +38,7 @@ export class MfaService {
       );
   }
 
-  public reEnable(dto: ConfirmMfaDto): Observable<FleenHealthResponse> {
+  public reEnable(): Observable<FleenHealthResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 're-enable']);
     return this.httpService.update(req)
       .pipe(
