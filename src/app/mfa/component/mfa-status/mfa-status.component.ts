@@ -8,6 +8,8 @@ import {ErrorResponse} from "../../../base/response/error-response";
 import {FormBuilder} from "@angular/forms";
 import {Observable} from "rxjs";
 import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
+import {capitalize} from "../../../shared/util/helpers";
+import {MfaType} from "../../enum/mfa.enum";
 
 @Component({
   selector: 'app-mfa-status',
@@ -44,6 +46,7 @@ export class MfaStatusComponent extends BaseFormComponent implements OnInit {
       .subscribe({
         next: (result: FleenHealthResponse): void => {
           this.statusMessage = result.message;
+          this.updateMfaStatus(status);
         },
         error: (error: ErrorResponse): void => {
           this.handleError(error);
@@ -59,4 +62,6 @@ export class MfaStatusComponent extends BaseFormComponent implements OnInit {
     this.mfaStatus.enabled = status;
   }
 
+  protected readonly capitalize = capitalize;
+  protected readonly MfaType = MfaType;
 }
