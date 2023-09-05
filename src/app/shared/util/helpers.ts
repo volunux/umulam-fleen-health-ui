@@ -144,3 +144,7 @@ export function getAllowableExtensions(fileTypes: string[]): string[] {
   }
   return fileExtensions;
 }
+
+export function manyToType<T extends Object>(Constructor: Newable<T>, entries: any[]): T[] {
+  return entries.map((value: any) => new Constructor(value));
+}
