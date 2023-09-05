@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: "", component: AppComponent },
   { path: 'auth', loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule) },
   { path: 'mfa', loadChildren: () => import('./mfa/mfa.module').then(m => m.MfaModule), canActivate: [AuthGuard] },
+  { path: 'professional', loadChildren: () => import('./professional/professional.module').then(m => m.ProfessionalModule), canActivate: [AuthGuard] },
   { path: 'country', loadChildren: () => import('./country/country.module').then(m => m.CountryModule), canActivate: [AuthGuard] },
   { path: 'profile', loadChildren: () => import('./member/member.module').then(m => m.MemberModule), canActivate: [AuthGuard] },
   { path: "**", component: FleenHeatlhComponent }
