@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {Router} from "@angular/router";
@@ -9,7 +9,7 @@ import {ErrorResponse} from "../../../base/response/error-response";
 import {DEFAULT_FORM_CONTROL_VALUE, MFA_SETUP_TYPE} from "../../../shared/constant/enum-constant";
 import {codeValidator, enumTypeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
-import {isFalsy, isTruthy} from "../../../shared/util/helpers";
+import {isFalsy} from "../../../shared/util/helpers";
 import {MfaDetailResponse} from "../../response/mfa-detail.response";
 import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
 import {MfaType} from "../../enum/mfa.enum";
@@ -26,7 +26,6 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
   public mfaDetail!: MfaDetailResponse;
   public isCodeVerification: boolean = false;
   public isQrVerification: boolean = false;
-  public statusMessage: string = '';
   public isVerificationCodeSent: boolean = false;
   public NO_MFA: string = 'Multi Factor Authenticator Reset to none';
   public qrCodeSecret: string = '';
