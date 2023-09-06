@@ -1,10 +1,10 @@
-enum UserType {
+export enum UserType {
   USER = 'USER',
   PROFESSIONAL = 'PROFESSIONAL',
   BUSINESS = 'BUSINESS'
 }
 
-enum Gender {
+export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
   OTHER = 'OTHER'

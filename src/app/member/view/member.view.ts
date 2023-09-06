@@ -1,6 +1,7 @@
 import {FleenHealthView} from "../../shared/view/fleen-health.view";
 import {MfaType} from "../../mfa/enum/mfa.enum";
 import {MemberStatusView} from "../../professional/view/professional.view";
+import {Gender, UserType} from "../enum/member.enum";
 
 export class MemberView extends FleenHealthView {
 
