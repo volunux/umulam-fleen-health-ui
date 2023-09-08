@@ -27,6 +27,7 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
       .subscribe({
         next: (result: GetProfessionalUpdateVerificationDetailResponse): void => {
           this.entryView = result;
+          console.log(this.entryView);
           this.initForm();
         },
         error: (error: ErrorResponse): void => {

@@ -27,7 +27,7 @@ export abstract class ProfessionalUpdateDetailsBaseComponent extends BaseFormImp
       yearsOfExperience: [withDefault(this.entryView.yearsOfExperience, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, Validators.minLength(1), Validators.maxLength(2), isNumberValidator]
       ],
-      areasOfExpertise: [withDefault(this.entryView.areaOfExpertise, DEFAULT_FORM_CONTROL_VALUE),
+      areaOfExpertise: [withDefault(this.entryView.areaOfExpertise, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, Validators.minLength(100), Validators.maxLength(2500)]
       ],
       country: [withDefault(this.entryView.country, DEFAULT_FORM_CONTROL_VALUE),

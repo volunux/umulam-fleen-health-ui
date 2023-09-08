@@ -30,15 +30,18 @@
     <app-validation-error [control]="qualificationType" [control-label]="'Qualification Type'"></app-validation-error>
   </div>
 
-  <label for="country">Country:</label>
-  <select id="country" name="country">
-    <option value=""></option>
-    <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
-  </select>
+  <div class="form-group">
+    <label for="country">Country</label>
+    <select id="country" name="country">
+      <option value=""></option>
+      <option *ngFor="let country of countries" [value]="country.id">{{ country.title }}</option>
+    </select>
+    <app-validation-error [control]="country" [control-label]="'Country'"></app-validation-error>
+  </div>
 
   <div class="form-group">
-    <label for="years_of_experience">First Name</label>
-    <input type="text" formControlName="yearOfExperience" id="years_of_experience"/>
+    <label for="years_of_experience">Years of Experience</label>
+    <input type="text" formControlName="yearsOfExperience" id="years_of_experience"/>
     <app-validation-error [control]="yearsOfExperience" [control-label]="'Years of Experience'"></app-validation-error>
   </div>
 

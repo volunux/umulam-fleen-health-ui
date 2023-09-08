@@ -1,5 +1,6 @@
 import {CountryView} from "../../country/view/country.view";
 import {ProfessionalTitleView} from "../view/professional-title.view";
+import {manyToType} from "../../shared/util/helpers";
 
 export class GetProfessionalUpdateVerificationDetailResponse {
 
@@ -23,7 +24,8 @@ export class GetProfessionalUpdateVerificationDetailResponse {
     this.languagesSpoken = data?.languagesSpoken;
     this.country = data?.country;
 
-    this.countries = data?.countries ? data.countries : [];
-    this.professionalTitles = data?.professionalTitles ? data.professionalTitles : [];
+    this.countries = data?.countries ? manyToType(CountryView, data.countries) : [];
+    console.log(data?.professionalTitles);
+    this.professionalTitles = data?.professionalTitles ? manyToType(ProfessionalTitleView, data.professionalTitles) : [];
   }
 }
