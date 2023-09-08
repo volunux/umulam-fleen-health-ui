@@ -1,7 +1,7 @@
 import {FileConstraints} from "../type/other";
 import {CONTENT_TYPE_APPLICATION_JSON, CONTENT_TYPE_APPLICATION_OCTET} from "./other-constant";
 
-export const PROFESSIONAL_TYPES: string[] = ['PROFESSIONAL', 'USER'];
+export const PROFILE_TYPES: string[] = ['PROFESSIONAL', 'USER'];
 export const GENDER: string[] = ['MALE', 'FEMALE', 'OTHER'];
 export const VERIFICATION_TYPES: string[] = ['EMAIL', 'PHONE'];
 export const SUPPORTED_CONTENT_TYPES: string[] = [CONTENT_TYPE_APPLICATION_JSON, CONTENT_TYPE_APPLICATION_OCTET];
@@ -26,3 +26,5 @@ export const DEFAULT_IMAGE_CONSTRAINT: FileConstraints = {
 }
 
 export const MFA_SETUP_TYPE: string[] = ['EMAIL', 'PHONE', 'AUTHENTICATOR', 'NONE'];
+export const PROFESSIONAL_TYPES: string[] = ['COUNSELOR', 'PSYCHOLOGIST', 'THERAPIST'];
+export const PROFESSIONAL_QUALIFICATION_TYPE: string[] = ['DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE'];

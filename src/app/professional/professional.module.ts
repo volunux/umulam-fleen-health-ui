@@ -25,6 +25,7 @@ import {ProfessionalBaseComponent} from './component/professional-base/professio
 import {ProfessionalDashboardComponent} from './component/professional-dashboard/professional-dashboard.component';
 import {ProfessionalService} from "./service/professional.service";
 import {SharedModule} from "../shared/shared.module";
+import {AuthenticationModule} from "../authentication/authentication.module";
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import {SharedModule} from "../shared/shared.module";
   imports: [
     SharedModule,
     CommonModule,
-    ProfessionalRoutingModule
+    ProfessionalRoutingModule,
+    AuthenticationModule
   ],
   providers: [
     ProfessionalService

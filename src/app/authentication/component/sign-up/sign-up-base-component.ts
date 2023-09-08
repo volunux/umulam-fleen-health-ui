@@ -13,7 +13,7 @@ import {
   DEFAULT_FORM_CONTROL_VALUE,
   DEFAULT_VERIFICATION_TYPE,
   GENDER,
-  PROFESSIONAL_TYPES,
+  PROFILE_TYPES,
   VERIFICATION_TYPES
 } from "../../../shared/constant/enum-constant";
 import {DATE, PASSWORD_PATTERNS, PHONE_NUMBER} from "../../../shared/util/format-pattern";
@@ -25,7 +25,7 @@ export abstract class SignUpBaseComponent extends AuthBaseComponent {
   protected initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({
       profileType: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
+        [Validators.required, enumTypeValidator(PROFILE_TYPES)]
       ],
       firstName: [DEFAULT_FORM_CONTROL_VALUE,
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)]

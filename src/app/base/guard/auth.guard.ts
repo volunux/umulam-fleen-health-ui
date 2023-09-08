@@ -6,9 +6,7 @@ import {AUTHENTICATION_ENTRY_POINT} from "../../shared/constant/base-config";
 import {SessionStorageService} from "../service/session-storage.service";
 import {USER_DESTINATION_PAGE_KEY} from "../../shared/constant/other-constant";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthGuard implements CanActivate {
 
   public constructor(private authenticationService: AuthenticationService,

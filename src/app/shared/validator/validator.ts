@@ -208,3 +208,11 @@ export function typeValidator(controlNames: [string, string], options: any[], pr
     return null;
   };
 }
+
+
+export function isNumberValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  if (isNaN(control.value)) {
+    return { isNumber: true };
+  }
+  return null;
+}
