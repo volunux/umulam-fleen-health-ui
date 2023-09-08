@@ -49,6 +49,8 @@ export const validationErrorMessages: { [key: string]: Function } = {
 
   fileEmpty: (control: AbstractControl | any, label: string): string => `${label} is required and cannot be empty.`,
 
+  isNumber: (control: AbstractControl | any, label: string): string => `${label} should be a number.`,
+
   fileSize: (control: AbstractControl | any, label: string, options: FileConstraints): string => {
     const { maxFileSize: size, fileSizeUnit } = options;
     return `File is too large. File size should be less than equal to ${size}${fileSizeUnit}`;

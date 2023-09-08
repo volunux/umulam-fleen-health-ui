@@ -209,7 +209,6 @@ export function typeValidator(controlNames: [string, string], options: any[], pr
   };
 }
 
-
 export function isNumberValidator(control: AbstractControl): { [key: string]: boolean } | null {
   if (isNaN(control.value)) {
     return { isNumber: true };

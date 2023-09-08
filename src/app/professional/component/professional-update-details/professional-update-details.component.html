@@ -1,4 +1,5 @@
-<form *ngIf="isFormReady" [formGroup]="updateDetailsForm" (ngSubmit)="updateDetails()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+<form *ngIf="isFormReady" [formGroup]="updateDetailsForm" (ngSubmit)="updateDetails()" method="post"
+      enctype="application/x-www-form-urlencoded" class="sign-up-form">
   <div class="form-error-message">
     {{errorMessage}}
   </div>
@@ -7,16 +8,17 @@
     <label for="professional_type">Professional Type</label>
     <select formControlName="professionalType" id="professional_type">
       <option value=""></option>
-      <option *ngFor="let type of professionalTypes" value="type"> {{ type | titlecase }} </option>
+      <option *ngFor="let type of professionalTypes" [value]="type"> {{ type | lowercase | titlecase }} </option>
     </select>
-    <app-validation-error [control]="professionalType" [control-label]="'Professional Type'"></app-validation-error>
+    <app-validation-error [control]="professionalType" [control-label]="'Professional'"></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="title">Title</label>
     <select formControlName="title" id="title">
       <option value=""></option>
-      <option *ngFor="let title of professionalTitles" value="title.name"> {{ title.label }} </option>
+      <option *ngFor="let title of professionalTitles"
+              [value]="title.name"> {{ title.label | lowercase | titlecase }} </option>
     </select>
     <app-validation-error [control]="title" [control-label]="'Title'"></app-validation-error>
   </div>
@@ -25,14 +27,14 @@
     <label for="qualification_type">Qualification Type</label>
     <select formControlName="qualificationType" id="qualification_type">
       <option value=""></option>
-      <option *ngFor="let type of qualificationTypes" value="type"> {{ type | titlecase }} </option>
+      <option *ngFor="let type of qualificationTypes" [value]="type"> {{ type | lowercase | titlecase }} </option>
     </select>
-    <app-validation-error [control]="qualificationType" [control-label]="'Qualification Type'"></app-validation-error>
+    <app-validation-error [control]="qualificationType" [control-label]="'Qualification'"></app-validation-error>
   </div>
 
   <div class="form-group">
     <label for="country">Country</label>
-    <select id="country" name="country">
+    <select id="country" formControlName="country">
       <option value=""></option>
       <option *ngFor="let country of countries" [value]="country.id">{{ country.title }}</option>
     </select>
