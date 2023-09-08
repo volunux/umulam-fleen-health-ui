@@ -43,6 +43,7 @@ export abstract class ProfessionalUpdateDetailsBaseComponent extends BaseFormImp
         [Validators.required, enumTypeValidator(PROFESSIONAL_QUALIFICATION_TYPES)]
       ]
     });
+    this.formReady();
   }
 
   public getFormBuilder(): FormBuilder {

@@ -32,7 +32,11 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
         error: (error: ErrorResponse): void => {
           console.log(error);
         }
-      })
+    });
+  }
+
+  public updateDetails(): void {
+    console.log(this.updateDetailsForm.value);
   }
 
   get countries(): CountryView[] {

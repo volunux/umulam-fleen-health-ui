@@ -1,6 +1,4 @@
-<app-otp-verification *ngIf="isPreVerificationStage" (otpSubmitted)="handleVerificationCode($event)" [email-address]="$emailAddress" [phone-number]="$phoneNumber"></app-otp-verification>
-
-<form *ngIf="isFormReady" [formGroup]="signUpForm" (ngSubmit)="signUp()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
+<form *ngIf="isFormReady" [formGroup]="updateDetailsForm" (ngSubmit)="updateDetails()" method="post" enctype="application/x-www-form-urlencoded" class="sign-up-form">
   <div class="form-error-message">
     {{errorMessage}}
   </div>
@@ -15,21 +13,21 @@
   </div>
 
   <div class="form-group">
-    <label for="qualification_type">Qualification Type</label>
-    <select formControlName="qualificationType" id="qualification_type">
-      <option value=""></option>
-      <option *ngFor="let type of qualificationTypes" value="type"> {{ type | titlecase }} </option>
-    </select>
-    <app-validation-error [control]="qualificationType" [control-label]="'Qualification Type'"></app-validation-error>
-  </div>
-
-  <div class="form-group">
     <label for="title">Title</label>
     <select formControlName="title" id="title">
       <option value=""></option>
       <option *ngFor="let title of professionalTitles" value="title.name"> {{ title.label }} </option>
     </select>
     <app-validation-error [control]="title" [control-label]="'Title'"></app-validation-error>
+  </div>
+
+  <div class="form-group">
+    <label for="qualification_type">Qualification Type</label>
+    <select formControlName="qualificationType" id="qualification_type">
+      <option value=""></option>
+      <option *ngFor="let type of qualificationTypes" value="type"> {{ type | titlecase }} </option>
+    </select>
+    <app-validation-error [control]="qualificationType" [control-label]="'Qualification Type'"></app-validation-error>
   </div>
 
   <label for="country">Country:</label>
@@ -45,51 +43,17 @@
   </div>
 
   <div class="form-group">
-    <label for="area_of_expertise">Area of Expertise</label>
-    <textarea formControlName="areaOfExpertise" id="area_of_expertise"></textarea>
-    <app-validation-error [control]="areaOfExpertise" [control-label]="'Area of Expertise'"></app-validation-error>
-  </div>
-
-
-  <div class="form-group">
     <label for="languages_spoken">Languages Spoken</label>
     <input type="text" formControlName="languagesSpoken" id="languages_spoken"/>
     <app-validation-error [control]="languagesSpoken" [control-label]="'Languages Spoken'"></app-validation-error>
   </div>
 
   <div class="form-group">
-    <label for="phone_number">Phone Number</label>
-    <input type="text" formControlName="phoneNumber" id="phone_number"/>
-    <app-validation-error [control]="phoneNumber" [control-label]="'Phone Number'"></app-validation-error>
+    <label for="area_of_expertise">Area of Expertise</label>
+    <textarea formControlName="areaOfExpertise" id="area_of_expertise"></textarea>
+    <app-validation-error [control]="areaOfExpertise" [control-label]="'Area of Expertise'"></app-validation-error>
   </div>
 
-  <div class="form-group">
-    <label for="gender">Gender</label>
-    <select formControlName="gender" id="gender">
-      <option value=""></option>
-      <option value="MALE">Male</option>
-      <option value="FEMALE">Female</option>
-      <option value="OTHER">Other</option>
-    </select>
-    <app-validation-error [control]="gender" [control-label]="'Gender'"></app-validation-error>
-  </div>
-
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" formControlName="password" id="password"/>
-    <app-validation-error [control]="password" [control-label]="'Password'"></app-validation-error>
-  </div>
-
-  <div class="form-group">
-    <label for="confirm_password">Confirm Password</label>
-    <input type="password" formControlName="confirmPassword" id="confirm_password"/>
-    <app-validation-error [control]="confirmPassword" [control-label]="'Confirm Password'"></app-validation-error>
-  </div>
-
-  <div class="form-group">
-    <input type="hidden" formControlName="verificationType" value="EMAIL"/>
-    <app-validation-error [control]="verificationType" [control-label]="'Verification Type'"></app-validation-error>
-  </div>
 
   <button type="submit" [disabled]="isSubmitting">Submit</button>
 
