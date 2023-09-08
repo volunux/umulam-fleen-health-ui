@@ -7,8 +7,8 @@ import {ErrorResponse} from "../../../base/response/error-response";
 import {CountryView} from "../../../country/view/country.view";
 import {FormBuilder} from "@angular/forms";
 import {ProfessionalUpdateDetailsBaseComponent} from "./professional-update-details-base.component";
-import {PROFESSIONAL_TYPES} from "../../../shared/constant/enum-constant";
-import {capitalize} from "../../../shared/util/helpers";
+import {PROFESSIONAL_QUALIFICATION_TYPES, PROFESSIONAL_TYPES} from "../../../shared/constant/enum-constant";
+import {ProfessionalTitleView} from "../../view/professional-title.view";
 
 @Component({
   selector: 'app-professional-update-details',
@@ -16,8 +16,6 @@ import {capitalize} from "../../../shared/util/helpers";
   styleUrls: ['./professional-update-details.component.css']
 })
 export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetailsBaseComponent implements OnInit {
-
-  public entryView!: GetProfessionalUpdateVerificationDetailResponse;
 
   public constructor(protected professionalService: ProfessionalService,
                      formBuilder: FormBuilder) {
@@ -29,6 +27,7 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
       .subscribe({
         next: (result: GetProfessionalUpdateVerificationDetailResponse): void => {
           this.entryView = result;
+          this.initForm();
         },
         error: (error: ErrorResponse): void => {
           console.log(error);
@@ -42,7 +41,14 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
 
   get professionalTypes(): string[] {
     return PROFESSIONAL_TYPES;
-  };
+  }
 
-  protected readonly capitalize = capitalize;
+  get qualificationTypes(): string [] {
+    return PROFESSIONAL_QUALIFICATION_TYPES;
+  }
+
+  get professionalTitles(): ProfessionalTitleView[] {
+    return this.entryView.professionalTitles;
+  }
+
 }

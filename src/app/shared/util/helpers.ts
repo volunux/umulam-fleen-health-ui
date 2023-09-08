@@ -130,9 +130,9 @@ export function toISODate(date: Date): string {
   return '';
 }
 
-export function withDefault(value: string, defaultValue: string = DEFAULT_FORM_CONTROL_VALUE): string {
+export function withDefault(value: string | number, defaultValue: string = DEFAULT_FORM_CONTROL_VALUE): string {
   if (isTruthy(value)) {
-    return value;
+    return value.toString();
   }
   return defaultValue;
 }

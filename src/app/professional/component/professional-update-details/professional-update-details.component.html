@@ -6,19 +6,34 @@
   </div>
 
   <div class="form-group">
+    <label for="professional_type">Professional Type</label>
+    <select formControlName="professionalType" id="professional_type">
+      <option value=""></option>
+      <option *ngFor="let type of professionalTypes" value="type"> {{ type | titlecase }} </option>
+    </select>
+    <app-validation-error [control]="professionalType" [control-label]="'Professional Type'"></app-validation-error>
+  </div>
+
+  <div class="form-group">
+    <label for="qualification_type">Qualification Type</label>
+    <select formControlName="qualificationType" id="qualification_type">
+      <option value=""></option>
+      <option *ngFor="let type of qualificationTypes" value="type"> {{ type | titlecase }} </option>
+    </select>
+    <app-validation-error [control]="qualificationType" [control-label]="'Qualification Type'"></app-validation-error>
+  </div>
+
+  <div class="form-group">
     <label for="title">Title</label>
     <select formControlName="title" id="title">
       <option value=""></option>
-      <option *ngFor="let professionalType of professionalTypes"></option>
-      <option value="professionalType">{{ capitalize(professionalType) }}</option>
-      <option value="Psychologist">Psychologist</option>
-      <option value="Therapist">Therapist</option>
+      <option *ngFor="let title of professionalTitles" value="title.name"> {{ title.label }} </option>
     </select>
     <app-validation-error [control]="title" [control-label]="'Title'"></app-validation-error>
   </div>
 
-  <label for="country">Select a Country:</label>
-  <select id="country" name="country" >
+  <label for="country">Country:</label>
+  <select id="country" name="country">
     <option value=""></option>
     <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
   </select>
@@ -26,25 +41,20 @@
   <div class="form-group">
     <label for="years_of_experience">First Name</label>
     <input type="text" formControlName="yearOfExperience" id="years_of_experience"/>
-    <app-validation-error [control]="yearOfExperience" [control-label]="'Years of Experience'"></app-validation-error>
+    <app-validation-error [control]="yearsOfExperience" [control-label]="'Years of Experience'"></app-validation-error>
   </div>
 
   <div class="form-group">
-    <label for="last_name">Last Name</label>
-    <input type="text" formControlName="lastName" id="last_name"/>
-    <app-validation-error [control]="lastName" [control-label]="'Last Name'"></app-validation-error>
+    <label for="area_of_expertise">Area of Expertise</label>
+    <textarea formControlName="areaOfExpertise" id="area_of_expertise"></textarea>
+    <app-validation-error [control]="areaOfExpertise" [control-label]="'Area of Expertise'"></app-validation-error>
   </div>
 
-  <div class="form-group">
-    <label for="date_of_birth">Date of Birth</label>
-    <input type="text" formControlName="dateOfBirth" id="date_of_birth"/>
-    <app-validation-error [control]="dateOfBirth" [control-label]="'Date of Birth'"></app-validation-error>
-  </div>
 
   <div class="form-group">
-    <label for="email_address">Email Address</label>
-    <input type="email" formControlName="emailAddress" id="email_address"/>
-    <app-validation-error [control]="emailAddress" [control-label]="'Email Address'" ></app-validation-error>
+    <label for="languages_spoken">Languages Spoken</label>
+    <input type="text" formControlName="languagesSpoken" id="languages_spoken"/>
+    <app-validation-error [control]="languagesSpoken" [control-label]="'Languages Spoken'"></app-validation-error>
   </div>
 
   <div class="form-group">

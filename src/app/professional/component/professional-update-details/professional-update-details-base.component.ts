@@ -1,6 +1,6 @@
 import {
   DEFAULT_FORM_CONTROL_VALUE,
-  PROFESSIONAL_QUALIFICATION_TYPE,
+  PROFESSIONAL_QUALIFICATION_TYPES,
   PROFESSIONAL_TYPES
 } from "../../../shared/constant/enum-constant";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -9,7 +9,7 @@ import {BaseFormImplComponent} from "../../../base/component/base-form/base-form
 import {
   GetProfessionalUpdateVerificationDetailResponse
 } from "../../response/get-professional-update-verification-detail.response";
-import {getPropsAsStringArr} from "../../../shared/util/helpers";
+import {getPropsAsStringArr, withDefault} from "../../../shared/util/helpers";
 
 export abstract class ProfessionalUpdateDetailsBaseComponent extends BaseFormImplComponent {
 
@@ -21,26 +21,26 @@ export abstract class ProfessionalUpdateDetailsBaseComponent extends BaseFormImp
 
   protected initForm(): void {
     this.fleenHealthForm = this.getFormBuilder().group({
-      title: [DEFAULT_FORM_CONTROL_VALUE,
+      title: [withDefault(this.entryView.title, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, Validators.minLength(1), Validators.maxLength(500), enumTypeValidator(getPropsAsStringArr(this.entryView.professionalTitles))]
       ],
-      yearsOfExperience: [DEFAULT_FORM_CONTROL_VALUE,
+      yearsOfExperience: [withDefault(this.entryView.yearsOfExperience, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, Validators.minLength(1), Validators.maxLength(2), isNumberValidator]
       ],
-      areasOfExpertise: [DEFAULT_FORM_CONTROL_VALUE,
+      areasOfExpertise: [withDefault(this.entryView.areaOfExpertise, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, Validators.minLength(100), Validators.maxLength(2500)]
       ],
-      country: [DEFAULT_FORM_CONTROL_VALUE,
+      country: [withDefault(this.entryView.country, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, isNumberValidator]
       ],
-      languagesSpoken: [DEFAULT_FORM_CONTROL_VALUE,
+      languagesSpoken: [withDefault(this.entryView.languagesSpoken, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, Validators.maxLength(150)]
       ],
-      professionalType: [DEFAULT_FORM_CONTROL_VALUE,
+      professionalType: [withDefault(this.entryView.professionalType, DEFAULT_FORM_CONTROL_VALUE),
         [Validators.required, enumTypeValidator(PROFESSIONAL_TYPES)]
       ],
-      qualificationType: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, enumTypeValidator(PROFESSIONAL_QUALIFICATION_TYPE)]
+      qualificationType: [withDefault(this.entryView.qualificationType, DEFAULT_FORM_CONTROL_VALUE),
+        [Validators.required, enumTypeValidator(PROFESSIONAL_QUALIFICATION_TYPES)]
       ]
     });
   }
