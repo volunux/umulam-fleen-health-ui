@@ -9,6 +9,8 @@ import {FormBuilder} from "@angular/forms";
 import {ProfessionalUpdateDetailsBaseComponent} from "./professional-update-details-base.component";
 import {PROFESSIONAL_QUALIFICATION_TYPES, PROFESSIONAL_TYPES} from "../../../shared/constant/enum-constant";
 import {ProfessionalTitleView} from "../../view/professional-title.view";
+import {isFalsy, isTruthy} from "../../../shared/util/helpers";
+import {ProfessionalView} from "../../view/professional.view";
 
 @Component({
   selector: 'app-professional-update-details',
@@ -27,7 +29,6 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
       .subscribe({
         next: (result: GetProfessionalUpdateVerificationDetailResponse): void => {
           this.entryView = result;
-          console.log(this.entryView);
           this.initForm();
         },
         error: (error: ErrorResponse): void => {
@@ -37,7 +38,21 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
   }
 
   public updateDetails(): void {
-    console.log(this.updateDetailsForm.value);
+    if (isFalsy(this.isSubmitting) && isTruthy(this.updateDetailsForm) && this.updateDetailsForm.valid) {
+      this.disableSubmitting();
+      this.professionalService.updateVerificationDetails(this.updateDetailsForm.value)
+        .subscribe({
+          next: (result: ProfessionalView): void => {
+            console.log(result);
+          },
+          error: (error: ErrorResponse): void => {
+            this.handleError(error);
+          },
+          complete: (): void => {
+            this.enableSubmitting();
+          }
+      });
+    }
   }
 
   get countries(): CountryView[] {

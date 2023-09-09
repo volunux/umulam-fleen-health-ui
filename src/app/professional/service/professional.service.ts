@@ -6,6 +6,7 @@ import {ProfessionalView} from "../view/professional.view";
 import {
   GetProfessionalUpdateVerificationDetailResponse
 } from "../response/get-professional-update-verification-detail.response";
+import {UpdateProfessionalDetailsDto} from "../dto/professional.dto";
 
 @Injectable()
 export class ProfessionalService {
@@ -27,6 +28,14 @@ export class ProfessionalService {
     return this.httpService.get(req)
       .pipe(
         map(data => new GetProfessionalUpdateVerificationDetailResponse(data))
+      )
+  }
+
+  public updateVerificationDetails(body: UpdateProfessionalDetailsDto): Observable<ProfessionalView> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'update-details']);
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new ProfessionalView(data))
       )
   }
 
