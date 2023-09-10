@@ -13,7 +13,13 @@ import {DeleteResponse} from "../../../shared/response/delete.response";
 import {UploadProfessionalDocumentDto} from "../../dto/professional.dto";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {FileDetail} from "../../../shared/interface/base";
-import {areAllPropertiesTruthy, getFirstKeyAndValue, isFalsy} from "../../../shared/util/helpers";
+import {
+  areAllPropertiesTruthy,
+  getFirstKeyAndValue,
+  isFalsy,
+  isTruthy,
+  toCamelCase
+} from "../../../shared/util/helpers";
 
 @Component({
   selector: 'app-professional-update-documents',
@@ -23,6 +29,10 @@ import {areAllPropertiesTruthy, getFirstKeyAndValue, isFalsy} from "../../../sha
 export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent implements OnInit {
   protected readonly documentConstraints: FileConstraints = DEFAULT_DOCUMENT_CONSTRAINT;
   public dto: UploadProfessionalDocumentDto = new UploadProfessionalDocumentDto(ANY_EMPTY);
+  public educationCertificate!: FormControl;
+  public transcript!: FormControl;
+  public professionalMembership!: FormControl;
+  public curriculumVitae!: FormControl;
 
   public constructor(protected professionalService: ProfessionalService,
                      protected signedUrlService: SignedUrlService) {
@@ -33,12 +43,29 @@ export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent 
     this.professionalService.getUploadDocuments()
       .subscribe({
         next: (result: VerificationDocumentView[]): void => {
-          console.log(result);
+          this.initDocumentDetails(result);
+          this.initForm();
         },
         error: (error: ErrorResponse): void => {
-          console.log(error);
+          this.handleError(error);
         }
     });
+  }
+
+  private initForm(): void {
+    this.educationCertificate = new FormControl('');
+    this.transcript = new FormControl('');
+    this.professionalMembership = new FormControl('');
+    this.curriculumVitae = new FormControl('');
+    this.formReady();
+  }
+
+  private initDocumentDetails(documents: VerificationDocumentView[]): void {
+    if (isTruthy(documents) && Array.isArray(documents)) {
+      documents.forEach((document: VerificationDocumentView): void => {
+        this.dto[toCamelCase(document.documentType)] = document.link;
+      });
+    }
   }
 
   public updateDetails(detail: FileDetail): void {
@@ -51,22 +78,6 @@ export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent 
       console.log(this.dto);
     }
     this.errorMessage = 'Form is not complete';
-  }
-
-  get educationCertificate(): FormControl {
-    return new FormControl('');
-  }
-
-  get transcript(): FormControl {
-    return new FormControl('');
-  };
-
-  get professionalMembership(): FormControl {
-    return new FormControl('');
-  }
-
-  get curriculumVitae(): FormControl {
-    return new FormControl('');
   }
 
   get signedUrlMethod(): (...data: any[]) => Observable<SignedUrlResponse> {
