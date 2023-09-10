@@ -25,7 +25,6 @@ export class GetProfessionalUpdateVerificationDetailResponse {
     this.country = data?.country;
 
     this.countries = data?.countries ? manyToType(CountryView, data.countries) : [];
-    console.log(data?.professionalTitles);
     this.professionalTitles = data?.professionalTitles ? manyToType(ProfessionalTitleView, data.professionalTitles) : [];
   }
 }

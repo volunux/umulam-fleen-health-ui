@@ -32,7 +32,7 @@ export class ProfessionalService {
   }
 
   public updateVerificationDetails(body: UpdateProfessionalDetailsDto): Observable<ProfessionalView> {
-    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'update-details']);
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'update-details'], null, { ...body });
     return this.httpService.update(req)
       .pipe(
         map(data => new ProfessionalView(data))

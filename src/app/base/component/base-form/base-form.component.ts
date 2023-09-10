@@ -79,6 +79,9 @@ export abstract class BaseFormComponent {
 
   protected getMessagesInSentence(messages: string[]): string {
     if (isTruthy(messages) && Array.isArray(messages)) {
+      if (messages.length < 2) {
+        return messages[0];
+      }
       return messages.join('. ') + '.';
     }
     return '';
@@ -103,6 +106,7 @@ export abstract class BaseFormComponent {
     const { type } = error;
     if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
       this.setErrorsFromApiResponse(error.fields);
+      this.enableSubmitting();
       return;
     }
     this.errorMessage = error?.message || '';
