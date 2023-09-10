@@ -17,13 +17,10 @@
         <th>Years of Experience</th>
         <td>{{ professionalView.yearsOfExperience }}</td>
       </tr>
-      <tr>
-        <th>Area of Expertise</th>
-        <td>{{ professionalView.areaOfExpertise }}</td>
-      </tr>
+
       <tr>
         <th>Availability Status</th>
-        <td>{{ professionalView.availabilityStatus }}</td>
+        <td>{{ professionalView.availabilityStatus | titlecase }}</td>
       </tr>
       <tr>
         <th>Languages Spoken</th>
@@ -33,9 +30,13 @@
         <th>Country</th>
         <td>{{ professionalView.country ? professionalView.country.title : 'NA' }}</td>
       </tr>
+      <tr>
+        <th>Area of Expertise</th>
+        <td>{{ professionalView.areaOfExpertise }}</td>
+      </tr>
       <tr *ngFor="let document of professionalView.verificationDocuments">
         <th>{{ normalizeName(document.documentType) }}</th>
-        <td><a [href]="document.link">View</a></td>
+        <td><button (click)="downloadFile(document.link)">View</button></td>
       </tr>
     </body>
   </table>

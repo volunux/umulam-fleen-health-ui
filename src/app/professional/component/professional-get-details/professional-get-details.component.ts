@@ -5,7 +5,9 @@ import {ProfessionalView} from "../../view/professional.view";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorType} from "../../../shared/constant/error-constant";
-import {normalizeName} from "../../../shared/util/helpers";
+import {isTruthy, nonNull, normalizeName} from "../../../shared/util/helpers";
+import {FileUploadDownloadService} from "../../../shared/service/file-upload-download.service";
+import {S3Service} from "../../../shared/service/s3.service";
 
 @Component({
   selector: 'app-professional-get-details',
@@ -14,8 +16,11 @@ import {normalizeName} from "../../../shared/util/helpers";
 })
 export class ProfessionalGetDetailsComponent extends BaseComponent implements OnInit {
   public entryView!: ProfessionalView;
+  protected readonly normalizeName = normalizeName;
 
   public constructor(protected professionalService: ProfessionalService,
+                     protected fileService: FileUploadDownloadService,
+                     protected s3Service: S3Service,
                      protected router: Router,
                      protected route: ActivatedRoute) {
     super();
@@ -40,10 +45,16 @@ export class ProfessionalGetDetailsComponent extends BaseComponent implements On
     await this.router.navigate(['..', 'update-details'], {relativeTo: this.route});
   }
 
+  public downloadFile(link: string): void {
+    if (isTruthy(link)) {
+      this.fileService.downloadFile(link, this.s3Service.getObjectKeyFromSignedUrl(link) as string)
+        .subscribe();
+    }
+  }
+
   get professionalView(): ProfessionalView {
     return this.entryView;
   }
 
 
-  protected readonly normalizeName = normalizeName;
 }
