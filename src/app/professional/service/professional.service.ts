@@ -53,7 +53,8 @@ export class ProfessionalService {
       );
   }
 
-  public deleteDocument(key: string): Observable<DeleteResponse> {
+  public deleteDocument(fileNameOrSignedUrlOrKey: string): Observable<DeleteResponse> {
+    const key: string = this.s3Service.getObjectKeyFromSignedUrl(fileNameOrSignedUrlOrKey) as string
     const req: BaseRequest = this.httpService.toRequest(['delete', 'member-document'], { key });
     return this.httpService.delete(req)
       .pipe(

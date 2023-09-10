@@ -97,9 +97,7 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
     if (isTruthy(this.cancelRequest$)) {
       this.cancelRequest$.unsubscribe();
     }
-    if (isTruthy(element)) {
-      this.fileService.clearInputFiles(element);
-    }
+    this.fileService.clearInputFiles(element);
     this.uploadMessage = statusText.fileUpload.abort;
   }
 
@@ -117,7 +115,7 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
     }
   }
 
-  public deleteFile(): void {
+  public deleteFile(elem: HTMLInputElement): void {
     if (isTruthy(this.fileNameOrUrl) && isTruthy(this.deleteFile$)) {
       this.uploadMessage = statusText.deleteObject.inProgress;
       this.deleteFile$(this.fileNameOrUrl)
@@ -132,6 +130,7 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
             this.deleteDetails.emit({
               [(this.fileKey)]: this.fileNameOrUrl
             });
+            this.fileService.clearInputFiles(elem);
           }
       });
     }
