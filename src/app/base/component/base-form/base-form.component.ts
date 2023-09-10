@@ -1,12 +1,12 @@
 import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
 import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
-import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {ANY_EMPTY, DEFAULT_ERROR_MESSAGE} from "../../../shared/constant/other-constant";
 import {ErrorResponse} from "../../response/error-response";
 import {Router} from "@angular/router";
 import {BASE_PATH} from "../../../shared/constant/base-config";
 import {Observable, of} from "rxjs";
-import {ErrorType} from "../../../shared/constant/error-constant";
+import {ERR_CONNECTION_REFUSED_MESSAGE, ErrorType} from "../../../shared/constant/error-constant";
 
 export abstract class BaseFormComponent {
 
@@ -112,6 +112,9 @@ export abstract class BaseFormComponent {
       return;
     }
     this.errorMessage = error?.message || '';
+    if (this.errorMessage.includes(ERR_CONNECTION_REFUSED_MESSAGE)) {
+      this.errorMessage = DEFAULT_ERROR_MESSAGE;
+    }
     this.enableSubmitting();
   }
 

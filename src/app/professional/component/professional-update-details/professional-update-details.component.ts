@@ -10,7 +10,6 @@ import {ProfessionalUpdateDetailsBaseComponent} from "./professional-update-deta
 import {PROFESSIONAL_QUALIFICATION_TYPES, PROFESSIONAL_TYPES} from "../../../shared/constant/enum-constant";
 import {ProfessionalTitleView} from "../../view/professional-title.view";
 import {isFalsy, isTruthy} from "../../../shared/util/helpers";
-import {ProfessionalView} from "../../view/professional.view";
 
 @Component({
   selector: 'app-professional-update-details',
@@ -32,7 +31,7 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
           this.initForm();
         },
         error: (error: ErrorResponse): void => {
-          console.log(error);
+          this.handleError(error);
         }
     });
   }
@@ -42,9 +41,6 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
       this.disableSubmitting();
       this.professionalService.updateVerificationDetails(this.updateDetailsForm.value)
         .subscribe({
-          next: (result: ProfessionalView): void => {
-            console.log(result);
-          },
           error: (error: ErrorResponse): void => {
             this.handleError(error);
           },
