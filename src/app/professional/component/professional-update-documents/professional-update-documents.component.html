@@ -1,1 +1,17 @@
-<p>professional-update-documents works!</p>
+<app-upload-file [control-label]="'Education Certificate'" [control]="educationCertificate" [file-constraints]="documentConstraints" [file-id]="'education_certificate'" [file-key]="'educationCertificate'"
+                 [file-url]="''" [signed-url-method]="signedUrlMethod" [save-file-method]="saveFileMethod" [delete-file-method]="deleteFileMethod" (upload-details)="updateDetails($event)"
+                 [can-download-or-view]="true"></app-upload-file>
+
+<app-upload-file [control-label]="'Transcript'" [control]="transcript" [file-constraints]="documentConstraints" [file-id]="'transcript'" [file-key]="'transcript'"
+                 [file-url]="''" [signed-url-method]="signedUrlMethod" [save-file-method]="saveFileMethod" [delete-file-method]="deleteFileMethod" (upload-details)="updateDetails($event)"
+                 [can-download-or-view]="true"></app-upload-file>
+
+<app-upload-file [control-label]="'Professional Membership'" [control]="professionalMembership" [file-constraints]="documentConstraints" [file-id]="'professional_membership'" [file-key]="'professionalMembership'"
+                 [file-url]="''" [signed-url-method]="signedUrlMethod" [save-file-method]="saveFileMethod" [delete-file-method]="deleteFileMethod" (upload-details)="updateDetails($event)"
+                 [can-download-or-view]="true"></app-upload-file>
+
+<app-upload-file [control-label]="'Curriculum Vitae'" [control]="curriculumVitae" [file-constraints]="documentConstraints" [file-id]="'curriculum_vitae'" [file-key]="'curriculumVitae'"
+                 [file-url]="''" [signed-url-method]="signedUrlMethod" [save-file-method]="saveFileMethod" [delete-file-method]="deleteFileMethod" (upload-details)="updateDetails($event)"
+                 [can-download-or-view]="true"></app-upload-file>
+
+<button type="button" [disabled]="isSubmitting">Submit</button>

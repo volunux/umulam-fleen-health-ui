@@ -13,3 +13,4 @@
   </form>
 </div>
 
+  <button type="button" *ngIf="canDownloadOrView && fileNameOrUrl" (click)="downloadOrView(fileNameOrUrl, fileKey)">Download</button>

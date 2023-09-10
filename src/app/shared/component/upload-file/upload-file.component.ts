@@ -29,6 +29,7 @@ export class UploadFileComponent extends BaseFormComponent {
   @Input('file-id') public fileId!: string;
   @Input('signed-url-method') public generateSignedUrl$!: (...data: any[]) => Observable<any>;
   @Input('delete-file-method') public deleteFile$!: (...data: any[]) => Observable<any>;
+  @Input('download-file-method') public downloadFile$!: (...data: any[]) => Observable<SignedUrlResponse>;
   @Input('save-file-method') public saveFile$!: (...data: any[]) => Observable<any>;
   @Output('upload-details') public uploadDetails: EventEmitter<any> = new EventEmitter<any>();
   @Output('delete-details') public deleteDetails: EventEmitter<any> = new EventEmitter<any>();
@@ -36,6 +37,7 @@ export class UploadFileComponent extends BaseFormComponent {
   @ViewChild('elem', { static: false }) inputElement!: ElementRef;
   public uploadMessage: string = '';
   private cancelRequest$!: Subscription;
+  @Input('can-download-or-view') public canDownloadOrView: boolean = false;
 
 
   public constructor(protected fileService: FileUploadDownloadService) {
@@ -123,6 +125,21 @@ export class UploadFileComponent extends BaseFormComponent {
               [(this.fileKey)]: this.fileNameOrUrl
             });
           }
+      });
+    }
+  }
+
+  public downloadOrView(pathOrUrlOrLinkOrKey: string, fileName: string): void {
+    if (isTruthy(pathOrUrlOrLinkOrKey) && isTruthy(fileName)) {
+      this.downloadFile$(pathOrUrlOrLinkOrKey)
+        .pipe(
+          switchMap((result: SignedUrlResponse) => {
+            return this.fileService.downloadFile(result.signedUrl, fileName);
+          })
+        ).subscribe({
+        complete: (): void => {
+          console.log('Download complete');
+        }
       });
     }
   }

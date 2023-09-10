@@ -1,10 +1,12 @@
 import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
 import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
-import {FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
+import {ANY_EMPTY, FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
 import {ErrorResponse} from "../../response/error-response";
 import {Router} from "@angular/router";
 import {BASE_PATH} from "../../../shared/constant/base-config";
+import {Observable, of} from "rxjs";
+import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
 
 export abstract class BaseFormComponent {
 
@@ -144,6 +146,10 @@ export abstract class BaseFormComponent {
 
   get noOpFunction(): (...data: any[]) => void {
     return (): void => { };
+  }
+
+  public noOpFunction$(...data: any[]): Observable<any> {
+    return of(ANY_EMPTY);
   }
 
 }

@@ -18,4 +18,12 @@ export class SignedUrlService {
         map(data => new SignedUrlResponse(data))
       );
   }
+
+  public generateForProfileVerificationDocument(fileName: string): Observable<SignedUrlResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'profile-verification-document'], { fileName });
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new SignedUrlResponse(data))
+      );
+  }
 }

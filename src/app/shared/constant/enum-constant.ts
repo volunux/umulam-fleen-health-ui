@@ -18,10 +18,17 @@ export const DEFAULT_VERIFICATION_TYPE: string = 'EMAIL';
 export const DEFAULT_FORM_CONTROL_VALUE: string = '';
 export const DEFAULT_PAGE_NO_KEY: string = 'page';
 export const DEFAULT_IMAGE_TYPES: string[] = ['image/jpeg', 'image/png'];
+export const DEFAULT_DOCUMENT_TYPES: string[] = ['application/pdf'];
 
 export const DEFAULT_IMAGE_CONSTRAINT: FileConstraints = {
   maxFileSize: 1,
   allowableTypes: DEFAULT_IMAGE_TYPES,
+  fileSizeUnit: 'MB'
+}
+
+export const DEFAULT_DOCUMENT_CONSTRAINT: FileConstraints = {
+  maxFileSize: 1,
+  allowableTypes: DEFAULT_DOCUMENT_TYPES,
   fileSizeUnit: 'MB'
 }
 

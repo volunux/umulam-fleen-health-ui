@@ -6,7 +6,7 @@ import {
   DEFAULT_UPLOAD_MAX_FILE_SIZE
 } from "../constant/other-constant";
 import {HttpClientService} from "./http-client.service";
-import {Observable} from "rxjs";
+import {Observable, Subscriber} from "rxjs";
 import {ExchangeRequest, RequestMethod} from "../type/http";
 import {HttpHeaders} from "@angular/common/http";
 import {AbstractControl} from "@angular/forms";
@@ -103,6 +103,26 @@ export class FileUploadDownloadService {
       body,
       reportProgress: true,  observe: 'events'
     }
+  }
+
+  downloadFile(path: string, filename: string): Observable<void> {
+    return new Observable<void>((observer: Subscriber<void>): void => {
+      const anchor: HTMLAnchorElement = document.createElement('a');
+      anchor.href = path;
+      anchor.download = filename;
+      anchor.target = '_blank';
+
+      anchor.style.display = 'none';
+      document.body.appendChild(anchor);
+
+      anchor.addEventListener('click', (): void => {
+        document.body.removeChild(anchor);
+        observer.next();
+        observer.complete();
+      });
+
+      anchor.click();
+    });
   }
 
 }

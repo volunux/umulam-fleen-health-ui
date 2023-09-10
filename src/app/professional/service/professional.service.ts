@@ -7,6 +7,10 @@ import {
   GetProfessionalUpdateVerificationDetailResponse
 } from "../response/get-professional-update-verification-detail.response";
 import {UpdateProfessionalDetailsDto} from "../dto/professional.dto";
+import {manyToType} from "../../shared/util/helpers";
+import {VerificationDocumentView} from "../view/verification-document.view";
+import {DeleteResponse} from "../../shared/response/delete.response";
+import {SignedUrlResponse} from "../../shared/response/signed-url.response";
 
 @Injectable()
 export class ProfessionalService {
@@ -20,7 +24,7 @@ export class ProfessionalService {
     return this.httpService.get(req)
       .pipe(
         map(data => new ProfessionalView(data))
-      )
+      );
   }
 
   public getUpdateVerificationDetails(): Observable<GetProfessionalUpdateVerificationDetailResponse> {
@@ -28,7 +32,7 @@ export class ProfessionalService {
     return this.httpService.get(req)
       .pipe(
         map(data => new GetProfessionalUpdateVerificationDetailResponse(data))
-      )
+      );
   }
 
   public updateVerificationDetails(body: UpdateProfessionalDetailsDto): Observable<ProfessionalView> {
@@ -36,7 +40,31 @@ export class ProfessionalService {
     return this.httpService.update(req)
       .pipe(
         map(data => new ProfessionalView(data))
-      )
+      );
+  }
+
+  public getUploadDocuments(): Observable<VerificationDocumentView[]> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'upload-documents']);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => manyToType(VerificationDocumentView, data))
+      );
+  }
+
+  public deleteDocument(key: string): Observable<DeleteResponse> {
+    const req: BaseRequest = this.httpService.toRequest(['', 'delete', 'member-document'], { key });
+    return this.httpService.delete(req)
+      .pipe(
+        map(data => new DeleteResponse(data))
+      );
+  }
+
+  public viewDocument(key: string): Observable<SignedUrlResponse> {
+    const req: BaseRequest = this.httpService.toRequest(['', 'delete', 'member-document'], { key });
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new SignedUrlResponse(data))
+      );
   }
 
 
