@@ -38,6 +38,7 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
   @ViewChild('elem', { static: false }) inputElement!: ElementRef;
   public uploadMessage: string = '';
   private cancelRequest$!: Subscription;
+  private uploadCompleted: boolean = false;
 
 
   public constructor(protected fileService: FileUploadDownloadService) {
@@ -66,7 +67,6 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
 
   private generateSignedUrlAndUploadFile(fileName: string, files: FileList, input: HTMLInputElement): void {
     const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, this.fileNameOrUrl as string);
-
     this.cancelRequest$ = this.generateSignedUrl$(fileName)
       .pipe(
         switchMap((result: SignedUrlResponse): Observable<any> => {
@@ -170,6 +170,13 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
     } else if (event instanceof HttpResponse) {
       this.uploadMessage = statusText.fileUpload.success;
     }
+  }
+
+  public readyForDownload(): boolean {
+    if (this.fileNameOrUrl) {
+      this.uploadCompleted = true;
+    }
+    return this.canDownloadOrView && this.uploadCompleted;
   }
 
 }

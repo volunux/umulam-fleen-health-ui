@@ -11,7 +11,7 @@
     <button type="button" (click)="cancelUpload(elem)">Cancel</button>
   </form>
 
-  <button type="button" *ngIf="canDownloadOrView && fileNameOrUrl" (click)="downloadOrView(fileNameOrUrl, fileKey)">Download</button>
+  <button type="button" *ngIf="canDownloadOrView && fileNameOrUrl && readyForDownload()" (click)="downloadOrView(fileNameOrUrl, fileKey)">Download</button>
 </div>
 
 
