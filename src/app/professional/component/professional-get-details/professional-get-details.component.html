@@ -36,7 +36,7 @@
       </tr>
       <tr *ngFor="let document of professionalView.verificationDocuments">
         <th>{{ normalizeName(document.documentType) }}</th>
-        <td><button (click)="downloadFile(document.link)">View</button></td>
+        <td><button (click)="viewFile(document.link)">View</button></td>
       </tr>
     </body>
   </table>

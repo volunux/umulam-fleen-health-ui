@@ -45,7 +45,7 @@ export class ProfessionalGetDetailsComponent extends BaseComponent implements On
     await this.router.navigate(['..', 'update-details'], {relativeTo: this.route});
   }
 
-  public downloadFile(link: string): void {
+  public viewFile(link: string): void {
     if (isTruthy(link)) {
       this.fileService.downloadFile(link, this.s3Service.getObjectKeyFromSignedUrl(link) as string)
         .subscribe();

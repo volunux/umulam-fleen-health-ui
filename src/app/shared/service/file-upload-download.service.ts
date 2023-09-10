@@ -105,7 +105,7 @@ export class FileUploadDownloadService {
     }
   }
 
-  downloadFile(path: string, filename: string): Observable<void> {
+  public downloadFile(path: string, filename: string): Observable<void> {
     return new Observable<void>((observer: Subscriber<void>): void => {
       const anchor: HTMLAnchorElement = document.createElement('a');
       anchor.href = path;
