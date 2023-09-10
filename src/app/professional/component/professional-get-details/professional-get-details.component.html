@@ -1,1 +1,42 @@
-<p>professional-get-details works!</p>
+<ng-container *ngIf="professionalView">
+  <table>
+    <body>
+      <tr>
+        <th>Title</th>
+        <td>{{ professionalView.title | titlecase }}</td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td>{{ professionalView.type | titlecase }}</td>
+      </tr>
+      <tr>
+        <th>Qualification</th>
+        <td>{{ professionalView.qualification | titlecase }}</td>
+      </tr>
+      <tr>
+        <th>Years of Experience</th>
+        <td>{{ professionalView.yearsOfExperience }}</td>
+      </tr>
+      <tr>
+        <th>Area of Expertise</th>
+        <td>{{ professionalView.areaOfExpertise }}</td>
+      </tr>
+      <tr>
+        <th>Availability Status</th>
+        <td>{{ professionalView.availabilityStatus }}</td>
+      </tr>
+      <tr>
+        <th>Languages Spoken</th>
+        <td>{{ professionalView.languagesSpoken }}</td>
+      </tr>
+      <tr>
+        <th>Country</th>
+        <td>{{ professionalView.country ? professionalView.country.title : 'NA' }}</td>
+      </tr>
+      <tr *ngFor="let document of professionalView.verificationDocuments">
+        <th>{{ normalizeName(document.documentType) }}</th>
+        <td><a [href]="document.link">View</a></td>
+      </tr>
+    </body>
+  </table>
+</ng-container>

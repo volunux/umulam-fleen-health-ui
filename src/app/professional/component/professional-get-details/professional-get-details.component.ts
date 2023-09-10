@@ -5,6 +5,7 @@ import {ProfessionalView} from "../../view/professional.view";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorType} from "../../../shared/constant/error-constant";
+import {normalizeName} from "../../../shared/util/helpers";
 
 @Component({
   selector: 'app-professional-get-details',
@@ -44,4 +45,5 @@ export class ProfessionalGetDetailsComponent extends BaseComponent implements On
   }
 
 
+  protected readonly normalizeName = normalizeName;
 }

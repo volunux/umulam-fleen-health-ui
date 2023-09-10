@@ -64,8 +64,8 @@ function capitalizeFirstLetter(word: string): string {
 }
 
 
-function normalizeName(input: string): string {
-  const cleanedInput: string = input.replace(/[^a-zA-Z0-9\s]/g, '');
+export function normalizeName(input: string): string {
+  const cleanedInput: string = input.replace(/[^a-zA-Z0-9\s]/g, ' ');
   const words: string[] = cleanedInput.split(/\s+/);
   const normalizedWords: string[] = words.map((word) => capitalizeFirstLetter(word));
   return normalizedWords.join(' ');
