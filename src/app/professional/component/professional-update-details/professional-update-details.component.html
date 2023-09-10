@@ -36,7 +36,7 @@
     <label for="country">Country</label>
     <select id="country" formControlName="country">
       <option value=""></option>
-      <option *ngFor="let country of countries" [value]="country.id">{{ country.title }}</option>
+      <option *ngFor="let country of countries | orderBy: 'title'" [value]="country.id">{{ country.title }}</option>
     </select>
     <app-validation-error [control]="country" [control-label]="'Country'"></app-validation-error>
   </div>

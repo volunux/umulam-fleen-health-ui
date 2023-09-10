@@ -41,10 +41,10 @@ import {AuthenticationModule} from "../authentication/authentication.module";
     ProfessionalDashboardComponent
   ],
   imports: [
-    SharedModule,
     CommonModule,
+    SharedModule,
     ProfessionalRoutingModule,
-    AuthenticationModule
+    AuthenticationModule,
   ],
   providers: [
     ProfessionalService

@@ -14,6 +14,8 @@ import {SignedUrlService} from "./service/signed-url.service";
 import {S3Service} from "./service/s3.service";
 import { UploadFileComponent } from './component/upload-file/upload-file.component';
 import {ChangePasswordComponent} from "./change-password/change-password.component";
+import {CapitalizePipe} from "./pipe/capitalize.pipe";
+import {OrderByPipe} from "./pipe/order-by.pipe";
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import {ChangePasswordComponent} from "./change-password/change-password.compone
     RowEntryOptionComponent,
     EntriesDeleteAllComponent,
     UploadFileComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    CapitalizePipe,
+    OrderByPipe
   ],
   imports: [
     CommonModule,
@@ -47,7 +51,9 @@ import {ChangePasswordComponent} from "./change-password/change-password.compone
     RowEntryOptionComponent,
     EntriesDeleteAllComponent,
     UploadFileComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    CapitalizePipe,
+    OrderByPipe
   ]
 })
 export class SharedModule { }

@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CapitalizePipe} from "./pipe/capitalize.pipe";
 import {LocalStorageService} from "./service/local-storage.service";
 import {SessionStorageService} from "./service/session-storage.service";
 import {JwtService} from "./service/jwt.service";
@@ -10,7 +9,7 @@ import {AuthenticationService} from "../authentication/service/authentication.se
 
 @NgModule({
   declarations: [
-    CapitalizePipe
+
   ],
   providers: [
     AuthenticationService,
@@ -19,6 +18,6 @@ import {AuthenticationService} from "../authentication/service/authentication.se
     JwtService,
     LoggerService,
     AuthGuard,
-  ]
+  ],
 })
 export class FleenHealthBaseModule { }
