@@ -4,6 +4,10 @@
     {{ errorMessage }}
   </div>
 
+  <div *ngIf="statusMessage">
+    {{ statusMessage }}
+  </div>
+
   <app-upload-file [control-label]="'Education Certificate'" [control]="educationCertificate" [file-constraints]="documentConstraints" [file-id]="'education_certificate'" [file-key]="'educationCertificate'"
                    [file-url]="''" [signed-url-method]="signedUrlMethod" [save-file-method]="saveFileMethod" [delete-file-method]="deleteFileMethod" (upload-details)="updateDetails($event)"
                    [can-download-or-view]="true" [download-file-method]="downloadOrViewFileMethod"></app-upload-file>

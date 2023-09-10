@@ -156,7 +156,7 @@ export function getPropsAsStringArr(arr: AnyProp[], keyToGet: string = 'name'): 
   return [];
 }
 
-function removeEmptyKeys<T>(obj: T): T {
+export function removeEmptyKeys<T>(obj: T): T {
   if (isTruthy(obj) && isObject(obj)) {
     for (const key in obj) {
       if ((<any>obj).hasOwnProperty(key)) {

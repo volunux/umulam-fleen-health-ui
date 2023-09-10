@@ -6,12 +6,13 @@ import {ProfessionalView} from "../view/professional.view";
 import {
   GetProfessionalUpdateVerificationDetailResponse
 } from "../response/get-professional-update-verification-detail.response";
-import {UpdateProfessionalDetailsDto} from "../dto/professional.dto";
+import {UpdateProfessionalDetailsDto, UploadProfessionalDocumentDto} from "../dto/professional.dto";
 import {manyToType} from "../../shared/util/helpers";
 import {VerificationDocumentView} from "../view/verification-document.view";
 import {DeleteResponse} from "../../shared/response/delete.response";
 import {SignedUrlResponse} from "../../shared/response/signed-url.response";
 import {S3Service} from "../../shared/service/s3.service";
+import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 
 @Injectable()
 export class ProfessionalService {
@@ -68,6 +69,14 @@ export class ProfessionalService {
     return this.httpService.get(req)
       .pipe(
         map(data => new SignedUrlResponse(data))
+      );
+  }
+
+  public uploadDocuments(body: UploadProfessionalDocumentDto): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'verification', 'upload-document'], null, { ...body });
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
       );
   }
 

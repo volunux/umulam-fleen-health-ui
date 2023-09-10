@@ -11,13 +11,14 @@ import {Observable} from "rxjs";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
 import {DeleteResponse} from "../../../shared/response/delete.response";
 import {UploadProfessionalDocumentDto} from "../../dto/professional.dto";
-import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {ANY_EMPTY, FORM_INCOMPLETE, FORM_SUCCESS} from "../../../shared/constant/other-constant";
 import {FileDetail} from "../../../shared/interface/base";
 import {
   areAllPropertiesTruthy,
   getFirstKeyAndValue,
   isFalsy,
   isTruthy,
+  removeEmptyKeys,
   toCamelCase
 } from "../../../shared/util/helpers";
 
@@ -75,9 +76,24 @@ export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent 
 
   public uploadDocuments(): void {
     if (isFalsy(this.isSubmitting) && areAllPropertiesTruthy(this.dto)) {
-      console.log(this.dto);
+
+      this.resetErrorMessage();
+      this.enableSubmitting();
+      removeEmptyKeys(this.dto);
+
+      this.professionalService.uploadDocuments(this.dto)
+        .subscribe({
+          error: (error: ErrorResponse): void => {
+            this.handleError(error);
+          },
+          complete: (): void => {
+            this.statusMessage = FORM_SUCCESS;
+            this.enableSubmitting();
+          }
+      });
+    } else {
+      this.errorMessage = FORM_INCOMPLETE;
     }
-    this.errorMessage = 'Form is not complete';
   }
 
   get signedUrlMethod(): (...data: any[]) => Observable<SignedUrlResponse> {

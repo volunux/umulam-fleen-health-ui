@@ -14,3 +14,5 @@ export const DEFAULT_UPLOAD_MAX_FILE_SIZE: number = 10; // 10 is in megabyte whi
 export const X_CANCEL_REQUEST_HEADER_KEY: string = 'X-Cancel-Request';
 export const DEFAULT_ERROR_MESSAGE: string = 'An error has occurred';
 export const MISSING_CONFIG: string = 'Missing configuration';
+export const FORM_INCOMPLETE: string = 'Form is incomplete';
+export const FORM_SUCCESS: string = 'Successful';
