@@ -1,12 +1,12 @@
 import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
 import {convertToDesiredFormat, equalsIgnoreCase, isObject, isTruthy, toCamelCase} from "../../../shared/util/helpers";
 import {AnyProp} from "../../../shared/type/base";
-import {ANY_EMPTY, FORM_VALIDATION_ERROR_TYPE} from "../../../shared/constant/other-constant";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
 import {ErrorResponse} from "../../response/error-response";
 import {Router} from "@angular/router";
 import {BASE_PATH} from "../../../shared/constant/base-config";
 import {Observable, of} from "rxjs";
-import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
+import {ErrorType} from "../../../shared/constant/error-constant";
 
 export abstract class BaseFormComponent {
 
@@ -106,7 +106,7 @@ export abstract class BaseFormComponent {
 
   protected handleError(error: ErrorResponse): void {
     const { type } = error;
-    if (isTruthy(type) && equalsIgnoreCase(type, FORM_VALIDATION_ERROR_TYPE)) {
+    if (isTruthy(type) && equalsIgnoreCase(type, ErrorType.DATA_VALIDATION)) {
       this.setErrorsFromApiResponse(error.fields);
       this.enableSubmitting();
       return;

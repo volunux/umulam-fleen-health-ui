@@ -4,6 +4,7 @@ import {BaseComponent} from "../../../base/component/base/base.component";
 import {ProfessionalView} from "../../view/professional.view";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ActivatedRoute, Router} from "@angular/router";
+import {ErrorType} from "../../../shared/constant/error-constant";
 
 @Component({
   selector: 'app-professional-get-details',
@@ -11,6 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./professional-get-details.component.css']
 })
 export class ProfessionalGetDetailsComponent extends BaseComponent implements OnInit {
+  public entryView!: ProfessionalView;
 
   public constructor(protected professionalService: ProfessionalService,
                      protected router: Router,
@@ -22,11 +24,10 @@ export class ProfessionalGetDetailsComponent extends BaseComponent implements On
     this.professionalService.getDetails()
       .subscribe({
         next: (result: ProfessionalView): void => {
-
+          this.entryView = result;
         },
         error: async (error: ErrorResponse): Promise<void> => {
-          console.log(error);
-          if (error.type === 'NO_PROFILE') {
+          if (error.type === ErrorType.NO_PROFILE) {
             return await this.updateDetails();
           }
           this.handleError(error);
@@ -36,6 +37,10 @@ export class ProfessionalGetDetailsComponent extends BaseComponent implements On
 
   public async updateDetails(): Promise<void> {
     await this.router.navigate(['..', 'update-details'], {relativeTo: this.route});
+  }
+
+  get professionalView(): ProfessionalView {
+    return this.entryView;
   }
 
 

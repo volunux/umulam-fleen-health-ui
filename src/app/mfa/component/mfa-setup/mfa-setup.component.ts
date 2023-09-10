@@ -141,12 +141,11 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
 
   private initAuthenticatorDetails(mfaDetail: MfaDetailResponse): void {
     const { qrCode, secret } = mfaDetail;
-    this.qrCodeSecret = secret;
-
     const img = this.renderer.createElement('img');
-    console.log(qrCode);
-    this.renderer.setAttribute(img, 'src', qrCode);
     const container = this.qrCodeImage.nativeElement;
+
+    this.qrCodeSecret = secret;
+    this.renderer.setAttribute(img, 'src', qrCode);
     this.renderer.appendChild(container, img);
   }
 

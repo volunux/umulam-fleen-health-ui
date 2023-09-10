@@ -70,8 +70,8 @@ export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent 
     return this.professionalService.deleteDocument.bind(this.professionalService);
   }
 
-  public downloadOrViewFileMethod(fileNameOrSignedUrlOrKey: string): Observable<SignedUrlResponse> {
-    return this.professionalService.viewDocument(this.s3Service.getObjectKeyFromSignedUrl(fileNameOrSignedUrlOrKey) as string);
+  get downloadOrViewFileMethod(): (...data: any[]) => Observable<SignedUrlResponse> {
+    return this.professionalService.viewDocument.bind(this.professionalService);
   }
 
 }

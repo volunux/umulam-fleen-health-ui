@@ -1,13 +1,13 @@
-import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl} from "@angular/forms";
 import {FileConstraints} from "../../type/other";
 import {DEFAULT_IMAGE_CONSTRAINT} from "../../constant/enum-constant";
 import {FileUploadDownloadService} from "../../service/file-upload-download.service";
-import {isTruthy, nonNull} from "../../util/helpers";
+import {isFalsy, isTruthy, nonNull} from "../../util/helpers";
 import {catchError, Observable, Subscription, switchMap, tap, throwError} from "rxjs";
 import {SignedUrlResponse} from "../../response/signed-url.response";
 import {ExchangeRequest} from "../../type/http";
-import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {HttpEvent, HttpEventType, HttpResponse} from "@angular/common/http";
 import {statusText} from "../../util/file-upload-download-messages";
 import {ANY_EMPTY, DEFAULT_ERROR_MESSAGE} from "../../constant/other-constant";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
@@ -19,7 +19,7 @@ import {ErrorResponse} from "../../../base/response/error-response";
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.css']
 })
-export class UploadFileComponent extends BaseFormComponent {
+export class UploadFileComponent extends BaseFormComponent implements OnInit {
 
   protected formBuilder!: FormBuilder;
   @Input('control') public control!: FormControl;
@@ -48,37 +48,39 @@ export class UploadFileComponent extends BaseFormComponent {
     return ANY_EMPTY;
   }
 
+  public ngOnInit(): void {
+    this.checkConfig();
+  }
+
   public upload(input: HTMLInputElement, control: AbstractControl, constraints: FileConstraints): void {
     let files: FileList | null = input?.files;
     if (nonNull(files) && this.fileService.isFilesPresent(files) && nonNull(control) && nonNull(constraints)) {
       const file: File | any = this.fileService.getFirst(files);
       if (this.fileService.validationPassed(file, control, constraints)) {
-        this.generateSignedUrlAndUploadFile(file.name, files as any);
+        this.generateSignedUrlAndUploadFile(file.name, files as any, input);
       }
     }
   }
 
-  private generateSignedUrlAndUploadFile(fileName: string, files: FileList): void {
+  private generateSignedUrlAndUploadFile(fileName: string, files: FileList, input: HTMLInputElement): void {
+    const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, this.fileNameOrUrl as string);
+
     this.cancelRequest$ = this.generateSignedUrl$(fileName)
       .pipe(
         switchMap((result: SignedUrlResponse): Observable<any> => {
           this.fileNameOrUrl = result.signedUrl;
-          const req: ExchangeRequest = this.fileService.toFileUploadRequest(files, result.signedUrl);
+          req.uri = this.fileNameOrUrl;
           return this.fileService.uploadFile(req);
         }),
         tap((event: any): void => {
-          if (event.type === HttpEventType.UploadProgress) {
-            const percentage: number = Math.round((event.loaded / event.total!) * 100);
-            this.uploadMessage = statusText.fileUpload.inProgress(percentage);
-          } else if (event instanceof HttpResponse) {
-            this.uploadMessage = statusText.fileUpload.success;
-          }
+          this.updateDownloadOrUploadProgress(event);
         }),
         catchError((error: any): Observable<any> => throwError(error))
       ).subscribe({
         error: (error): void => {
           error.message = error.message || DEFAULT_ERROR_MESSAGE;
           this.handleError(error);
+          this.fileService.clearInputFiles(input);
         },
         complete: (): void => {
           this.saveFile(this.fileNameOrUrl);
@@ -90,13 +92,17 @@ export class UploadFileComponent extends BaseFormComponent {
   }
 
   public cancelUpload(element: HTMLInputElement): void {
-    this.cancelRequest$.unsubscribe();
-    this.fileService.clearInputFiles(element);
+    if (isTruthy(this.cancelRequest$)) {
+      this.cancelRequest$.unsubscribe();
+    }
+    if (isTruthy(element)) {
+      this.fileService.clearInputFiles(element);
+    }
     this.uploadMessage = statusText.fileUpload.abort;
   }
 
   private saveFile(fileNameOrUrl: string | null): void {
-    if (nonNull(fileNameOrUrl)) {
+    if (nonNull(fileNameOrUrl) && isTruthy(this.saveFile$)) {
       this.saveFile$(fileNameOrUrl).subscribe({
         complete: (): void => {
           this.uploadMessage = statusText.fileUpload.success;
@@ -110,7 +116,7 @@ export class UploadFileComponent extends BaseFormComponent {
   }
 
   public deleteFile(): void {
-    if (isTruthy(this.fileNameOrUrl)) {
+    if (isTruthy(this.fileNameOrUrl) && isTruthy(this.deleteFile$)) {
       this.uploadMessage = statusText.deleteObject.inProgress;
       this.deleteFile$(this.fileNameOrUrl)
         .subscribe({
@@ -130,17 +136,36 @@ export class UploadFileComponent extends BaseFormComponent {
   }
 
   public downloadOrView(pathOrUrlOrLinkOrKey: string, fileName: string): void {
-    if (isTruthy(pathOrUrlOrLinkOrKey) && isTruthy(fileName)) {
+    if (isTruthy(pathOrUrlOrLinkOrKey) && isTruthy(fileName) && isTruthy(this.downloadFile$) && isTruthy(this.canDownloadOrView)) {
       this.downloadFile$(pathOrUrlOrLinkOrKey)
         .pipe(
           switchMap((result: SignedUrlResponse) => {
             return this.fileService.downloadFile(result.signedUrl, fileName);
           })
         ).subscribe({
-        complete: (): void => {
-          console.log('Download complete');
-        }
-      });
+          error: (error: ErrorResponse | any): void => {
+            this.handleError(error);
+          }
+       });
+    }
+  }
+
+  private checkConfig(): void {
+    if (isFalsy(this.generateSignedUrl$) && isFalsy(this.deleteFile$)) {
+      throw new Error('Missing configurations');
+    } else if (isFalsy(this.generateSignedUrl$) && isFalsy(this.deleteFile$) && isFalsy(this.downloadFile$) && isTruthy(this.canDownloadOrView)) {
+      throw new Error('Missing configurations');
+    } else if (isFalsy(this.downloadFile$) && isTruthy(this.canDownloadOrView)) {
+      throw new Error('Missing configurations');
+    }
+  }
+
+  private updateDownloadOrUploadProgress(event: HttpEvent<any>): void {
+    if (event.type === HttpEventType.UploadProgress) {
+      const percentage: number = Math.round((event.loaded / event.total!) * 100);
+      this.uploadMessage = statusText.fileUpload.inProgress(percentage);
+    } else if (event instanceof HttpResponse) {
+      this.uploadMessage = statusText.fileUpload.success;
     }
   }
 

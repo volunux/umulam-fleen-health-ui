@@ -27,7 +27,7 @@ export const DEFAULT_IMAGE_CONSTRAINT: FileConstraints = {
 }
 
 export const DEFAULT_DOCUMENT_CONSTRAINT: FileConstraints = {
-  maxFileSize: 1,
+  maxFileSize: 2,
   allowableTypes: DEFAULT_DOCUMENT_TYPES,
   fileSizeUnit: 'MB'
 }
@@ -35,3 +35,4 @@ export const DEFAULT_DOCUMENT_CONSTRAINT: FileConstraints = {
 export const MFA_SETUP_TYPE: string[] = ['EMAIL', 'PHONE', 'AUTHENTICATOR', 'NONE'];
 export const PROFESSIONAL_TYPES: string[] = ['COUNSELOR', 'PSYCHOLOGIST', 'THERAPIST'];
 export const PROFESSIONAL_QUALIFICATION_TYPES: string[] = ['DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE'];
+

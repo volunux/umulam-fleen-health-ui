@@ -11,13 +11,15 @@ import {manyToType} from "../../shared/util/helpers";
 import {VerificationDocumentView} from "../view/verification-document.view";
 import {DeleteResponse} from "../../shared/response/delete.response";
 import {SignedUrlResponse} from "../../shared/response/signed-url.response";
+import {S3Service} from "../../shared/service/s3.service";
 
 @Injectable()
 export class ProfessionalService {
 
   private readonly BASE_PATH: string = "professional";
 
-  public constructor(private httpService: HttpClientService) { }
+  public constructor(private httpService: HttpClientService,
+                     private s3Service: S3Service) { }
 
   public getDetails(): Observable<ProfessionalView> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'get-details']);
@@ -52,15 +54,16 @@ export class ProfessionalService {
   }
 
   public deleteDocument(key: string): Observable<DeleteResponse> {
-    const req: BaseRequest = this.httpService.toRequest(['', 'delete', 'member-document'], { key });
+    const req: BaseRequest = this.httpService.toRequest(['delete', 'member-document'], { key });
     return this.httpService.delete(req)
       .pipe(
         map(data => new DeleteResponse(data))
       );
   }
 
-  public viewDocument(key: string): Observable<SignedUrlResponse> {
-    const req: BaseRequest = this.httpService.toRequest(['', 'delete', 'member-document'], { key });
+  public viewDocument(fileNameOrSignedUrlOrKey: string): Observable<SignedUrlResponse> {
+    const key: string = this.s3Service.getObjectKeyFromSignedUrl(fileNameOrSignedUrlOrKey) as string
+    const req: BaseRequest = this.httpService.toRequest(['view', 'member-document'], { key });
     return this.httpService.get(req)
       .pipe(
         map(data => new SignedUrlResponse(data))
