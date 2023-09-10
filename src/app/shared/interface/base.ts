@@ -6,3 +6,7 @@ export interface Newable<T extends Object> {
 export interface SearchDto {
   [key: string]: any
 }
+
+export interface FileDetail {
+  [key: string]: string;
+}

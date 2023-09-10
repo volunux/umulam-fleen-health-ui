@@ -13,3 +13,4 @@ export const USER_DESTINATION_PAGE_KEY: string = 'USER_STATUS_PAGE';
 export const DEFAULT_UPLOAD_MAX_FILE_SIZE: number = 10; // 10 is in megabyte which is equal to 1024 * 1024 * 10;
 export const X_CANCEL_REQUEST_HEADER_KEY: string = 'X-Cancel-Request';
 export const DEFAULT_ERROR_MESSAGE: string = 'An error has occurred';
+export const MISSING_CONFIG: string = 'Missing configuration';

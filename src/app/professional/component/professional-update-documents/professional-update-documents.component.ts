@@ -10,7 +10,10 @@ import {SignedUrlService} from "../../../shared/service/signed-url.service";
 import {Observable} from "rxjs";
 import {SignedUrlResponse} from "../../../shared/response/signed-url.response";
 import {DeleteResponse} from "../../../shared/response/delete.response";
-import {S3Service} from "../../../shared/service/s3.service";
+import {UploadProfessionalDocumentDto} from "../../dto/professional.dto";
+import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {FileDetail} from "../../../shared/interface/base";
+import {areAllPropertiesTruthy, getFirstKeyAndValue, isFalsy} from "../../../shared/util/helpers";
 
 @Component({
   selector: 'app-professional-update-documents',
@@ -19,10 +22,10 @@ import {S3Service} from "../../../shared/service/s3.service";
 })
 export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent implements OnInit {
   protected readonly documentConstraints: FileConstraints = DEFAULT_DOCUMENT_CONSTRAINT;
+  public dto: UploadProfessionalDocumentDto = new UploadProfessionalDocumentDto(ANY_EMPTY);
 
   public constructor(protected professionalService: ProfessionalService,
-                     protected signedUrlService: SignedUrlService,
-                     protected s3Service: S3Service) {
+                     protected signedUrlService: SignedUrlService) {
     super();
   }
 
@@ -38,8 +41,16 @@ export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent 
     });
   }
 
-  public updateDetails(detail: any): void {
-    console.log(detail);
+  public updateDetails(detail: FileDetail): void {
+    const [key, value] = getFirstKeyAndValue(detail);
+    this.dto[key] = value;
+  }
+
+  public uploadDocuments(): void {
+    if (isFalsy(this.isSubmitting) && areAllPropertiesTruthy(this.dto)) {
+      console.log(this.dto);
+    }
+    this.errorMessage = 'Form is not complete';
   }
 
   get educationCertificate(): FormControl {

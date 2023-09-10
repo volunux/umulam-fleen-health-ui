@@ -1,4 +1,4 @@
-<div class="">
+<div *ngIf="isFormReady" class="">
 
   <form>
     <label [for]="fileId">{{ controlLabel }}</label>
@@ -10,6 +10,8 @@
     <button type="button" (click)="deleteFile()">Delete</button>
     <button type="button" (click)="cancelUpload(elem)">Cancel</button>
   </form>
-</div>
 
   <button type="button" *ngIf="canDownloadOrView && fileNameOrUrl" (click)="downloadOrView(fileNameOrUrl, fileKey)">Download</button>
+</div>
+
+

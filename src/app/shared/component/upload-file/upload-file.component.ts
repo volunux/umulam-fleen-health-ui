@@ -9,7 +9,7 @@ import {SignedUrlResponse} from "../../response/signed-url.response";
 import {ExchangeRequest} from "../../type/http";
 import {HttpEvent, HttpEventType, HttpResponse} from "@angular/common/http";
 import {statusText} from "../../util/file-upload-download-messages";
-import {ANY_EMPTY, DEFAULT_ERROR_MESSAGE} from "../../constant/other-constant";
+import {ANY_EMPTY, DEFAULT_ERROR_MESSAGE, MISSING_CONFIG} from "../../constant/other-constant";
 import {BaseFormComponent} from "../../../base/component/base-form/base-form.component";
 import {Router} from "@angular/router";
 import {ErrorResponse} from "../../../base/response/error-response";
@@ -27,6 +27,7 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
   @Input('file-constraints') public fileConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
   @Input('file-key') public fileKey!: string;
   @Input('file-id') public fileId!: string;
+  @Input('can-download-or-view') public canDownloadOrView: boolean = false;
   @Input('signed-url-method') public generateSignedUrl$!: (...data: any[]) => Observable<any>;
   @Input('delete-file-method') public deleteFile$!: (...data: any[]) => Observable<any>;
   @Input('download-file-method') public downloadFile$!: (...data: any[]) => Observable<SignedUrlResponse>;
@@ -37,7 +38,6 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
   @ViewChild('elem', { static: false }) inputElement!: ElementRef;
   public uploadMessage: string = '';
   private cancelRequest$!: Subscription;
-  @Input('can-download-or-view') public canDownloadOrView: boolean = false;
 
 
   public constructor(protected fileService: FileUploadDownloadService) {
@@ -49,7 +49,9 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.checkConfig();
+    if (this.checkConfig()) {
+      this.formReady();
+    }
   }
 
   public upload(input: HTMLInputElement, control: AbstractControl, constraints: FileConstraints): void {
@@ -150,14 +152,16 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
     }
   }
 
-  private checkConfig(): void {
+  private checkConfig(): boolean {
     if (isFalsy(this.generateSignedUrl$) && isFalsy(this.deleteFile$)) {
-      throw new Error('Missing configurations');
-    } else if (isFalsy(this.generateSignedUrl$) && isFalsy(this.deleteFile$) && isFalsy(this.downloadFile$) && isTruthy(this.canDownloadOrView)) {
-      throw new Error('Missing configurations');
+      throw new Error(MISSING_CONFIG);
+    } else if (isFalsy(this.generateSignedUrl$) && isFalsy(this.deleteFile$)
+        && isFalsy(this.downloadFile$) && isTruthy(this.canDownloadOrView)) {
+      throw new Error(MISSING_CONFIG);
     } else if (isFalsy(this.downloadFile$) && isTruthy(this.canDownloadOrView)) {
-      throw new Error('Missing configurations');
+      throw new Error(MISSING_CONFIG);
     }
+    return true;
   }
 
   private updateDownloadOrUploadProgress(event: HttpEvent<any>): void {

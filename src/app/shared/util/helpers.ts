@@ -155,3 +155,39 @@ export function getPropsAsStringArr(arr: AnyProp[], keyToGet: string = 'name'): 
   }
   return [];
 }
+
+function removeEmptyKeys<T>(obj: T): T {
+  if (isTruthy(obj) && isObject(obj)) {
+    for (const key in obj) {
+      if ((<any>obj).hasOwnProperty(key)) {
+        const value: any = obj[key];
+
+        if (value === undefined || value === null || value === '') {
+          delete obj[key];
+        }
+      }
+    }
+  }
+  return obj;
+}
+
+export function getFirstKeyAndValue(obj: Record<string, any>): [string, any] {
+  if (isTruthy(obj) && isObject(obj)) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        return [key, value];
+      }
+    }
+  }
+  return ['', ''];
+}
+
+export function areAllPropertiesTruthy(obj: Record<string, any>): boolean {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && !obj[key]) {
+      return false;
+    }
+  }
+  return true;
+}
