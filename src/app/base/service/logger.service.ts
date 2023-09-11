@@ -9,7 +9,7 @@ export class LoggerService {
     console.log(data);
   }
 
-  public error(data: any): void {
+  public error(...data: any): void {
     console.error(data);
   }
 }

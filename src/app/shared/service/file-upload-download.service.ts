@@ -1,21 +1,19 @@
 import {Injectable} from '@angular/core';
 import {isFalsy, isObject, isTruthy, nonNull} from "../util/helpers";
-import {
-  CONTENT_TYPE_APPLICATION_OCTET,
-  CONTENT_TYPE_HEADER_KEY,
-  DEFAULT_UPLOAD_MAX_FILE_SIZE
-} from "../constant/other-constant";
+import {CONTENT_TYPE_HEADER_KEY, DEFAULT_ERROR_MESSAGE, DEFAULT_UPLOAD_MAX_FILE_SIZE} from "../constant/other-constant";
 import {HttpClientService} from "./http-client.service";
 import {Observable, Subscriber} from "rxjs";
 import {ExchangeRequest, RequestMethod} from "../type/http";
 import {HttpHeaders} from "@angular/common/http";
 import {AbstractControl} from "@angular/forms";
 import {FileConstraints} from "../type/other";
+import {LoggerService} from "../../base/service/logger.service";
 
 @Injectable()
 export class FileUploadDownloadService {
 
-  constructor(protected httpService: HttpClientService) { }
+  constructor(protected httpService: HttpClientService,
+              protected logger: LoggerService) { }
 
   public isFileEmpty(file): boolean {
     return isFalsy(file);
@@ -62,11 +60,11 @@ export class FileUploadDownloadService {
     }
   }
 
-  public uploadFile(req: ExchangeRequest): Observable<any> {
+  public uploadFile(req: ExchangeRequest, contentType: string): Observable<any> {
     let { headers } = req;
     if (isFalsy(headers)) {
       headers = new HttpHeaders()
-        .set(CONTENT_TYPE_HEADER_KEY, CONTENT_TYPE_APPLICATION_OCTET)
+        .set(CONTENT_TYPE_HEADER_KEY, contentType)
       req.headers = headers;
     }
     return this.httpService.exchange(req);
@@ -123,6 +121,24 @@ export class FileUploadDownloadService {
 
       anchor.click();
     });
+  }
+
+  public downloadFileBlob(fileUrl: string, fileName: string): void {
+    fetch(fileUrl)
+      .then((response: Response) => response.blob())
+      .then((blob: Blob): void => {
+        const blobUrl: string = window.URL.createObjectURL(blob);
+
+        const a: HTMLAnchorElement = document.createElement('a');
+        a.href = blobUrl;
+        a.download = fileName;
+
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+      })
+      .catch(error => {
+        this.logger.error(DEFAULT_ERROR_MESSAGE, error);
+      });
   }
 
 }

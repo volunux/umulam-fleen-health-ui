@@ -5,7 +5,7 @@ import {ProfessionalView} from "../../view/professional.view";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorType} from "../../../shared/constant/error-constant";
-import {isTruthy, nonNull, normalizeName} from "../../../shared/util/helpers";
+import {isTruthy, normalizeName} from "../../../shared/util/helpers";
 import {FileUploadDownloadService} from "../../../shared/service/file-upload-download.service";
 import {S3Service} from "../../../shared/service/s3.service";
 
@@ -51,6 +51,14 @@ export class ProfessionalGetDetailsComponent extends BaseComponent implements On
         .subscribe();
     }
   }
+
+  public downloadFile(link: string): void {
+    if (isTruthy(link)) {
+      this.fileService.downloadFileBlob(link, this.s3Service.getObjectKeyFromSignedUrl(link) as string);
+    }
+  }
+
+
 
   get professionalView(): ProfessionalView {
     return this.entryView;

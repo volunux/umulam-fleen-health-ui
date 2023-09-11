@@ -72,7 +72,7 @@ export class UploadFileComponent extends BaseFormComponent implements OnInit {
         switchMap((result: SignedUrlResponse): Observable<any> => {
           this.fileNameOrUrl = result.signedUrl;
           req.uri = this.fileNameOrUrl;
-          return this.fileService.uploadFile(req);
+          return this.fileService.uploadFile(req, files[0].type);
         }),
         tap((event: any): void => {
           this.updateDownloadOrUploadProgress(event);
