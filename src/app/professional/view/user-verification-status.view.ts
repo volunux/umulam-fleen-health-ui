@@ -1,7 +1,8 @@
+import {ProfileVerificationStatus} from "../../member/enum/member.enum";
 
 export class UserVerificationStatusView {
 
-  public status: string;
+  public status: ProfileVerificationStatus;
   public label: string;
   public timestamp: Date;
 

@@ -9,3 +9,10 @@ export enum Gender {
   FEMALE = 'FEMALE',
   OTHER = 'OTHER'
 }
+
+export enum ProfileVerificationStatus {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DISAPPROVED = 'DISAPPROVED',
+  APPROVED = 'APPROVED'
+}

@@ -1,1 +1,9 @@
-<p>professional-request-verification works!</p>
+<ng-container *ngIf="errorMessage">
+  {{ errorMessage }}
+</ng-container>
+
+<div *ngIf="statusView">
+  <p>The verification status is {{ statusView.label }}</p>
+
+  <button *ngIf="isVerificationPending && !hasRequestedForVerification" type="button" [disabled]="isSubmitting" (click)="requestForVerification()">Request for verification</button>
+</div>

@@ -89,4 +89,12 @@ export class ProfessionalService {
       );
   }
 
+  public requestVerification(): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'request-verification']);
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
+      );
+  }
+
 }
