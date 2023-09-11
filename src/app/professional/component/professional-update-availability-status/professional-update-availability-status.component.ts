@@ -6,6 +6,7 @@ import {
 } from "../../view/get-professional-update-availability-status.response";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ProfessionalAvailabilityStatus} from "../../enum/professional.enum";
+import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
 
 @Component({
   selector: 'app-professional-update-availability-status',
@@ -36,12 +37,13 @@ export class ProfessionalUpdateAvailabilityStatusComponent extends BaseFormImplC
   public updateAvailabilityStatus(availabilityStatus: ProfessionalAvailabilityStatus): void {
     this.professionalService.updateAvailabilityStatus({ availabilityStatus })
       .subscribe({
+        next: (result: FleenHealthResponse): void => {
+          this.statusMessage = result.message;
+          this.toggleAvailability(availabilityStatus);
+        },
         error: (error: ErrorResponse): void => {
           this.handleError(error);
         },
-        complete: (): void => {
-          this.toggleAvailability(availabilityStatus);
-        }
     });
   }
 
