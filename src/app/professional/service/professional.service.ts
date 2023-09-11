@@ -6,7 +6,11 @@ import {ProfessionalView} from "../view/professional.view";
 import {
   GetProfessionalUpdateVerificationDetailResponse
 } from "../response/get-professional-update-verification-detail.response";
-import {UpdateProfessionalDetailsDto, UploadProfessionalDocumentDto} from "../dto/professional.dto";
+import {
+  UpdateProfessionalAvailabilityStatusDto,
+  UpdateProfessionalDetailsDto,
+  UploadProfessionalDocumentDto
+} from "../dto/professional.dto";
 import {manyToType} from "../../shared/util/helpers";
 import {VerificationDocumentView} from "../view/verification-document.view";
 import {DeleteResponse} from "../../shared/response/delete.response";
@@ -14,6 +18,9 @@ import {SignedUrlResponse} from "../../shared/response/signed-url.response";
 import {S3Service} from "../../shared/service/s3.service";
 import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 import {UserVerificationStatusView} from "../view/user-verification-status.view";
+import {
+  GetProfessionalUpdateAvailabilityStatusResponse
+} from "../view/get-professional-update-availability-status.response";
 
 @Injectable()
 export class ProfessionalService {
@@ -91,6 +98,22 @@ export class ProfessionalService {
 
   public requestVerification(): Observable<FleenHealthResponse> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'request-verification']);
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
+      );
+  }
+
+  public getAvailabilityStatus(): Observable<GetProfessionalUpdateAvailabilityStatusResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'check-availability-status']);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new GetProfessionalUpdateAvailabilityStatusResponse(data))
+      );
+  }
+
+  public updateAvailabilityStatus(body: UpdateProfessionalAvailabilityStatusDto): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update-availability-status'], null, { ...body });
     return this.httpService.update(req)
       .pipe(
         map(data => new FleenHealthResponse(data))

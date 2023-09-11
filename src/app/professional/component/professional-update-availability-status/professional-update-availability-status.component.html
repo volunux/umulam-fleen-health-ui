@@ -1,1 +1,20 @@
-<p>professional-update-availability-status works!</p>
+
+<ng-container *ngIf="errorMessage">
+  {{ errorMessage }}
+</ng-container>
+
+<ng-container *ngIf="availability">
+  <p>Status is {{ availability.availabilityStatus }}</p>
+
+  <ng-container *ngIf="availability.availabilityStatus === ProfessionalAvailabilityStatus.AVAILABLE">
+    You're currently available, click to update your status to <b>Unavailable</b>
+    <button (click)="updateAvailabilityStatus(ProfessionalAvailabilityStatus.UNAVAILABLE)">Submit</button>
+  </ng-container>
+
+  <ng-container *ngIf="availability.availabilityStatus === ProfessionalAvailabilityStatus.UNAVAILABLE">
+    You're currently unavailable, click to update your status to <b>Available</b>
+    <button (click)="updateAvailabilityStatus(ProfessionalAvailabilityStatus.AVAILABLE)">Submit</button>
+  </ng-container>
+
+
+</ng-container>

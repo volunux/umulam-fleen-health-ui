@@ -1,4 +1,4 @@
-import {isTruthy} from "../../shared/util/helpers";
+import {ProfessionalAvailabilityStatus} from "../enum/professional.enum";
 
 export type UpdateProfessionalDetailsDto = {
   title: string;
@@ -8,6 +8,10 @@ export type UpdateProfessionalDetailsDto = {
   qualificationType: string;
   languagesSpoken: string;
   country: number;
+}
+
+export type UpdateProfessionalAvailabilityStatusDto = {
+  availabilityStatus: ProfessionalAvailabilityStatus;
 }
 
 export class UploadProfessionalDocumentDto {
@@ -24,3 +28,4 @@ export class UploadProfessionalDocumentDto {
     this.educationCertificate = data?.educationCertificate ? data.educationCertificate : data?.educationCertificate;
   }
 }
+
