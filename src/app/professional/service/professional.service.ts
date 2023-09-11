@@ -13,6 +13,7 @@ import {DeleteResponse} from "../../shared/response/delete.response";
 import {SignedUrlResponse} from "../../shared/response/signed-url.response";
 import {S3Service} from "../../shared/service/s3.service";
 import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
+import {UserVerificationStatusView} from "../view/user-verification-status.view";
 
 @Injectable()
 export class ProfessionalService {
@@ -80,5 +81,12 @@ export class ProfessionalService {
       );
   }
 
+  public checkVerificationStatus(): Observable<UserVerificationStatusView> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'check-verification-status']);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new UserVerificationStatusView(data))
+      );
+  }
 
 }
