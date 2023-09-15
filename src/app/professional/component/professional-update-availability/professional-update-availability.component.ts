@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {
   completeHourValidator,
@@ -11,21 +11,29 @@ import {checkForOverlappingPeriods, isFalsy, nonNull} from "../../../shared/util
 import {PeriodDto} from "../../dto/professional.dto";
 import {DAYS_OF_WEEK, DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
 import {AnyProp} from "../../../shared/type/base";
+import {BaseFormImplComponent} from "../../../base/component/base-form/base-form-impl.component";
 
 @Component({
   selector: 'app-professional-update-availability',
   templateUrl: './professional-update-availability.component.html',
   styleUrls: ['./professional-update-availability.component.css']
 })
-export class ProfessionalUpdateAvailabilityComponent {
+export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplComponent implements OnInit {
   private readonly AVAILABILITY_MIN_TIME: string = '08:00';
   private readonly AVAILABILITY_MAX_TIME: string = '18:00';
 
-  timeForm: FormGroup;
   periods: any[] = [];
 
-  public constructor(protected fb: FormBuilder) {
-    this.timeForm = this.fb.group({
+  public constructor(protected override formBuilder: FormBuilder) {
+    super();
+  }
+
+  public ngOnInit(): void {
+    this.initForm();
+  }
+
+  private initForm(): void {
+    this.fleenHealthForm = this.formBuilder.group({
       dayOfWeek: [DEFAULT_FORM_CONTROL_VALUE, [
         Validators.required, enumTypeValidator(DAYS_OF_WEEK)]
       ],
@@ -33,10 +41,13 @@ export class ProfessionalUpdateAvailabilityComponent {
         Validators.required, minTimeValidator(this.AVAILABILITY_MIN_TIME)]
       ],
       endTime: [DEFAULT_FORM_CONTROL_VALUE, [
-        Validators.required, maxTimeValidator(this.AVAILABILITY_MAX_TIME), completeHourValidator]
+        Validators.required, maxTimeValidator(this.AVAILABILITY_MAX_TIME), completeHourValidator('starTime')]
       ],
     }, {
-      validators: [endTimeGreaterThanStartTimeValidator, this.overlappingPeriodsValidator]
+      validators: [
+        endTimeGreaterThanStartTimeValidator('startTime', 'endTime'),
+        this.overlappingPeriodsValidator('dayOfWeek', 'startTime', 'endTime')
+      ]
     });
   }
 
@@ -94,6 +105,10 @@ export class ProfessionalUpdateAvailabilityComponent {
     if (nonNull(this.endTime)) {
       this.endTime?.setErrors(null);
     }
+  }
+
+  get timeForm(): FormGroup {
+    return this.fleenHealthForm;
   }
 
   get startTime(): AbstractControl | null | undefined {
