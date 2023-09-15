@@ -27,7 +27,7 @@ export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.otp.addValidators([
-      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)
+      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)
     ]);
   }
 

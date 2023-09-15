@@ -21,8 +21,7 @@ import {BaseFormImplComponent} from "../../../base/component/base-form/base-form
 export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplComponent implements OnInit {
   private readonly AVAILABILITY_MIN_TIME: string = '08:00';
   private readonly AVAILABILITY_MAX_TIME: string = '18:00';
-
-  periods: any[] = [];
+  public periods: any[] = [];
 
   public constructor(protected override formBuilder: FormBuilder) {
     super();

@@ -72,7 +72,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
         [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)]
       ],
       [(this.EMAIL_VERIFICATION_CODE_CONTROL_KEY)]: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)]
+        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)]
       ]
     });
   }
@@ -83,7 +83,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
         [Validators.required, Validators.minLength(4), Validators.maxLength(15), phoneNumberValidator(PHONE_NUMBER)]
       ],
       [(this.PHONE_VERIFICATION_CODE_CONTROL_KEY)]: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)]
+        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)]
       ]
     });
   }

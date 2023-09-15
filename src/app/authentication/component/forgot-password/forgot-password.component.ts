@@ -44,7 +44,7 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
       Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)
     ]);
     this.verificationCode.addValidators([
-      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)
+      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)
     ]);
   }
 

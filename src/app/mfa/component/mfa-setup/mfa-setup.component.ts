@@ -121,7 +121,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
   private addCodeFormControl(): void {
     this.fleenHealthForm.addControl(
       'code', this.formBuilder.control('', [
-        Validators.required, Validators.minLength(1), Validators.maxLength(6), codeValidator(VERIFICATION_CODE)]
+        Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)]
       )
     );
   }
