@@ -18,6 +18,8 @@ import {AnyProp} from "../../../shared/type/base";
   styleUrls: ['./professional-update-availability.component.css']
 })
 export class ProfessionalUpdateAvailabilityComponent {
+  private readonly AVAILABILITY_MIN_TIME: string = '08:00';
+  private readonly AVAILABILITY_MAX_TIME: string = '18:00';
 
   timeForm: FormGroup;
   periods: any[] = [];
@@ -27,10 +29,15 @@ export class ProfessionalUpdateAvailabilityComponent {
       dayOfWeek: [DEFAULT_FORM_CONTROL_VALUE, [
         Validators.required, enumTypeValidator(DAYS_OF_WEEK)]
       ],
-      startTime: ['', [Validators.required, minTimeValidator('08:00')]],
-      endTime: ['', [Validators.required, maxTimeValidator('18:00'), completeHourValidator]],
-    }, { validators: [endTimeGreaterThanStartTimeValidator, this.overlappingPeriodsValidator] });
-
+      startTime: [DEFAULT_FORM_CONTROL_VALUE, [
+        Validators.required, minTimeValidator(this.AVAILABILITY_MIN_TIME)]
+      ],
+      endTime: [DEFAULT_FORM_CONTROL_VALUE, [
+        Validators.required, maxTimeValidator(this.AVAILABILITY_MAX_TIME), completeHourValidator]
+      ],
+    }, {
+      validators: [endTimeGreaterThanStartTimeValidator, this.overlappingPeriodsValidator]
+    });
   }
 
   private overlappingPeriodsValidator(dayOfWeekFieldName: string, startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
@@ -58,7 +65,7 @@ export class ProfessionalUpdateAvailabilityComponent {
     }
   };
 
-  addToPeriods() {
+  public addToPeriods() {
     if (this.timeForm.valid && nonNull(this.dayOfWeek) && nonNull(this.startTime) && nonNull(this.endTime)) {
       const dayOfWeek = this.dayOfWeek?.value;
       const startTime = this.startTime?.value;
@@ -81,8 +88,12 @@ export class ProfessionalUpdateAvailabilityComponent {
   }
 
   public onTimeInput(event: any) {
-    this.timeForm.controls['startTime'].setErrors(null);
-    this.timeForm.controls['endTime'].setErrors(null);
+    if (nonNull(this.startTime)) {
+      this.startTime?.setErrors(null);
+    }
+    if (nonNull(this.endTime)) {
+      this.endTime?.setErrors(null);
+    }
   }
 
   get startTime(): AbstractControl | null | undefined {
