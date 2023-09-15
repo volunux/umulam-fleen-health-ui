@@ -22,24 +22,28 @@ import {ErrorResponse} from "../../../base/response/error-response";
 export class UploadFileComponent extends BaseFormComponent implements OnInit {
 
   protected formBuilder!: FormBuilder;
-  @Input('control') public control!: FormControl;
-  @Input('control-label') public controlLabel: string = 'This field';
-  @Input('file-constraints') public fileConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
-  @Input('file-key') public fileKey!: string;
-  @Input('file-id') public fileId!: string;
-  @Input('can-download-or-view') public canDownloadOrView: boolean = false;
-  @Input('signed-url-method') public generateSignedUrl$!: (...data: any[]) => Observable<any>;
-  @Input('delete-file-method') public deleteFile$!: (...data: any[]) => Observable<any>;
-  @Input('download-file-method') public downloadFile$!: (...data: any[]) => Observable<SignedUrlResponse>;
-  @Input('save-file-method') public saveFile$!: (...data: any[]) => Observable<any>;
-  @Output('upload-details') public uploadDetails: EventEmitter<any> = new EventEmitter<any>();
-  @Output('delete-details') public deleteDetails: EventEmitter<any> = new EventEmitter<any>();
-  @Input('file-url') public fileNameOrUrl: string | null = '';
-  @ViewChild('elem', { static: false }) inputElement!: ElementRef;
   public uploadMessage: string = '';
   private cancelRequest$!: Subscription;
   private uploadCompleted: boolean = false;
 
+  @Input({ alias: 'control', required: true }) public control!: FormControl;
+  @Input({ alias: 'control-label', required: true }) public controlLabel: string = 'This field';
+  @Input({ alias: 'file-key', required: true }) public fileKey!: string;
+  @Input({ alias: 'file-id', required: true }) public fileId!: string;
+
+  @Input({ alias: 'save-file-method', required: false }) public saveFile$!: (...data: any[]) => Observable<any>;
+  @Input({ alias: 'delete-file-method', required: true }) public deleteFile$!: (...data: any[]) => Observable<any>;
+  @Input({ alias: 'download-file-method', required: false }) public downloadFile$!: (...data: any[]) => Observable<SignedUrlResponse>;
+  @Input({ alias: 'signed-url-method', required: true }) public generateSignedUrl$!: (...data: any[]) => Observable<any>;
+
+  @Input('file-url') public fileNameOrUrl: string | null = '';
+  @Input('can-download-or-view') public canDownloadOrView: boolean = false;
+
+  @Input('file-constraints') public fileConstraints: FileConstraints = DEFAULT_IMAGE_CONSTRAINT;
+  @Output('upload-details') public uploadDetails: EventEmitter<any> = new EventEmitter<any>();
+  @Output('delete-details') public deleteDetails: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('elem', { static: false }) inputElement!: ElementRef;
 
   public constructor(protected fileService: FileUploadDownloadService) {
     super();
