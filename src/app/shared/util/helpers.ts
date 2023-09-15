@@ -6,7 +6,7 @@ import {DEFAULT_FORM_CONTROL_VALUE} from "../constant/enum-constant";
 
 export function capitalizeMany(inputArray: string[]): string[] {
   if (isTruthy(inputArray) && Array.isArray(inputArray) && inputArray.length > 0) {
-    return inputArray.map(item => capitalize(item));
+    return inputArray.map((item: string) => capitalize(item));
   }
   return [];
 }
@@ -190,4 +190,15 @@ export function areAllPropertiesTruthy(obj: Record<string, any>): boolean {
     }
   }
   return true;
+}
+
+
+export function checkForOverlappingPeriods(existingPeriods: any[], newPeriod: any): boolean {
+  const overlappingPeriod = existingPeriods.find((period) => {
+    return period.dayOfWeek === newPeriod.dayOfWeek &&
+      ((newPeriod.startTime >= period.startTime && newPeriod.startTime <= period.endTime) ||
+        (newPeriod.endTime >= period.startTime && newPeriod.endTime <= period.endTime));
+  });
+
+  return !!overlappingPeriod;
 }

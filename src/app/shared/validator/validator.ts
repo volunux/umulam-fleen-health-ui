@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {equalsIgnoreCase, isFalsy, isTruthy, validatePattern} from "../util/helpers";
 import {catchError, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
@@ -213,5 +213,117 @@ export function isNumberValidator(control: AbstractControl): { [key: string]: bo
   if (isNaN(control.value)) {
     return { isNumber: true };
   }
+  return null;
+}
+
+export function minTimeValidator(minTime: string) {
+  return (control: FormControl): ValidationErrors | null => {
+    const inputTime = control.value;
+    if (!inputTime) {
+      return null;
+    }
+
+    const inputParts = inputTime.split(':');
+    if (inputParts.length !== 2) {
+      return { formatError: true };
+    }
+
+    const inputHours: number = parseInt(inputParts[0], 10);
+    const inputMinutes: number = parseInt(inputParts[1], 10);
+
+    const minTimeParts: string[] = minTime.split(':');
+    const minHours: number = parseInt(minTimeParts[0], 10);
+    const minMinutes: number = parseInt(minTimeParts[1], 10);
+
+    if (inputHours < minHours || (inputHours === minHours && inputMinutes < minMinutes)) {
+      return { minTime: true };
+    }
+
+    return null;
+  };
+}
+
+export function maxTimeValidator(maxTime: string) {
+  return (control: FormControl) => {
+    const inputTime = control.value;
+    if (!inputTime) {
+      return null;
+    }
+
+    const inputParts = inputTime.split(':');
+    if (inputParts.length !== 2) {
+      return { formatError: true };
+    }
+
+    const inputHours = parseInt(inputParts[0], 10);
+    const inputMinutes = parseInt(inputParts[1], 10);
+
+    const maxTimeParts = maxTime.split(':');
+    const maxHours = parseInt(maxTimeParts[0], 10);
+    const maxMinutes = parseInt(maxTimeParts[1], 10);
+
+    if (inputHours > maxHours || (inputHours === maxHours && inputMinutes > maxMinutes)) {
+      return { maxTime: true };
+    }
+
+    return null;
+  };
+}
+
+export function endTimeGreaterThanStartTimeValidator(group: FormGroup) {
+  const startTimeControl = group.get('startTime');
+  const endTimeControl = group.get('endTime');
+
+  if (!startTimeControl || !endTimeControl) {
+    return null; // Validation cannot proceed without both controls
+  }
+
+  const startTime = startTimeControl.value;
+  const endTime = endTimeControl.value;
+
+  if (!startTime || !endTime) {
+    return null; // Allow empty values, as they may not be filled yet
+  }
+
+  const startTimeParts = startTime.split(':');
+  const endTimeParts = endTime.split(':');
+
+  const startHours = parseInt(startTimeParts[0], 10);
+  const startMinutes = parseInt(startTimeParts[1], 10);
+
+  const endHours = parseInt(endTimeParts[0], 10);
+  const endMinutes = parseInt(endTimeParts[1], 10);
+
+  if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
+    return { endTimeGreaterThanStartTime: true };
+  }
+
+  return null;
+}
+
+export function completeHourValidator(control: FormControl) {
+  const startTime = control.parent?.get('startTime')?.value;
+  const endTime = control.value;
+
+  if (!startTime || !endTime) {
+    return null; // Allow empty values, as they may not be filled yet
+  }
+
+  const startTimeParts = startTime.split(':');
+  const endTimeParts = endTime.split(':');
+
+  const startHours = parseInt(startTimeParts[0], 10);
+  const startMinutes = parseInt(startTimeParts[1], 10);
+
+  const endHours = parseInt(endTimeParts[0], 10);
+  const endMinutes = parseInt(endTimeParts[1], 10);
+
+  // Calculate the difference in minutes
+  const minuteDifference = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+
+  if (minuteDifference % 60 !== 0) {
+    return { completeHourDifference: true };
+  }
+
   return null;
 }
