@@ -9,3 +9,4 @@ export type AnyRegEx = {
 }
 
 export type TwoArray = [number, number] | null;
+

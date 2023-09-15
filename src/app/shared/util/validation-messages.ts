@@ -1,8 +1,7 @@
 import {AbstractControl} from "@angular/forms";
 import {DATE_FORMAT} from "./format-pattern";
 import {capitalizeMany, getAllowableExtensions, joining} from "./helpers";
-import {DateAndTimeConstraints, FileConstraints} from "../type/other";
-import {AnyProp} from "../type/base";
+import {FileConstraints} from "../type/other";
 
 export const validationErrorMessages: { [key: string]: Function } = {
 
@@ -71,6 +70,10 @@ export const validationErrorMessages: { [key: string]: Function } = {
   },
 
   maxTime: (control: AbstractControl | any, label: string): string => {
-    return `${label} must be at or after ${control?.errors["maxTimeValue"]}.`
+    return `${label} must be at or before ${control?.errors["maxTimeValue"]}.`
   },
+
+  endTimeGreaterThanStartTime: (control: AbstractControl | any, label: string): string => `${label} cannot be before the start time.`,
+
+  completeHourDifference: (): string => `The time difference must be in complete hours.`
 };

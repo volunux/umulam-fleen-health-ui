@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, FormControl, ValidationErrors, ValidatorFn} from "@angular/forms";
 import {equalsIgnoreCase, isFalsy, isTruthy, nonNull, validatePattern} from "../util/helpers";
 import {catchError, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
@@ -30,14 +30,12 @@ export function fieldsMatchValidator(fieldName1: string, fieldName2: string, lab
       return null;
     }
 
-    if (field1.value !== field2.value) {
-      const value: AnyProp = { mismatch: true, label1, label2 };
-      field2.setErrors(value);
-      return value;
-    } else {
-      field2.setErrors(null);
-      return null;
-    }
+    const value: AnyProp | null = field1.value !== field2.value
+      ? { mismatch: true, label1, label2 }
+      : null;
+
+    field2.setErrors(value);
+    return value;
   };
 }
 
@@ -216,12 +214,12 @@ export function isNumberValidator(control: AbstractControl): { [key: string]: bo
   return null;
 }
 
-function parseTime(time: string): TwoArray {
+function parseTime(time: string, separator: string = ':'): TwoArray {
   if (isFalsy(time)) {
     return null;
   }
 
-  const timeParts: string[] = time.split(':');
+  const timeParts: string[] = time.split(separator);
   if (timeParts.length !== 2) {
     return null;
   }
@@ -285,60 +283,56 @@ export function maxTimeValidator(maxTime: string, pattern: string = TIME_FORMAT)
   };
 }
 
-export function endTimeGreaterThanStartTimeValidator(group: FormGroup) {
-  const startTimeControl = group.get('startTime');
-  const endTimeControl = group.get('endTime');
+export function endTimeGreaterThanStartTimeValidator(startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const startTimeControl: AbstractControl | any = formGroup?.get(startTimeFieldName);
+    const endTimeControl: AbstractControl | any = formGroup?.get(endTimeFieldName);
 
-  if (!startTimeControl || !endTimeControl) {
-    return null; // Validation cannot proceed without both controls
+    if (isFalsy(startTimeControl) || isFalsy(endTimeControl)) {
+      return null;
+    }
+
+    const startTime = startTimeControl.value;
+    const endTime = endTimeControl.value;
+
+    if (isFalsy(startTime) || isFalsy(endTime)) {
+      return null;
+    }
+
+    const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
+    const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
+
+    if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
+      return { endTimeGreaterThanStartTime: true };
+    }
+
+    return null;
   }
-
-  const startTime = startTimeControl.value;
-  const endTime = endTimeControl.value;
-
-  if (!startTime || !endTime) {
-    return null; // Allow empty values, as they may not be filled yet
-  }
-
-  const startTimeParts = startTime.split(':');
-  const endTimeParts = endTime.split(':');
-
-  const startHours = parseInt(startTimeParts[0], 10);
-  const startMinutes = parseInt(startTimeParts[1], 10);
-
-  const endHours = parseInt(endTimeParts[0], 10);
-  const endMinutes = parseInt(endTimeParts[1], 10);
-
-  if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
-    return { endTimeGreaterThanStartTime: true };
-  }
-
-  return null;
 }
 
-export function completeHourValidator(control: FormControl) {
-  const startTime = control.parent?.get('startTime')?.value;
-  const endTime = control.value;
+export function completeHourValidator(startTimeFieldName: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const startTimeCtrl: AbstractControl | any = control.parent?.get(startTimeFieldName);
+    if (isFalsy(startTimeCtrl)) {
+      return null;
+    }
 
-  if (!startTime || !endTime) {
-    return null; // Allow empty values, as they may not be filled yet
+    const startTime = control.parent?.get(startTimeFieldName)?.value;
+    const endTime: string = control.value;
+
+    if (isFalsy(startTime) || isFalsy(endTime)) {
+      return null;
+    }
+
+    const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
+    const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
+
+    const minuteDifference: number = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+
+    if (minuteDifference % 60 !== 0) {
+      return { completeHourDifference: true };
+    }
+
+    return null;
   }
-
-  const startTimeParts = startTime.split(':');
-  const endTimeParts = endTime.split(':');
-
-  const startHours = parseInt(startTimeParts[0], 10);
-  const startMinutes = parseInt(startTimeParts[1], 10);
-
-  const endHours = parseInt(endTimeParts[0], 10);
-  const endMinutes = parseInt(endTimeParts[1], 10);
-
-  // Calculate the difference in minutes
-  const minuteDifference = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
-
-  if (minuteDifference % 60 !== 0) {
-    return { completeHourDifference: true };
-  }
-
-  return null;
 }

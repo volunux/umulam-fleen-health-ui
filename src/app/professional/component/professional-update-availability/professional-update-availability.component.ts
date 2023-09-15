@@ -2,13 +2,15 @@ import {Component} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {
   completeHourValidator,
-  endTimeGreaterThanStartTimeValidator, enumTypeValidator,
+  endTimeGreaterThanStartTimeValidator,
+  enumTypeValidator,
   maxTimeValidator,
   minTimeValidator
 } from "../../../shared/validator/validator";
 import {checkForOverlappingPeriods, isFalsy, nonNull} from "../../../shared/util/helpers";
 import {PeriodDto} from "../../dto/professional.dto";
 import {DAYS_OF_WEEK, DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
+import {AnyProp} from "../../../shared/type/base";
 
 @Component({
   selector: 'app-professional-update-availability',
@@ -45,9 +47,13 @@ export class ProfessionalUpdateAvailabilityComponent {
         const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
         const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
-        return hasOverlap ? { overlappingPeriods: true } : null;
-      }
+        const value: AnyProp | null = hasOverlap
+          ? { overlappingPeriods: true }
+          : null;
 
+        startTimeCtrl.setErrors(value);
+        return value;
+      }
       return null;
     }
   };
