@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {codeValidator, phoneNumberValidator} from "../../../shared/validator/validator";
+import {codeOrOtpValidator, phoneNumberValidator} from "../../../shared/validator/validator";
 import {PHONE_NUMBER, VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {MemberService} from "../../service/member.service";
 import {GetMemberUpdateDetailsResponse} from "../../response/get-member-update-details.response";
@@ -72,7 +72,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
         [Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)]
       ],
       [(this.EMAIL_VERIFICATION_CODE_CONTROL_KEY)]: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)]
+        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidator(VERIFICATION_CODE)]
       ]
     });
   }
@@ -83,7 +83,7 @@ export class MemberUpdateEmailPhoneComponent extends BaseFormComponent implement
         [Validators.required, Validators.minLength(4), Validators.maxLength(15), phoneNumberValidator(PHONE_NUMBER)]
       ],
       [(this.PHONE_VERIFICATION_CODE_CONTROL_KEY)]: [DEFAULT_FORM_CONTROL_VALUE,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)]
+        [Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidator(VERIFICATION_CODE)]
       ]
     });
   }

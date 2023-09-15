@@ -8,7 +8,7 @@ import {ChangePasswordDto, ForgotPasswordDto, ResetPasswordDto} from "../../../s
 import {ForgotPasswordResponse} from "../../response/forgot-password.response";
 import {InitiatePasswordChangeResponse} from "../../response/initiate-password-change.response";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {codeValidator} from "../../../shared/validator/validator";
+import {codeOrOtpValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {Router} from "@angular/router";
 import {ErrorResponse} from "../../../base/response/error-response";
@@ -44,7 +44,7 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
       Validators.required, Validators.email, Validators.minLength(4), Validators.maxLength(150)
     ]);
     this.verificationCode.addValidators([
-      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)
+      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidator(VERIFICATION_CODE)
     ]);
   }
 

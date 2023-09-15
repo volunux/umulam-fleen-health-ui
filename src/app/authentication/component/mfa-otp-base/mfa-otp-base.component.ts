@@ -5,7 +5,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {Observable, of} from "rxjs";
 import {VerificationType} from "../../../shared/enum/authentication.enum";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {codeValidator} from "../../../shared/validator/validator";
+import {codeOrOtpValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
@@ -27,7 +27,7 @@ export class MfaOtpBaseComponent extends BaseFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.otp.addValidators([
-      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidatorVERIFICATION_CODE)
+      Validators.required, Validators.minLength(1), Validators.maxLength(6), codeOrOtpValidator(VERIFICATION_CODE)
     ]);
   }
 

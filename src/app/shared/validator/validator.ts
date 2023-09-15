@@ -7,10 +7,22 @@ import {EntityExistsResponse} from "../response/entity-exists.response";
 import {BETWEEN_DATE_TYPE, DATE_TYPE, NO_INPUT_KEY} from "../constant/enum-constant";
 import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
 
-export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
+
+/**
+   * Validator function to check if a control's value matches one of the allowed enum values.
+   *
+   * This validator function validates that a control's value matches one of the allowed values specified in an enum.
+   * It's useful for ensuring that a select or dropdown input contains a valid enum value.
+   *
+   * @param allowedValues An array of strings representing the allowed enum values.
+   *
+   * @returns A validator function that returns a validation error object with the 'invalidType' and 'allowedValues' keys
+   *          if the control's value does not match any of the allowed values, or null if it's valid.
+   */
+  export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (isTruthy(control) && isTruthy(control.value)) {
-        const value = control.value;
+        const value: string = control.value;
 
         if (!allowedValues.includes(value)) {
           return {invalidType: value, allowedValues};
@@ -21,6 +33,20 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   }
 
 
+  /**
+   * Validator function to check if two form fields have matching values.
+   *
+   * This validator function compares the values of two form fields and checks if they match. It's typically used
+   * to confirm that two password fields or similar fields have the same value.
+   *
+   * @param fieldName1 The name of the first form field to compare.
+   * @param fieldName2 The name of the second form field to compare.
+   * @param label1 The label or description of the first form field (used in error message).
+   * @param label2 The label or description of the second form field (used in error message).
+   *
+   * @returns A validator function that sets an error on the second form field if the values do not match and
+   *          returns a validation error object with 'mismatch', 'label1', and 'label2' keys, or null if they match.
+   */
   export function fieldsMatchValidator(fieldName1: string, fieldName2: string, label1: string, label2: string): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const field1: AbstractControl | any = formGroup.get(fieldName1);
@@ -39,6 +65,18 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
     };
   }
 
+
+  /**
+   * Validator function to check the validity of a date based on a provided regular expression pattern.
+   *
+   * This validator function checks if the provided date matches a specified regular expression pattern.
+   * It's used to validate dates according to a custom format defined by the regular expression.
+   *
+   * @param pattern The regular expression pattern used to validate the date format.
+   *
+   * @returns A validator function that returns a validation error object with the 'invalidDateFormat' key
+   *          if the date does not match the pattern, or null if it's valid.
+   */
   export function dateValidator(pattern: RegExp): ValidatorFn | any {
     return (control: FormControl): ValidationErrors | null => {
       if (isTruthy(control) && isTruthy(control.value)) {
@@ -52,6 +90,17 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
 
   export const dateOfBirthValidator = dateValidator;
 
+
+  /**
+   * Validator function to check if a date is in the past.
+   *
+   * This validator function compares the provided date with the current date and checks if the provided date
+   * is in the past. It's used to validate that a date entered by the user is not in the future.
+   *
+   * @param control The form control representing the date input field.
+   *
+   * @returns A validation error object with the 'pastDate' key if the provided date is in the future, or null if it's valid.
+   */
   export function pastDateValidator(control: FormControl): ValidationErrors | null {
     if (isTruthy(control) && isTruthy(control.value)) {
       const enteredDate: Date = new Date(control.value);
@@ -64,6 +113,17 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
     return null;
   }
 
+  /**
+   * Validator function to check if a date input represents a date in the future.
+   *
+   * This validator function validates that a date input represents a date that is in the future relative to the current date.
+   * It's useful for ensuring that a date input corresponds to a date that has not already occurred.
+   *
+   * @param control The form control representing the date input to be validated.
+   *
+   * @returns A validation error object with the 'futureDate' key if the date input represents a date in the past,
+   *          or null if it represents a future date or if the control is not defined or empty.
+   */
   export function futureDateValidator(control: FormControl): ValidationErrors | null {
     if (isTruthy(control) && isTruthy(control.value)) {
       const enteredDate: Date = new Date(control.value);
@@ -76,10 +136,22 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
     return null;
   }
 
+
+  /**
+   * Validator function to check the validity of a phone number based on a provided regular expression pattern.
+   *
+   * This validator function checks if the provided phone number matches a specified regular expression pattern.
+   * It's used to validate phone numbers according to a custom format defined by the regular expression.
+   *
+   * @param pattern The regular expression pattern used to validate the phone number format.
+   *
+   * @returns A validator function that returns a validation error object if the phone number does not match the pattern,
+   *          or null if it's valid.
+   */
   export function phoneNumberValidator(pattern: RegExp): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (isTruthy(pattern) && isTruthy(control) && isTruthy(control.value)) {
-        const phoneNumber = control.value;
+        const phoneNumber: string = control.value;
 
         if (!pattern.test(phoneNumber)) {
           return { invalidPhoneNumber: true };
@@ -89,11 +161,24 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
     };
   }
 
+
+  /**
+   * Asynchronous validator function to check if an email address already exists in the system.
+   *
+   * This validator function communicates with a provided authentication service to verify if the provided email
+   * address is already registered in the system. It performs various transformations on the input data, including
+   * trimming whitespace and handling empty values.
+   *
+   * @param service The authentication service used for checking email existence.
+   *
+   * @returns An asynchronous validator function that returns an observable with validation results. It emits null if the
+   *          email is not found in the system or an object with the 'exists' property set to true if the email already exists.
+   */
   export function emailExistsValidator(service: AuthenticationService): any {
     let previousEmail: string;
     return (control: FormControl): Observable<any> => {
       if (isTruthy(control) && isTruthy(control.value)) {
-        const email = control.value;
+        const email: string = control.value;
 
         if (equalsIgnoreCase(previousEmail, email)) {
           return of(null);
@@ -101,14 +186,14 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
         previousEmail = email;
 
         return of(email).pipe(
-          map(value => value.trim()),
-          map(value => isFalsy(value) ? null : value),
+          map((value: string): string => value.trim()),
+          map((value: string): string | null | any => isFalsy(value) ? null : value),
           switchMap((value: string): Observable<any> => {
             if (isFalsy(value)) {
               return of(null);
             }
             return service.isEmailExists(value).pipe(
-              map((response:EntityExistsResponse) => (response.exists ? { exists: true } : null)),
+              map((response:EntityExistsResponse): AnyProp | null => (response.exists ? { exists: true } : null)),
               catchError(() => of(null))
             );
           })
@@ -119,10 +204,23 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   }
 
 
+  /**
+   * Validator function to check the strength and validity of a password based on specified criteria.
+   *
+   * This validator function checks if the provided password meets specific criteria, including length, character types,
+   * and the presence of special characters.
+   *
+   * @param patterns Regular expressions for different character types (lowercase, uppercase, digit, special character).
+   * @param minLength The minimum allowed length for the password (default is 8 characters).
+   * @param maxLength The maximum allowed length for the password (default is 24 characters).
+   *
+   * @returns A validator function that returns validation error objects if the password does not meet the criteria,
+   *          or null if it's valid.
+   */
   export function passwordValidator(patterns: AnyRegEx, minLength: number = 8, maxLength: number = 24): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (isTruthy(control) && isTruthy(control.value)) {
-        const value = control.value;
+        const value: string = control.value;
         const { lowerCase: lowercaseRegex, upperCase: uppercaseRegex, digit: digitRegex, specialChar: specialCharRegex} = patterns;
 
         if (value.length < minLength || value.length > maxLength) {
@@ -150,10 +248,20 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   }
 
 
+  /**
+   * Validator function to check if a provided date of birth meets a minimum age requirement.
+   *
+   * This validator function verifies if the provided date of birth corresponds to an individual's age that is equal to
+   * or greater than the specified minimum age.
+   *
+   * @param minAge The minimum age requirement that the date of birth must meet.
+   *
+   * @returns A validator function that returns a validation error object if the age requirement is not met, or null if it's valid.
+   */
   export function ageLimitValidator(minAge: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (isTruthy(control) && isTruthy(control.value)) {
-        const value = control.value;
+        const value: string = control.value;
         const currentDate: Date = new Date();
         const birthDate: Date = new Date(value);
         const age: number = currentDate.getFullYear() - birthDate.getFullYear();
@@ -165,6 +273,20 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
     };
   }
 
+
+  /**
+   * Validator function to validate a code or OTP (One-Time Password) based on specified criteria.
+   *
+   * This validator function checks if the provided input control value meets specific criteria for a code or OTP.
+   * It validates the input against a regular expression pattern and ensures it falls within the specified length range.
+   *
+   * @param pattern The regular expression pattern used to validate the code or OTP.
+   * @param minLength The minimum allowed length for the code or OTP (default is 1).
+   * @param maxLength The maximum allowed length for the code or OTP (default is 8).
+   *
+   * @returns A validator function that returns validation error objects if the input does not meet the criteria,
+   *          or null if it's valid.
+   */
   export function codeOrOtpValidator(pattern: RegExp, minLength: number = 1, maxLength: number = 8): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       if (isTruthy(control) && isTruthy(control.value)) {
@@ -284,7 +406,7 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   export function minTimeValidator(minTime: string, pattern: string = TIME_FORMAT): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (nonNull(control) && nonNull(minTime)) {
-        const inputTime = control.value;
+        const inputTime: string = control.value;
         const inputTimeParsed: TwoArray | any = parseTime(inputTime);
         const minTimeParsed: TwoArray | any = parseTime(minTime);
 
@@ -354,7 +476,7 @@ export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   export function maxTimeValidator(maxTime: string, pattern: string = TIME_FORMAT): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (nonNull(control) && (nonNull(maxTime))) {
-        const inputTime = control.value;
+        const inputTime: string = control.value;
         const inputTimeParsed: TwoArray | any = parseTime(inputTime);
         const maxTimeParsed: TwoArray | any = parseTime(maxTime);
 
