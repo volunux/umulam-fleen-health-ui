@@ -1,22 +1,17 @@
-<form [formGroup]="timeForm">
-  <label for="dayOfWeek">Day of the Week:</label>
+<form *ngIf="timeForm" [formGroup]="timeForm">
+  <label for="dayOfWeek">Day of the Week</label>
   <select id="dayOfWeek" formControlName="dayOfWeek">
-    <option value="Monday">Monday</option>
-    <option value="Tuesday">Tuesday</option>
-    <option value="Wednesday">Wednesday</option>
-    <option value="Thursday">Thursday</option>
-    <option value="Friday">Friday</option>
-    <option value="Saturday">Saturday</option>
-    <option value="Sunday">Sunday</option>
+    <option value=""></option>
+    <option *ngFor="let dayOfWeek of daysOfTheWeek" [value]="{{ dayOfWeek }}">{{ dayOfWeek | titlecase }}</option>
   </select>
 
   <div [formGroup]="timeForm">
     <!-- Start Time Input -->
     <div class="form-group">
-      <label for="startTime">Start Time:</label>
+      <label for="start_time">Start Time:</label>
       <input
         type="text"
-        id="startTime"
+        id="start_time"
         formControlName="startTime"
         placeholder="HH:MM"
       />

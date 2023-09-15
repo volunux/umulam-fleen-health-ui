@@ -1,7 +1,8 @@
 import {AbstractControl} from "@angular/forms";
 import {DATE_FORMAT} from "./format-pattern";
 import {capitalizeMany, getAllowableExtensions, joining} from "./helpers";
-import {FileConstraints} from "../type/other";
+import {DateAndTimeConstraints, FileConstraints} from "../type/other";
+import {AnyProp} from "../type/base";
 
 export const validationErrorMessages: { [key: string]: Function } = {
 
@@ -53,11 +54,23 @@ export const validationErrorMessages: { [key: string]: Function } = {
 
   fileSize: (control: AbstractControl | any, label: string, options: FileConstraints): string => {
     const { maxFileSize: size, fileSizeUnit } = options;
-    return `File is too large. File size should be less than equal to ${size}${fileSizeUnit}`;
+    return `File is too large. File size should be less than equal to ${size}${fileSizeUnit}.`;
   },
 
   fileType: (control: AbstractControl | any, label: string, options: FileConstraints): string => {
     const { allowableTypes } = options;
     return `File type is invalid and file cannot be uploaded. Allowed types : ${joining(getAllowableExtensions(allowableTypes))}`
-  }
+  },
+
+  timeFormatError: (control: AbstractControl | any, label: string): string => {
+    return `Invalid time format. Use ${control?.errors["pattern"]}.`
+  },
+
+  minTime: (control: AbstractControl | any, label: string): string => {
+    return `${label} must be at or after ${control?.errors["minTimeValue"]}.`
+  },
+
+  maxTime: (control: AbstractControl | any, label: string): string => {
+    return `${label} must be at or after ${control?.errors["maxTimeValue"]}.`
+  },
 };

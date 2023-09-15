@@ -10,9 +10,9 @@ import {AnyProp} from "../../type/base";
 })
 export class ValidationErrorComponent {
 
-  @Input() public control: AbstractControl | undefined | null;
-  @Input('control-label') public controlLabel: string = "This field";
-  @Input('control-options') public controlOptions: AnyProp = {};
+  @Input({ required: true }) public control: AbstractControl | undefined | null;
+  @Input({ alias: 'control-label', required: true }) public controlLabel: string = "This field";
+  @Input({ alias: 'control-options', required: false }) public controlOptions: AnyProp = {};
 
   get errors(): any[] {
     if (this.control && this.control.invalid && (this.control.dirty || this.control.touched)) {

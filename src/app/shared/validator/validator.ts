@@ -1,11 +1,11 @@
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn} from "@angular/forms";
-import {equalsIgnoreCase, isFalsy, isTruthy, validatePattern} from "../util/helpers";
+import {equalsIgnoreCase, isFalsy, isTruthy, nonNull, validatePattern} from "../util/helpers";
 import {catchError, map, Observable, of, switchMap} from "rxjs";
 import {AuthenticationService} from "../../authentication/service/authentication.service";
-import {AnyProp, AnyRegEx} from "../type/base";
+import {AnyProp, AnyRegEx, TwoArray} from "../type/base";
 import {EntityExistsResponse} from "../response/entity-exists.response";
 import {BETWEEN_DATE_TYPE, DATE_TYPE, NO_INPUT_KEY} from "../constant/enum-constant";
-import {DATE, TWO_DATES} from "../util/format-pattern";
+import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
 
 export function enumTypeValidator(allowedValues: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -216,54 +216,69 @@ export function isNumberValidator(control: AbstractControl): { [key: string]: bo
   return null;
 }
 
-export function minTimeValidator(minTime: string) {
-  return (control: FormControl): ValidationErrors | null => {
-    const inputTime = control.value;
-    if (!inputTime) {
-      return null;
-    }
+function parseTime(time: string): TwoArray {
+  if (isFalsy(time)) {
+    return null;
+  }
 
-    const inputParts = inputTime.split(':');
-    if (inputParts.length !== 2) {
-      return { formatError: true };
-    }
+  const timeParts: string[] = time.split(':');
+  if (timeParts.length !== 2) {
+    return null;
+  }
 
-    const inputHours: number = parseInt(inputParts[0], 10);
-    const inputMinutes: number = parseInt(inputParts[1], 10);
+  const hours: number = parseInt(timeParts[0], 10);
+  const minutes: number = parseInt(timeParts[1], 10);
 
-    const minTimeParts: string[] = minTime.split(':');
-    const minHours: number = parseInt(minTimeParts[0], 10);
-    const minMinutes: number = parseInt(minTimeParts[1], 10);
+  return [hours, minutes];
+}
 
-    if (inputHours < minHours || (inputHours === minHours && inputMinutes < minMinutes)) {
-      return { minTime: true };
+export function minTimeValidator(minTime: string, pattern: string = TIME_FORMAT): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (nonNull(control) && nonNull(minTime)) {
+      const inputTime = control.value;
+      const inputTimeParsed: TwoArray | any = parseTime(inputTime);
+      const minTimeParsed: TwoArray | any = parseTime(minTime);
+
+      if (isFalsy(inputTimeParsed)) {
+        return { timeFormatError: true, pattern };
+      }
+
+      const chosenHour: number = inputTimeParsed[0];
+      const chosenMinute: number = inputTimeParsed[1];
+
+      const requiredHour: number = minTimeParsed[0];
+      const requiredMinute: number = minTimeParsed[1];
+
+      if (minTimeParsed &&
+          (inputTimeParsed[0] < requiredHour || (chosenHour === requiredHour && chosenMinute < requiredMinute))) {
+        return { minTime: true, minTimeValue: minTime };
+      }
     }
 
     return null;
   };
 }
 
-export function maxTimeValidator(maxTime: string) {
-  return (control: FormControl) => {
-    const inputTime = control.value;
-    if (!inputTime) {
-      return null;
-    }
+export function maxTimeValidator(maxTime: string, pattern: string = TIME_FORMAT): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (nonNull(control) && (nonNull(maxTime))) {
+      const inputTime = control.value;
+      const inputTimeParsed: TwoArray | any = parseTime(inputTime);
+      const maxTimeParsed: TwoArray | any = parseTime(maxTime);
 
-    const inputParts = inputTime.split(':');
-    if (inputParts.length !== 2) {
-      return { formatError: true };
-    }
+      if (isFalsy(inputTimeParsed)) {
+        return { timeFormatError: true, pattern };
+      }
 
-    const inputHours = parseInt(inputParts[0], 10);
-    const inputMinutes = parseInt(inputParts[1], 10);
+      const chosenHour: number = inputTimeParsed[0];
+      const chosenMinute: number = inputTimeParsed[1];
+      const requiredHour: number = maxTimeParsed[0];
+      const requiredMinute: number = maxTimeParsed[1];
 
-    const maxTimeParts = maxTime.split(':');
-    const maxHours = parseInt(maxTimeParts[0], 10);
-    const maxMinutes = parseInt(maxTimeParts[1], 10);
-
-    if (inputHours > maxHours || (inputHours === maxHours && inputMinutes > maxMinutes)) {
-      return { maxTime: true };
+      if (maxTimeParsed &&
+          (chosenHour > requiredHour || (chosenHour === requiredHour && chosenMinute > requiredMinute))) {
+        return { maxTime: true };
+      }
     }
 
     return null;

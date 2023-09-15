@@ -14,6 +14,12 @@ export type UpdateProfessionalAvailabilityStatusDto = {
   availabilityStatus: ProfessionalAvailabilityStatus;
 }
 
+export type PeriodDto = {
+  dayOfWeek: string
+  startTime: string;
+  endTime: string;
+}
+
 export class UploadProfessionalDocumentDto {
 
   public curriculumVitae: string;

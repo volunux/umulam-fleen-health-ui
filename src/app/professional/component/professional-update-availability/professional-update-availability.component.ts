@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {
   completeHourValidator,
-  endTimeGreaterThanStartTimeValidator,
+  endTimeGreaterThanStartTimeValidator, enumTypeValidator,
   maxTimeValidator,
   minTimeValidator
 } from "../../../shared/validator/validator";
-import {checkForOverlappingPeriods} from "../../../shared/util/helpers";
+import {checkForOverlappingPeriods, isFalsy, nonNull} from "../../../shared/util/helpers";
+import {PeriodDto} from "../../dto/professional.dto";
+import {DAYS_OF_WEEK, DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
 
 @Component({
   selector: 'app-professional-update-availability',
@@ -17,55 +19,80 @@ export class ProfessionalUpdateAvailabilityComponent {
 
   timeForm: FormGroup;
   periods: any[] = [];
+
   public constructor(protected fb: FormBuilder) {
     this.timeForm = this.fb.group({
-      dayOfWeek: ['Monday', [Validators.required]],
+      dayOfWeek: [DEFAULT_FORM_CONTROL_VALUE, [
+        Validators.required, enumTypeValidator(DAYS_OF_WEEK)]
+      ],
       startTime: ['', [Validators.required, minTimeValidator('08:00')]],
       endTime: ['', [Validators.required, maxTimeValidator('18:00'), completeHourValidator]],
     }, { validators: [endTimeGreaterThanStartTimeValidator, this.overlappingPeriodsValidator] });
+
   }
 
-  overlappingPeriodsValidator() {
-    const dayOfWeek = this.timeForm.controls['dayOfWeek'].value;
-    const startTime = this.timeForm.controls['startTime'].value;
-    const endTime = this.timeForm.controls['endTime'].value;
+  private overlappingPeriodsValidator(dayOfWeekFieldName: string, startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const dayOfWeekCtrl: AbstractControl | any = formGroup.get(dayOfWeekFieldName);
+      const startTimeCtrl: AbstractControl | any = formGroup.get(startTimeFieldName);
+      const endTimeCtrl: AbstractControl | any = formGroup.get(endTimeFieldName);
 
-    if (dayOfWeek && startTime && endTime) {
-      const newPeriod = { dayOfWeek, startTime, endTime };
-      const hasOverlap = checkForOverlappingPeriods(this.periods, newPeriod);
+      if (nonNull(dayOfWeekCtrl) && nonNull(startTimeCtrl) && nonNull(endTimeCtrl)) {
+        const dayOfWeek: string = dayOfWeekCtrl.value;
+        const startTime: string = startTimeCtrl.value;
+        const endTime: string = endTimeCtrl.value;
 
-      return hasOverlap ? { overlappingPeriods: true } : null;
+        const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
+        const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
+
+        return hasOverlap ? { overlappingPeriods: true } : null;
+      }
+
+      return null;
     }
-
-    return null;
   };
 
   addToPeriods() {
-    if (this.timeForm.valid) {
-      const dayOfWeek = this.timeForm.controls['dayOfWeek'].value;
-      const startTime = this.timeForm.controls['startTime'].value;
-      const endTime = this.timeForm.controls['endTime'].value;
-      const newPeriod = { dayOfWeek, startTime, endTime };
+    if (this.timeForm.valid && nonNull(this.dayOfWeek) && nonNull(this.startTime) && nonNull(this.endTime)) {
+      const dayOfWeek = this.dayOfWeek?.value;
+      const startTime = this.startTime?.value;
+      const endTime = this.endTime?.value;
+      const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
 
-      const hasOverlap = checkForOverlappingPeriods(this.periods, newPeriod);
+      const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
-      if (hasOverlap) {
-        console.log('Overlapping periods are not allowed.');
-      } else {
+      if (isFalsy(hasOverlap)) {
         this.periods.push(newPeriod);
         this.timeForm.reset();
       }
     }
+    console.log(this.periods);
   }
 
-  resetForm() {
-    this.periods = []; // Clear the periods array
-    this.timeForm.reset(); // Reset the form
+  public resetForm(): void {
+    this.periods = [];
+    this.timeForm.reset();
   }
 
-  onTimeInput(event: any) {
+  public onTimeInput(event: any) {
     this.timeForm.controls['startTime'].setErrors(null);
     this.timeForm.controls['endTime'].setErrors(null);
+  }
+
+  get startTime(): AbstractControl | null | undefined {
+    return this.timeForm?.get('startTime');
+  }
+
+  get endTime(): AbstractControl | null | undefined {
+    return this.timeForm?.get('endTime');
+  }
+
+  get dayOfWeek(): AbstractControl | null | undefined {
+    return this.timeForm?.get('dayOfWeek');
+  }
+
+  get daysOfTheWeek(): string[] {
+    return DAYS_OF_WEEK;
   }
 
 }

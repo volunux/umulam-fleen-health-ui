@@ -7,3 +7,9 @@ export type FileConstraints = {
   allowableTypes: string[];
   fileSizeUnit: 'MB'
 }
+
+
+export type DateAndTimeConstraints = {
+  pattern?: string;
+  minTime?: string;
+}
