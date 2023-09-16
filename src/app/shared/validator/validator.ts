@@ -580,10 +580,9 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
         const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
         const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
 
-        const errors: ValidationErrors = { ...(endTimeControl.errors) };
+        let errors: ValidationErrors = { ...(endTimeControl.errors) };
         if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
-          errors['endTimeGreaterThanStartTime'] = true
-          errors["fieldLabel"] = endTimeFieldLabel;
+          errors = { ...errors, endTimeGreaterThanStartTime: true, fieldLabel: endTimeFieldLabel };
         }
 
         endTimeControl.setErrors(Object.keys(errors).length > 0 ? errors : null);

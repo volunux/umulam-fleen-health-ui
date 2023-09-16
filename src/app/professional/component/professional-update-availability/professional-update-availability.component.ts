@@ -126,12 +126,12 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
         const dayOfTheWeek: string = dayOfTheWeekCtrl.value;
         const startTime: string = startTimeCtrl.value;
         const endTime: string = endTimeCtrl.value;
-
         const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
+
         const hasOverlap: boolean = checkForOverlappingPeriods((<PeriodDto[]>this.periods), newPeriod);
-        const errors: ValidationErrors = { ...(startTimeCtrl.errors) };
+        let errors: ValidationErrors = { ...(startTimeCtrl.errors) };
         if (hasOverlap) {
-          errors['overlappingPeriods'] = true;
+          errors = { ...errors, overlappingPeriods: true }
         }
 
         startTimeCtrl.setErrors(Object.keys(errors).length > 0 ? errors : null);
@@ -161,7 +161,6 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
 
       const hasOverlap: boolean = checkForOverlappingPeriods((<PeriodDto[]>this.periods), newPeriod);
-
       if (isFalsy(hasOverlap)) {
         this.periods.push(newPeriod);
         this.timeForm.reset();
@@ -190,6 +189,34 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       && this.periods.length > 0
   }
 
+
+  /**
+   * Sorts the list of periods based on the day of the week and start time.
+   * This method is intended to arrange periods in ascending order by day of the week
+   * and, for periods on the same day, by their start times.
+   *
+   * By calling this method, you can ensure that your list of periods is organized
+   * in a clear and easy-to-read manner, facilitating better user experience and
+   * management of healthcare professional availability.
+   *
+   * Usage:
+   * - Call this method whenever you need to update or display the sorted list of periods.
+   * - It sorts the periods array in-place, so there's no need to assign the result to
+   *   a new variable; your original array will be sorted directly.
+   *
+   * Example:
+   * ```typescript
+   * // Sort the periods array before displaying it in the UI.
+   * this.sortPeriods();
+   * ```
+   *
+   * @remarks
+   * - This method assumes that you have an array of periods, each having a `dayOfTheWeek`
+   *   property representing the day and a `startTime` property representing the start time.
+   * - Make sure that your array contains valid period objects to ensure accurate sorting.
+   *
+   * @see PeriodDto
+   */
   private sortPeriods(): void {
     this.periods.sort((a, b): number | any => {
       if (a.dayOfTheWeek < b.dayOfTheWeek) {
@@ -220,6 +247,63 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
 
   get daysOfTheWeek(): string[] {
     return Object.values(AvailabilityDayOfTheWeek);
+  }
+
+
+  /**
+   * Handles the change event when the day of the week is selected in the form.
+   * This method is intended to ensure real-time validation updates for the start time
+   * and end time controls based on the selected day.
+   *
+   * When the day of the week changes, this method programmatically marks the start time
+   * and end time controls as "touched," which triggers validation checks immediately.
+   * This behavior addresses a situation where validation errors from a previous day may
+   * persist until the user interacts with the input fields.
+   *
+   * Additionally, this method calls `updateValueAndValidity` on the start time and end time
+   * controls to ensure that validation updates are executed promptly. This is particularly
+   * useful in scenarios where asynchronous operations or complex component interactions
+   * might affect the timing of validation.
+   *
+   * By marking the controls as "touched" and calling `updateValueAndValidity` upon day selection
+   * changes, it ensures that validation updates in real-time as the user selects different days,
+   * providing a smoother and more responsive user experience.
+   *
+   * Usage:
+   * - Bind this method to the change event of the dayOfWeek control in your form template.
+   * - Ensure that the dayOfWeek control is a dropdown or input field where users can select
+   *   the day of the week.
+   * - When the user selects a different day, this method will be triggered, and it will
+   *   mark the start time and end time controls as "touched," triggering validation checks and
+   *   explicitly updating the validation status.
+   *
+   * Example:
+   * ```html
+   * <select formControlName="dayOfWeek" (change)="onDayOfWeekChange()">
+   *   <!-- Dropdown options for selecting the day of the week -->
+   * </select>
+   * ```
+   *
+   * @remarks
+   * - This method assumes that you are using Angular Reactive Forms to manage your form controls.
+   * - Make sure to adjust this method and your form structure to match your specific implementation.
+   * - By marking controls as "touched" upon day selection changes and explicitly calling
+   *   `updateValueAndValidity`, validation errors will be updated immediately for a smoother user
+   *   experience, especially in scenarios involving complex interactions.
+   *
+   * @see FormGroup
+   * @see FormBuilder
+   * @see AbstractControl
+   */
+  public onDayOfWeekChange(): void {
+    if (this.startTime?.dirty) {
+      this.startTime?.markAsTouched();
+      this.startTime?.updateValueAndValidity();
+    }
+    if (this.endTime?.dirty) {
+      this.endTime?.markAsTouched();
+      this.endTime?.updateValueAndValidity();
+    }
   }
 
 }

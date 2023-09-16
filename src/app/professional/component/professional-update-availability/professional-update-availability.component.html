@@ -3,7 +3,7 @@
 
     <div class="form-group">
       <label for="day_of_week">Day of the Week</label>
-      <select id="day_of_week" formControlName="dayOfTheWeek">
+      <select id="day_of_week" formControlName="dayOfTheWeek" (change)="onDayOfWeekChange()">
         <option value=""></option>
         <option *ngFor="let dayOfTheWeek of daysOfTheWeek" [value]="dayOfTheWeek">{{ dayOfTheWeek | titlecase }}</option>
       </select>
