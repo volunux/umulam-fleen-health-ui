@@ -640,9 +640,12 @@ export function nonNull(value: any): boolean {
   export function checkForOverlappingPeriods(existingPeriods: any[], newPeriod: any): boolean {
     const overlappingPeriod = existingPeriods.find((period) => {
       return period.dayOfWeek === newPeriod.dayOfWeek &&
-        ((newPeriod.startTime >= period.startTime && newPeriod.startTime <= period.endTime) ||
-          (newPeriod.endTime >= period.startTime && newPeriod.endTime <= period.endTime));
+        (
+          (newPeriod.startTime >= period.startTime && newPeriod.startTime < period.endTime) ||
+          (newPeriod.endTime > period.startTime && newPeriod.endTime <= period.endTime)
+        );
     });
 
     return !!overlappingPeriod;
   }
+

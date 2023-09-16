@@ -7,10 +7,9 @@ import {
   maxTimeValidator,
   minTimeValidator
 } from "../../../shared/validator/validator";
-import {checkForOverlappingPeriods, isFalsy, nonNull} from "../../../shared/util/helpers";
+import {checkForOverlappingPeriods, isFalsy, isObject, nonNull} from "../../../shared/util/helpers";
 import {PeriodDto} from "../../dto/professional.dto";
 import {DAYS_OF_WEEK, DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
-import {AnyProp} from "../../../shared/type/base";
 import {BaseFormImplComponent} from "../../../base/component/base-form/base-form-impl.component";
 
 @Component({
@@ -48,6 +47,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
         this.overlappingPeriodsValidator('dayOfWeek', 'startTime', 'endTime')
       ]
     });
+    this.formReady();
   }
 
 
@@ -92,16 +92,16 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
         const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
         const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
-        const value: AnyProp | null = hasOverlap
-          ? { overlappingPeriods: true }
-          : null;
+        const errors: ValidationErrors = { ...(startTimeCtrl.errors) };
+        if (hasOverlap) {
+          errors['overlappingPeriods'] = true
+        }
 
-        dayOfWeekCtrl.setErrors(value);
-        return value;
+        startTimeCtrl.setErrors(Object.keys(errors).length > 0 ? errors : null);
       }
       return null;
     }
-  };
+  }
 
 
   /**
@@ -118,9 +118,9 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
    */
   public addToPeriods(): void {
     if (this.timeForm.valid && nonNull(this.dayOfWeek) && nonNull(this.startTime) && nonNull(this.endTime)) {
-      const dayOfWeek = this.dayOfWeek?.value;
-      const startTime = this.startTime?.value;
-      const endTime = this.endTime?.value;
+      const dayOfWeek: string = this.dayOfWeek?.value;
+      const startTime: string = this.startTime?.value;
+      const endTime: string = this.endTime?.value;
       const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
 
       const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
@@ -137,10 +137,16 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
     this.timeForm.reset();
   }
 
-  public removePeriod(index: number) {
+  public removePeriod(index: number): void {
     if (index >= 0 && index < this.periods.length) {
       this.periods.splice(index, 1);
     }
+  }
+
+  public isPeriodsMoreThanOne(): boolean {
+    return isObject(this.periods)
+      && Array.isArray(this.periods)
+      && this.periods.length > 0
   }
 
 

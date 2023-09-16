@@ -73,7 +73,9 @@ export const validationErrorMessages: { [key: string]: Function } = {
     return `${label} must be at or before ${control?.errors["maxTimeValue"]}.`
   },
 
-  endTimeGreaterThanStartTime: (control: AbstractControl | any, label: string): string => `${label} cannot be before the start time.`,
+  endTimeGreaterThanStartTime: (control: AbstractControl | any, label: string): string => `${control?.errors["fieldLabel"]} cannot be before the start time.`,
 
-  completeHourDifference: (): string => `The time difference must be in complete hours.`
+  completeHourDifference: (): string => `The time difference must be in complete hours.`,
+
+  overlappingPeriods: (): string => `Two session period cannot overlap each other.`
 };

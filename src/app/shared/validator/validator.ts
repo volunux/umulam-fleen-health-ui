@@ -559,7 +559,7 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
    *
    * @returns A validator function that returns a validation error object if the end time is not greater than the start time, or null if it's valid.
    */
-  export function endTimeGreaterThanStartTimeValidator(startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
+  export function endTimeGreaterThanStartTimeValidator(startTimeFieldName: string, endTimeFieldName: string, endTimeFieldLabel: string = 'End Time'): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const startTimeControl: AbstractControl | any = formGroup?.get(startTimeFieldName);
       const endTimeControl: AbstractControl | any = formGroup?.get(endTimeFieldName);
@@ -578,12 +578,14 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
       if (nonNull(parseTime(startTime)) && nonNull(parseTime(endTime))) {
         const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
         const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
-        const value: ValidationErrors | null = endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)
-          ? { endTimeGreaterThanStartTime: true }
-          : null;
 
-        endTimeControl.setErrors(value);
-        return value;
+        const errors: ValidationErrors = { ...(endTimeControl.errors) };
+        if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
+          errors['endTimeGreaterThanStartTime'] = true
+          errors["fieldLabel"] = endTimeFieldLabel;
+        }
+
+        endTimeControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
       }
       return null;
     }

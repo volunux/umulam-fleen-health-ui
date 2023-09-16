@@ -1,38 +1,32 @@
-<form *ngIf="timeForm" [formGroup]="timeForm">
-  <label for="dayOfWeek">Day of the Week</label>
-  <select id="dayOfWeek" formControlName="dayOfWeek">
-    <option value=""></option>
-    <option *ngFor="let dayOfWeek of daysOfTheWeek" [value]="dayOfWeek">{{ dayOfWeek | titlecase }}</option>
-  </select>
+<form *ngIf="isFormReady" [formGroup]="timeForm">
+  <app-validation-error [control]="timeForm" [control-label]="'The current values'"></app-validation-error>
 
-  <div [formGroup]="timeForm">
-    <!-- Start Time Input -->
+    <div class="form-group">
+      <label for="day_of_week">Day of the Week</label>
+      <select id="day_of_week" formControlName="dayOfWeek">
+        <option value=""></option>
+        <option *ngFor="let dayOfWeek of daysOfTheWeek" [value]="dayOfWeek">{{ dayOfWeek | titlecase }}</option>
+      </select>
+      <app-validation-error [control]="dayOfWeek" [control-label]="'Day of Week'"></app-validation-error>
+    </div>
+
     <div class="form-group">
       <label for="start_time">Start Time:</label>
-      <input
-        type="text"
-        id="start_time"
-        formControlName="startTime"
-        placeholder="HH:MM"
-      />
+      <input type="text" id="start_time" formControlName="startTime" placeholder="HH:MM"/>
       <app-validation-error [control]="startTime" [control-label]="'Start Time'"></app-validation-error>
     </div>
 
-    <!-- End Time Input -->
     <div class="form-group">
       <label for="end_time">End Time:</label>
-      <input
-        type="text"
-        id="end_time"
-        formControlName="endTime"
-        placeholder="HH:MM"
-      />
+      <input type="text" id="end_time" formControlName="endTime" placeholder="HH:MM"/>
       <app-validation-error [control]="endTime" [control-label]="'End Time'"></app-validation-error>
     </div>
-  </div>
-
-
-
 
   <button type="button" (click)="addToPeriods()">Add to Periods</button>
+
+  <ng-container *ngIf="isPeriodsMoreThanOne">
+    <p *ngFor="let period of periods; let i = index;">{{ period.dayOfWeek }} : {{ period.startTime }} - {{ period.endTime }} <span (click)="removePeriod(i)">X</span></p>
+  </ng-container>
+
+  <button type="button" (click)="resetFormAndPeriod()">Reset form</button>
 </form>
