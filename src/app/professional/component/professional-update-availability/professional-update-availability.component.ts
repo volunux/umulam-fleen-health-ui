@@ -92,9 +92,9 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
         const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
         const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
-        const errors: ValidationErrors = { ...(startTimeCtrl.errors) };
+        const errors: ValidationErrors = {};
         if (hasOverlap) {
-          errors['overlappingPeriods'] = true
+          errors['overlappingPeriods'] = true;
         }
 
         startTimeCtrl.setErrors(Object.keys(errors).length > 0 ? errors : null);
@@ -147,16 +147,6 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
     return isObject(this.periods)
       && Array.isArray(this.periods)
       && this.periods.length > 0
-  }
-
-
-  public onTimeInput(event: any) {
-    if (nonNull(this.startTime)) {
-      this.startTime?.setErrors(null);
-    }
-    if (nonNull(this.endTime)) {
-      this.endTime?.setErrors(null);
-    }
   }
 
   get timeForm(): FormGroup {
