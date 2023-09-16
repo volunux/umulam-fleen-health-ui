@@ -12,6 +12,7 @@ import {SearchResultView} from "../../../shared/view/search-result.view";
 import {DeleteIdsDto} from "../../../shared/type/other";
 import {DeleteResponse} from "../../../shared/response/delete.response";
 import {ANY_EMPTY} from "../../../shared/constant/other-constant";
+import {isTruthy} from "../../../shared/util/helpers";
 
 @Component({
   selector: 'app-view-professionals',
@@ -39,6 +40,16 @@ export class ViewProfessionalsComponent extends BaseEntriesComponent<Professiona
 
   override deleteEntries(dto: DeleteIdsDto): Observable<DeleteResponse> {
     return of(ANY_EMPTY);
+  }
+
+  get professionals(): ProfessionalView[] {
+    return this.entries;
+  }
+
+  public override async viewDetail(id: number | string | undefined): Promise<void> {
+    if (isTruthy(id)) {
+      await this.router.navigate(['..', 'view-professional-detail', id], {relativeTo: this.route});
+    }
   }
 
 }

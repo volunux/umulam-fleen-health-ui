@@ -11,6 +11,8 @@ export class RowEntryOptionComponent {
   @Output() public detailClicked: EventEmitter<number> = new EventEmitter<number>();
   @Output() public updateClicked: EventEmitter<number> = new EventEmitter<number>();
   @Output() public checkedChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input('can-check') public canCheck: boolean = true;
+  @Input('can-update') public canUpdate: boolean = true;
 
   public viewDetail(): void {
     this.detailClicked.emit(this.entryId);

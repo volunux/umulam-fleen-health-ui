@@ -1,1 +1,48 @@
-<p>view-professionals works!</p>
+<app-search-form-delete-menu [is-submitting]="isSubmitting" [search-filter]="searchFilter" (searchSubmitted)="search($event)" (deleteConfirmed)="confirmDeleteEntries()"></app-search-form-delete-menu>
+
+<p>The current page is {{currentPage}}</p>
+
+<div *ngIf="entries.length > 0">
+  <table>
+
+    <thead>
+    <tr>
+      <th>S/N</th>
+      <th>Full Name</th>
+      <th>Country</th>
+      <th>Title</th>
+      <th>Type</th>
+      <th>Qualification</th>
+      <th>Years of Experience</th>
+      <th>Area of Expertise</th>
+      <th>Availability Status</th>
+      <th>Languages Spoken</th>
+      <th>Created On</th>
+      <th>Updated On</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr *ngFor="let professional of professionals; let i = index; trackBy: trackByFn">
+      <td>{{ addOneToIndex(i) }}</td>
+      <td>{{ professional.member.firstName | titlecase }} {{ professional.member.lastName | titlecase }}</td>
+      <td>{{ professional.country.title | titlecase }}</td>
+      <td>{{ professional.title }}</td>
+      <td>{{ professional.type | titlecase }}</td>
+      <td>{{ professional.qualification | titlecase }}</td>
+      <td>{{ professional.yearsOfExperience }}</td>
+      <td>{{ professional.areaOfExpertise }}</td>
+      <td>{{ professional.availabilityStatus }}</td>
+      <td>{{ professional.languagesSpoken }}</td>
+      <td>{{ professional.createdOn | date:'mediumDate' }}</td>
+      <td>{{ professional.updatedOn | date:'mediumDate' }}</td>
+      <app-row-entry-option [can-check]="false" [can-update]="false" [entry-id]="professional.id" (detailClicked)="viewDetail(professional.id)"></app-row-entry-option>
+    </tr>
+    </tbody>
+  </table>
+
+  <app-pagination [is-first]="isFirst" [is-last]="isLast" [current-page-number]="currentPage"
+                  (toNextPage)="nextPage()" (toPreviousPage)="previousPage()"></app-pagination>
+
+</div>

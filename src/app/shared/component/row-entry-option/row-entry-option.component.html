@@ -1,7 +1,7 @@
 <button (click)="viewDetail()">View</button>
-<button (click)="updateEntry()">Update</button>
+<button *ngIf="canUpdate" (click)="updateEntry()">Update</button>
 
-<label class="custom-checkbox" [class.checked]="checked.checked">
+<label *ngIf="canCheck" class="custom-checkbox" [class.checked]="checked.checked">
   <input type="checkbox" (change)="handleChecked(checked.checked)" #checked>
   <span class="checkmark"></span>
 </label>

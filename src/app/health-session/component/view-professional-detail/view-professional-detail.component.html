@@ -1,1 +1,59 @@
-<p>view-professional-detail works!</p>
+<ng-container *ngIf="professionalView">
+  <table>
+    <thead>
+    <tr>
+      <td colspan="2">Professional Detail</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <td>{{ professionalView.id }}</td>
+    </tr>
+    <tr>
+      <th>Full Name</th>
+      <td>{{ professionalView.member.firstName | titlecase }} {{ professionalView.member.lastName }}</td>
+    </tr>
+    <tr>
+      <th>Title</th>
+      <td>{{ professionalView.title }}</td>
+    </tr>
+    <tr>
+      <th>Price</th>
+      <td>{{ professionalView.price | number }}</td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td>{{ professionalView.type | titlecase }}</td>
+    </tr>
+    <tr>
+      <th>Qualification</th>
+      <td>{{ professionalView.qualification | titlecase }}</td>
+    </tr>
+    <tr>
+      <th>Years of Experience</th>
+      <td>{{ professionalView.yearsOfExperience }}</td>
+    </tr>
+    <tr>
+      <th>Area of Expertise</th>
+      <td>{{ professionalView.areaOfExpertise }}</td>
+    </tr>
+    <tr>
+      <th>Languages Spoken</th>
+      <td>{{ professionalView.languagesSpoken | titlecase }}</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>{{ professionalView.country.title | titlecase }}</td>
+    </tr>
+    <tr>
+      <th>Created On</th>
+      <td>{{ professionalView.createdOn | date:'longDate' }}</td>
+    </tr>
+    <tr>
+      <th>Updated On</th>
+      <td>{{ professionalView.updatedOn | date:'longDate' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</ng-container>
