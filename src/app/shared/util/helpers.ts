@@ -647,3 +647,14 @@ export function nonNull(value: any): boolean {
   }
 
 
+export function createTimeNoSeconds(time: string): Date {
+  if (isTruthy(time)) {
+    const [hour, minute]: string[] = time.split(':');
+    const date: Date = new Date();
+
+    date.setHours(parseInt(hour, 10));
+    date.setMinutes(parseInt(minute, 10));
+    return date;
+  }
+  return new Date();
+}
