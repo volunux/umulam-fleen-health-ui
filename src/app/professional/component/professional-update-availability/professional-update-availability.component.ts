@@ -7,7 +7,7 @@ import {
   maxTimeValidator,
   minTimeValidator
 } from "../../../shared/validator/validator";
-import {checkForOverlappingPeriods, isFalsy, isObject, nonNull} from "../../../shared/util/helpers";
+import {checkForOverlappingPeriods, isFalsy, isObject, isTruthy, nonNull} from "../../../shared/util/helpers";
 import {PeriodDto} from "../../dto/professional.dto";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
 import {BaseFormImplComponent} from "../../../base/component/base-form/base-form-impl.component";
@@ -125,15 +125,16 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
         const dayOfTheWeek: string = dayOfTheWeekCtrl.value;
         const startTime: string = startTimeCtrl.value;
         const endTime: string = endTimeCtrl.value;
-        const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
+        if (isTruthy(dayOfTheWeek) && isTruthy(startTime) && isTruthy(endTime)) {
+          const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
+          const hasOverlap: boolean = checkForOverlappingPeriods((<PeriodDto[]>this.periods), newPeriod);
+          let errors: ValidationErrors = { ...(startTimeCtrl.errors) };
 
-        const hasOverlap: boolean = checkForOverlappingPeriods((<PeriodDto[]>this.periods), newPeriod);
-        let errors: ValidationErrors = { ...(startTimeCtrl.errors) };
-        if (hasOverlap) {
-          errors = { ...errors, overlappingPeriods: true }
+          if (hasOverlap) {
+            errors = { ...errors, overlappingPeriods: true }
+          }
+          startTimeCtrl.setErrors(Object.keys(errors).length > 0 ? errors : null);
         }
-
-        startTimeCtrl.setErrors(Object.keys(errors).length > 0 ? errors : null);
       }
       return null;
     }
