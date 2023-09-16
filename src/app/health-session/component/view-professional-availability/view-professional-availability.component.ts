@@ -12,7 +12,6 @@ import {Observable} from "rxjs";
 })
 export class ViewProfessionalAvailabilityComponent extends BaseDetailComponent<ProfessionalCheckAvailabilityResponse> implements OnInit  {
 
-
   public override entryView!: ProfessionalCheckAvailabilityResponse;
   protected override formBuilder;
 
