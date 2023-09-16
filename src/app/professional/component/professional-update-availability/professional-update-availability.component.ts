@@ -54,20 +54,24 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
         Validators.required, minTimeValidator(this.AVAILABILITY_MIN_TIME)]
       ],
       endTime: [DEFAULT_FORM_CONTROL_VALUE, [
-        Validators.required, maxTimeValidator(this.AVAILABILITY_MAX_TIME), completeHourValidator('starTime')]
+        Validators.required, maxTimeValidator(this.AVAILABILITY_MAX_TIME), ]
       ],
     }, {
       validators: [
         endTimeGreaterThanStartTimeValidator('startTime', 'endTime'),
-        this.overlappingPeriodsValidator('dayOfTheWeek', 'startTime', 'endTime')
+        this.overlappingPeriodsValidator('dayOfTheWeek', 'startTime', 'endTime'),
+        completeHourValidator('startTime', 'endTime')
       ]
     });
     this.formReady();
   }
 
   public updateAvailabilityOrSchedule(): void {
-    if (isFalsy(this.isSubmitting) && isObject(this.periods) && Array.isArray(this.periods)) {
+    if (isFalsy(this.isSubmitting) && isObject(this.periods) && Array.isArray(this.periods) && this.isPeriodsMoreThanOne()) {
       this.disableSubmitting();
+      this.resetErrorMessage();
+      this.sortPeriods();
+
       this.professionalService.updateAvailabilityOrSchedule({ periods: this.periods })
         .subscribe({
           next: (result: FleenHealthResponse): void => {
@@ -117,8 +121,6 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       const dayOfTheWeekCtrl: AbstractControl | any = formGroup.get(dayOfTheWeekFieldName);
       const startTimeCtrl: AbstractControl | any = formGroup.get(startTimeFieldName);
       const endTimeCtrl: AbstractControl | any = formGroup.get(endTimeFieldName);
-
-      console.log(startTimeCtrl.errors);
 
       if (nonNull(dayOfTheWeekCtrl) && nonNull(startTimeCtrl) && nonNull(endTimeCtrl)) {
         const dayOfTheWeek: string = dayOfTheWeekCtrl.value;
@@ -186,6 +188,18 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
     return isObject(this.periods)
       && Array.isArray(this.periods)
       && this.periods.length > 0
+  }
+
+  private sortPeriods(): void {
+    this.periods.sort((a, b): number | any => {
+      if (a.dayOfTheWeek < b.dayOfTheWeek) {
+        return -1;
+      } else if (a.dayOfTheWeek > b.dayOfTheWeek) {
+        return 1;
+      } else {
+        return a.startTime.localeCompare(b.startTime);
+      }
+    });
   }
 
   get timeForm(): FormGroup {

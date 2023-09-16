@@ -76,9 +76,8 @@ export class ProfessionalUpdateDocumentsComponent extends BaseFormImplComponent 
 
   public uploadDocuments(): void {
     if (isFalsy(this.isSubmitting) && areAllPropertiesTruthy(this.dto)) {
-
+      this.disableSubmitting();
       this.resetErrorMessage();
-      this.enableSubmitting();
       removeEmptyKeys(this.dto);
 
       this.professionalService.uploadDocuments(this.dto)

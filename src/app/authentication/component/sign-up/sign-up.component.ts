@@ -64,6 +64,7 @@ export class SignUpComponent extends SignUpBaseComponent implements OnInit {
     if (isTruthy(this.signUpForm) && this.signUpForm.valid && isFalsy(this.isSubmitting)) {
       this.disableSubmitting();
       this.resetErrorMessage();
+
       this.authenticationService.signUp(this.signUpForm.value)
         .subscribe({
           next: (result: SignUpResponse): void => {

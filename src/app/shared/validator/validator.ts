@@ -556,6 +556,7 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
    *
    * @param startTimeFieldName The name of the form control representing the start time.
    * @param endTimeFieldName The name of the form control representing the end time.
+   * @param endTimeFieldLabel the label or title for the end time form control
    *
    * @returns A validator function that returns a validation error object if the end time is not greater than the start time, or null if it's valid.
    */
@@ -600,44 +601,51 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
    * For example, a difference of 2 hours and 30 minutes is not considered valid.
    *
    * @param startTimeFieldName The name of the form control representing the start time.
+   * @param endTimeFieldName the name of the form control representing the end time
    *
    * @returns A validator function that returns a validation error object if the time difference is not in complete hours, or null if it's valid.
    */
-  export function completeHourValidator(startTimeFieldName: string): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const startTimeControl: AbstractControl | any = control.parent?.get(startTimeFieldName);
-      if (isFalsy(startTimeControl)) {
+  export function completeHourValidator(startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
+      const startTimeControl: AbstractControl | any = formGroup?.get(startTimeFieldName);
+      const endTimeControl: AbstractControl | any = formGroup?.get(endTimeFieldName);
+      if (isFalsy(startTimeControl) || isFalsy(endTimeControl)) {
         return null;
       }
 
-      const startTime = control.parent?.get(startTimeFieldName)?.value;
-      const endTime: string = control.value;
+      const startTime = startTimeControl?.value;
+      const endTime: string = endTimeControl?.value;
 
       if (isFalsy(startTime) || isFalsy(endTime)) {
         return null;
       }
 
-      const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
-      const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
+      if (nonNull(parseTime(startTime)) && nonNull(parseTime(endTime))) {
+        const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
+        const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
 
-      /**
-       * i. Minute Difference Calculation:
-       *
-       * The purpose of this code block is to calculate the total minute difference between the end time and start time. It aims to measure the duration in minutes between two time points.
-       * - `endHours * 60 + endMinutes` calculates the total minutes in the `endHours` and `endMinutes`.
-       * - `startHours * 60 + startMinutes` calculates the total minutes in the `startHours` and `startMinutes`.
-       * Subtracting the total minutes of the start time from the total minutes of the end time gives us the minute difference between the two times.
-       *
-       * ii. Checking for a Complete Hour:
-       *
-       * After calculating the minute difference, the code checks if this difference represents a complete hour or not.
-       * It does this by checking if `minuteDifference` is not divisible by 60 (i.e., if `minuteDifference % 60 !== 0`).
-       *
-       * If the difference is not evenly divisible by 60, it means that there are remaining minutes that are not part of a complete hour.
-       */
-      const minuteDifference: number = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
-      if (minuteDifference % 60 !== 0) {
-        return { completeHourDifference: true };
+        /**
+         * i. Minute Difference Calculation:
+         *
+         * The purpose of this code block is to calculate the total minute difference between the end time and start time. It aims to measure the duration in minutes between two time points.
+         * - `endHours * 60 + endMinutes` calculates the total minutes in the `endHours` and `endMinutes`.
+         * - `startHours * 60 + startMinutes` calculates the total minutes in the `startHours` and `startMinutes`.
+         * Subtracting the total minutes of the start time from the total minutes of the end time gives us the minute difference between the two times.
+         *
+         * ii. Checking for a Complete Hour:
+         *
+         * After calculating the minute difference, the code checks if this difference represents a complete hour or not.
+         * It does this by checking if `minuteDifference` is not divisible by 60 (i.e., if `minuteDifference % 60 !== 0`).
+         *
+         * If the difference is not evenly divisible by 60, it means that there are remaining minutes that are not part of a complete hour.
+         */
+        const errors: ValidationErrors = { ...(endTimeControl.errors) };
+        const minuteDifference: number = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+
+        if (minuteDifference % 60 !== 0) {
+          errors['completeHourDifference'] = true
+        }
+        endTimeControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
       }
 
       return null;
