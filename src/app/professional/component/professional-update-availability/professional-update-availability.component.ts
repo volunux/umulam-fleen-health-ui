@@ -68,8 +68,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
 
   public updateAvailabilityOrSchedule(): void {
     if (isFalsy(this.isSubmitting) && isObject(this.periods) && Array.isArray(this.periods) && this.isPeriodsMoreThanOne()) {
-      this.disableSubmitting();
-      this.resetErrorMessage();
+      this.disableSubmittingAndResetErrorMessage();
       this.sortPeriods();
 
       this.professionalService.updateAvailabilityOrSchedule({ periods: this.periods })

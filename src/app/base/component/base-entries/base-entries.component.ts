@@ -105,7 +105,7 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   protected getEntries(): void {
     const params: AnyProp = this.prepareSearchParams();
-    this.disableSubmitting();
+    this.disableSubmittingAndResetErrorMessage();
     this.findEntries(params)
       .subscribe({
         next: (result: SearchResultView<T>): void => {
@@ -129,7 +129,8 @@ export abstract class BaseEntriesComponent<T> extends BaseFormComponent {
 
   public confirmDeleteEntries(): void {
     if (this.deleteIds.length > 0 && isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       const dto: DeleteIdsDto = { ids: this.deleteIds };
       this.deleteEntries(dto)
         .subscribe({

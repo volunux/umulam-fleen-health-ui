@@ -58,7 +58,8 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
       const emailAddress: string = this.emailAddress.value.toString();
       const dto: ForgotPasswordDto = { emailAddress, verificationType: VerificationType.EMAIL };
       this.authenticationService.clearAuthTokens();
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.authenticationService.forgotPassword(dto)
         .subscribe({
           next: (result: ForgotPasswordResponse): void => {
@@ -80,7 +81,8 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
     if (this.emailAddress.valid && this.verificationCode.valid && isFalsy(this.isSubmitting)) {
       const emailAddress: string = this.emailAddress.value.toString();
       const dto: ResetPasswordDto = { emailAddress, code: this.verificationCode.value };
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.authenticationService.verifyResetPasswordCode(dto)
         .subscribe({
           next: (result: InitiatePasswordChangeResponse): void => {
@@ -100,7 +102,8 @@ export class ForgotPasswordComponent extends BaseFormComponent implements OnInit
 
   public changePassword(dto: ChangePasswordDto): void {
     if (isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.authenticationService.resetAndChangePassword(dto)
         .subscribe({
           error: (result: ErrorResponse): void => {

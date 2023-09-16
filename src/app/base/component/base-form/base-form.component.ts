@@ -104,6 +104,11 @@ export abstract class BaseFormComponent {
     this.isSubmitting = false;
   }
 
+  protected disableSubmittingAndResetErrorMessage(): void {
+    this.disableSubmitting();
+    this.resetErrorMessage();
+  }
+
   protected handleError(error: ErrorResponse): void {
     const { type } = error;
     if (isTruthy(type) && equalsIgnoreCase(type, ErrorType.DATA_VALIDATION)) {

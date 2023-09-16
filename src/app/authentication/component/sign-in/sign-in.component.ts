@@ -77,7 +77,8 @@ export class SignInComponent extends SignInBaseComponent implements OnInit {
 
   public signIn(): void {
     if (isTruthy(this.signInForm) && this.signInForm.valid && isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.authenticationService.signIn(this.signInForm.value)
         .subscribe({
           next: (result: SignInResponse): void => {

@@ -67,7 +67,8 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
 
   public setupMfa(): void {
     if (isFalsy(this.isSubmitting) && this.fleenHealthForm.valid) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.mfaService.setup(this.fleenHealthForm.value)
         .subscribe({
           next: (result: MfaDetailResponse): void => {
@@ -87,7 +88,7 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
 
   public resendVerificationCode(): void {
     if (isFalsy(this.isSubmitting) && this.fleenHealthForm.valid) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
       this.isVerificationCodeSent = false;
       this.mfaService.setup(this.fleenHealthForm.value)
         .subscribe({
@@ -98,13 +99,14 @@ export class MfaSetupComponent extends BaseFormComponent implements OnInit {
             this.enableSubmitting();
             this.isVerificationCodeSent = true;
           }
-        });
+      });
     }
   }
 
   public confirmMfaSetup(): void {
     if (isFalsy(this.isSubmitting) && this.fleenHealthForm.valid) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.mfaService.confirmSetup(this.fleenHealthForm.value)
         .subscribe({
           next: (result: FleenHealthResponse): void => {

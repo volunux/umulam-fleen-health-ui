@@ -40,7 +40,8 @@ export class MemberUpdatePasswordComponent extends BaseFormComponent implements 
 
   public updatePassword(dto: ChangePasswordDto): void {
     if (isFalsy(this.isSubmitting) && this.oldPassword.valid) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       const oldPassword: string = this.oldPassword.value;
       const body: UpdatePasswordDto = { ...dto, oldPassword }
       this.memberService.updatePassword(body)

@@ -51,7 +51,7 @@ export class MfaStatusComponent extends BaseFormComponent implements OnInit {
         error: (error: ErrorResponse): void => {
           this.handleError(error);
         }
-      })
+    });
   }
 
   private getServiceMethod(status: boolean): Observable<FleenHealthResponse> {

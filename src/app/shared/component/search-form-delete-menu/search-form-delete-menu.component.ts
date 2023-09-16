@@ -43,7 +43,7 @@ export class SearchFormDeleteMenuComponent extends BaseFormComponent implements 
 
   public search(): void {
     if (this.searchForm.valid && isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
       const { type, value } = this.searchFormValue;
       this.searchParams = {[type]: value};
       this.checkBetweenDateParam();

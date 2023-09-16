@@ -48,7 +48,8 @@ export abstract class BaseUpdateComponent<T, D> extends BaseFormComponent {
 
   public updateEntry(): void {
     if (isTruthy(this.fleenHealthForm) && this.fleenHealthForm.valid && isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.$updateEntry(this.entryId, this.fleenHealthForm.value)
         .subscribe({
           error: (result: ErrorResponse): void => {

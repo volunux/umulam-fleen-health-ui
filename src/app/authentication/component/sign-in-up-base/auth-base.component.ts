@@ -27,7 +27,7 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
   public handleVerificationCode(verification: AuthVerificationDto): void {
     if (isTruthy(verification.code) && isFalsy(this.isSubmitting)) {
       const { type } = verification;
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
       this.resetHandleVerificationCodeErrorMessage(type);
 
       this.completeSignUpOrValidateMfaOrOnboarding(verification)
@@ -51,7 +51,8 @@ export abstract class AuthBaseComponent extends BaseFormComponent {
 
   public changePassword(dto: ChangePasswordDto): void {
     if (isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.completeChangePassword(dto)
         .subscribe({
           next: (result: SignInUpResponse): void => {

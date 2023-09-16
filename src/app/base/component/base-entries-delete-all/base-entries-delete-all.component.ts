@@ -27,11 +27,11 @@ export abstract class BaseEntriesDeleteAllComponent extends BaseFormComponent {
 
   public async deleteAll(): Promise<void> {
     if (isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.serviceDeleteAll().subscribe({
         error: (error: ErrorResponse): void => {
           this.handleError(error);
-          this.enableSubmitting();
         },
         complete: (): void => {
           this.goToEntries(null, 1);

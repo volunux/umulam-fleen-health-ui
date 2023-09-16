@@ -38,7 +38,8 @@ export class ProfessionalUpdateDetailsComponent extends ProfessionalUpdateDetail
 
   public updateDetails(): void {
     if (isFalsy(this.isSubmitting) && isTruthy(this.updateDetailsForm) && this.updateDetailsForm.valid) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.professionalService.updateVerificationDetails(this.updateDetailsForm.value)
         .subscribe({
           error: (error: ErrorResponse): void => {

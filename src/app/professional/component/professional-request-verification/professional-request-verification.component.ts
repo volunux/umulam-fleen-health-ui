@@ -35,13 +35,12 @@ export class ProfessionalRequestVerificationComponent extends BaseFormImplCompon
 
   public requestForVerification(): void {
     if (isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
 
       this.professionalService.requestVerification()
         .subscribe({
           error: (error: ErrorResponse): void => {
             this.handleError(error);
-            this.enableSubmitting();
           },
           complete: (): void => {
             this.hasRequestedForVerification = true;

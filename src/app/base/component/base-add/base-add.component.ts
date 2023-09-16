@@ -26,7 +26,8 @@ export abstract class BaseAddComponent<D, R> extends BaseFormComponent {
 
   protected saveEntry(): void {
     if (isTruthy(this.fleenHealthForm) && this.fleenHealthForm.valid && isFalsy(this.isSubmitting)) {
-      this.disableSubmitting();
+      this.disableSubmittingAndResetErrorMessage();
+
       this.$saveEntry(this.fleenHealthForm.value)
         .subscribe({
           error: (result: ErrorResponse): void => {
