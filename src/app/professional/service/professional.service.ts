@@ -122,11 +122,11 @@ export class ProfessionalService {
       );
   }
 
-  public getUpdateAvailabilityOrSchedule(): Observable<ProfessionalAvailabilityView> {
+  public getUpdateAvailabilityOrSchedule(): Observable<ProfessionalAvailabilityView[]> {
     const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update-availability']);
     return this.httpService.get(req)
       .pipe(
-        map(data => new ProfessionalAvailabilityView(data))
+        map(data => manyToType(ProfessionalAvailabilityView, data))
       );
   }
 

@@ -13,6 +13,9 @@ import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant
 import {BaseFormImplComponent} from "../../../base/component/base-form/base-form-impl.component";
 import {ProfessionalService} from "../../service/professional.service";
 import {AvailabilityDayOfTheWeek} from "../../enum/professional.enum";
+import {ProfessionalAvailabilityView} from "../../view/professional-availability.view";
+import {ErrorResponse} from "../../../base/response/error-response";
+import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";
 
 @Component({
   selector: 'app-professional-update-availability',
@@ -22,7 +25,7 @@ import {AvailabilityDayOfTheWeek} from "../../enum/professional.enum";
 export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplComponent implements OnInit {
   private readonly AVAILABILITY_MIN_TIME: string = '08:00';
   private readonly AVAILABILITY_MAX_TIME: string = '18:00';
-  public periods: PeriodDto[] = [];
+  public periods: PeriodDto[] | ProfessionalAvailabilityView[] = [];
 
   public constructor(protected professionalService: ProfessionalService,
                      protected override formBuilder: FormBuilder) {
@@ -30,7 +33,16 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
   }
 
   public ngOnInit(): void {
-    this.initForm();
+    this.professionalService.getUpdateAvailabilityOrSchedule()
+      .subscribe({
+        next: (result: ProfessionalAvailabilityView[]): void => {
+          this.periods = result;
+          this.initForm();
+        },
+        error: (error: ErrorResponse): void => {
+          this.handleError(error);
+        }
+    });
   }
 
   private initForm(): void {
@@ -51,6 +63,25 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       ]
     });
     this.formReady();
+  }
+
+  public updateAvailabilityOrSchedule(): void {
+    if (isFalsy(this.isSubmitting) && isObject(this.periods) && Array.isArray(this.periods)) {
+      this.disableSubmitting();
+      this.professionalService.updateAvailabilityOrSchedule({ periods: this.periods })
+        .subscribe({
+          next: (result: FleenHealthResponse): void => {
+            this.setStatusMessage(result.message);
+          },
+          error: (error: ErrorResponse): void => {
+            this.handleError(error);
+          },
+          complete: (): void => {
+            this.enableSubmitting();
+            this.resetForm();
+          }
+      });
+    }
   }
 
 
@@ -129,7 +160,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
       if (isFalsy(hasOverlap)) {
-        this.periods.push(newPeriod);
+        this.periods.push(newPeriod as any);
         this.timeForm.reset();
       }
     }
@@ -137,6 +168,10 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
 
   public resetFormAndPeriod(): void {
     this.periods = [];
+    this.resetForm();
+  }
+
+  private resetForm(): void {
     this.timeForm.reset();
   }
 

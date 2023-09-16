@@ -123,8 +123,12 @@ export abstract class BaseFormComponent {
     evt.stopPropagation();
   }
 
-  public resetErrorMessage(): void {
+  protected resetErrorMessage(): void {
     this.errorMessage = '';
+  }
+
+  protected setStatusMessage(message: string): void {
+    this.statusMessage = message;
   }
 
   public formReady(): void {

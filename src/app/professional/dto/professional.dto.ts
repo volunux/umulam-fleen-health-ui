@@ -1,4 +1,5 @@
 import {ProfessionalAvailabilityStatus} from "../enum/professional.enum";
+import {ProfessionalAvailabilityView} from "../view/professional-availability.view";
 
 export type UpdateProfessionalDetailsDto = {
   title: string;
@@ -37,5 +38,5 @@ export class UploadProfessionalDocumentDto {
 
 
 export type UpdateProfessionalAvailabilityDto = {
-  periods: PeriodDto[];
+  periods: PeriodDto[] | ProfessionalAvailabilityView[];
 }
