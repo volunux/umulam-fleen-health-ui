@@ -10,7 +10,7 @@ import {ProfessionalView} from "../../../professional/view/professional.view";
   templateUrl: './view-professional-detail.component.html',
   styleUrls: ['./view-professional-detail.component.css']
 })
-export class ViewProfessionalDetailComponent  extends BaseDetailComponent<ProfessionalView> implements OnInit {
+export class ViewProfessionalDetailComponent extends BaseDetailComponent<ProfessionalView> implements OnInit {
 
   public override entryView!: ProfessionalView;
   protected override formBuilder;
