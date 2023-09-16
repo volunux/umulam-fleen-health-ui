@@ -29,4 +29,6 @@
   </ng-container>
 
   <button type="button" (click)="resetFormAndPeriod()">Reset form</button>
+
+  <button type="submit" [disabled]="isSubmitting">Submit</button>
 </form>

@@ -9,8 +9,10 @@ import {
 } from "../../../shared/validator/validator";
 import {checkForOverlappingPeriods, isFalsy, isObject, nonNull} from "../../../shared/util/helpers";
 import {PeriodDto} from "../../dto/professional.dto";
-import {DAYS_OF_WEEK, DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
+import {DEFAULT_FORM_CONTROL_VALUE} from "../../../shared/constant/enum-constant";
 import {BaseFormImplComponent} from "../../../base/component/base-form/base-form-impl.component";
+import {ProfessionalService} from "../../service/professional.service";
+import {AvailabilityDayOfTheWeek} from "../../enum/professional.enum";
 
 @Component({
   selector: 'app-professional-update-availability',
@@ -22,7 +24,8 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
   private readonly AVAILABILITY_MAX_TIME: string = '18:00';
   public periods: PeriodDto[] = [];
 
-  public constructor(protected override formBuilder: FormBuilder) {
+  public constructor(protected professionalService: ProfessionalService,
+                     protected override formBuilder: FormBuilder) {
     super();
   }
 
@@ -33,7 +36,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
   private initForm(): void {
     this.fleenHealthForm = this.formBuilder.group({
       dayOfWeek: [DEFAULT_FORM_CONTROL_VALUE, [
-        Validators.required, enumTypeValidator(DAYS_OF_WEEK)]
+        Validators.required, enumTypeValidator(this.daysOfTheWeek)]
       ],
       startTime: [DEFAULT_FORM_CONTROL_VALUE, [
         Validators.required, minTimeValidator(this.AVAILABILITY_MIN_TIME)]
@@ -166,7 +169,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
   }
 
   get daysOfTheWeek(): string[] {
-    return DAYS_OF_WEEK;
+    return Object.values(AvailabilityDayOfTheWeek);
   }
 
 }

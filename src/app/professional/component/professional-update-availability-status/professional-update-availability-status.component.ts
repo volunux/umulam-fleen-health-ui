@@ -3,7 +3,7 @@ import {BaseFormImplComponent} from "../../../base/component/base-form/base-form
 import {ProfessionalService} from "../../service/professional.service";
 import {
   GetProfessionalUpdateAvailabilityStatusResponse
-} from "../../view/get-professional-update-availability-status.response";
+} from "../../response/get-professional-update-availability-status.response";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {ProfessionalAvailabilityStatus} from "../../enum/professional.enum";
 import {FleenHealthResponse} from "../../../shared/response/fleen-health.response";

@@ -47,5 +47,3 @@ export const DEFAULT_DOCUMENT_CONSTRAINT: FileConstraints = {
 export const MFA_SETUP_TYPE: string[] = ['EMAIL', 'PHONE', 'AUTHENTICATOR', 'NONE'];
 export const PROFESSIONAL_TYPES: string[] = ['COUNSELOR', 'PSYCHOLOGIST', 'THERAPIST'];
 export const PROFESSIONAL_QUALIFICATION_TYPES: string[] = ['DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE'];
-
-export const DAYS_OF_WEEK: string[] = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];

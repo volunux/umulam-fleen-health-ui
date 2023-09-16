@@ -20,7 +20,8 @@ import {FleenHealthResponse} from "../../shared/response/fleen-health.response";
 import {UserVerificationStatusView} from "../view/user-verification-status.view";
 import {
   GetProfessionalUpdateAvailabilityStatusResponse
-} from "../view/get-professional-update-availability-status.response";
+} from "../response/get-professional-update-availability-status.response";
+import {ProfessionalAvailabilityView} from "../view/professional-availability.view";
 
 @Injectable()
 export class ProfessionalService {
@@ -117,6 +118,14 @@ export class ProfessionalService {
     return this.httpService.update(req)
       .pipe(
         map(data => new FleenHealthResponse(data))
+      );
+  }
+
+  public getUpdateAvailabilityOrSchedule(): Observable<ProfessionalAvailabilityView> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update-availability']);
+    return this.httpService.get(req)
+      .pipe(
+        map(data => new ProfessionalAvailabilityView(data))
       );
   }
 
