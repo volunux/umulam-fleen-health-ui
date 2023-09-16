@@ -8,7 +8,7 @@ export class ProfessionalAvailabilityView {
 
   public constructor(data: ProfessionalAvailabilityView) {
     this.dayOfTheWeek = data?.dayOfTheWeek ? data.dayOfTheWeek : data?.dayOfTheWeek;
-    this.startTime = data?.startTime ? new Date(data.startTime) : data?.startTime;
-    this.endTime = data?.endTime ? new Date(data.endTime) : data?.endTime;
+    this.startTime = data?.startTime ? data.startTime : data?.startTime;
+    this.endTime = data?.endTime ? data.endTime : data?.endTime;
   }
 }
