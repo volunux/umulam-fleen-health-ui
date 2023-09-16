@@ -23,7 +23,7 @@ export class CountryService {
     return this.httpService.get(req)
       .pipe(
         map(data => mapToSearchResult(CountryView, data))
-      )
+      );
   }
 
   public findCountry(id: number | string): Observable<CountryView> {

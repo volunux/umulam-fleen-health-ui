@@ -1,0 +1,8 @@
+export enum HealthSessionStatus {
+
+  PENDING = 'PENDING',
+  SCHEDULED = 'SCHEDULED',
+  RESCHEDULED = 'RESCHEDULED',
+  CANCELED = 'CANCELED',
+  COMPLETED = 'COMPLETED'
+}
