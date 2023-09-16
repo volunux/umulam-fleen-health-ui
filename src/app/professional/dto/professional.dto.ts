@@ -15,7 +15,7 @@ export type UpdateProfessionalAvailabilityStatusDto = {
 }
 
 export type PeriodDto = {
-  dayOfWeek: string
+  dayOfTheWeek: string
   startTime: string;
   endTime: string;
 }
@@ -35,3 +35,7 @@ export class UploadProfessionalDocumentDto {
   }
 }
 
+
+export type UpdateProfessionalAvailabilityDto = {
+  periods: PeriodDto[];
+}

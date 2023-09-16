@@ -605,8 +605,8 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
    */
   export function completeHourValidator(startTimeFieldName: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const startTimeCtrl: AbstractControl | any = control.parent?.get(startTimeFieldName);
-      if (isFalsy(startTimeCtrl)) {
+      const startTimeControl: AbstractControl | any = control.parent?.get(startTimeFieldName);
+      if (isFalsy(startTimeControl)) {
         return null;
       }
 

@@ -3,11 +3,11 @@
 
     <div class="form-group">
       <label for="day_of_week">Day of the Week</label>
-      <select id="day_of_week" formControlName="dayOfWeek">
+      <select id="day_of_week" formControlName="dayOfTheWeek">
         <option value=""></option>
-        <option *ngFor="let dayOfWeek of daysOfTheWeek" [value]="dayOfWeek">{{ dayOfWeek | titlecase }}</option>
+        <option *ngFor="let dayOfTheWeek of daysOfTheWeek" [value]="dayOfTheWeek">{{ dayOfTheWeek | titlecase }}</option>
       </select>
-      <app-validation-error [control]="dayOfWeek" [control-label]="'Day of Week'"></app-validation-error>
+      <app-validation-error [control]="dayOfTheWeek" [control-label]="'Day of Week'"></app-validation-error>
     </div>
 
     <div class="form-group">
@@ -25,7 +25,7 @@
   <button type="button" (click)="addToPeriods()">Add to Periods</button>
 
   <ng-container *ngIf="isPeriodsMoreThanOne">
-    <p *ngFor="let period of periods; let i = index;">{{ period.dayOfWeek }} : {{ period.startTime }} - {{ period.endTime }} <span (click)="removePeriod(i)">X</span></p>
+    <p *ngFor="let period of periods; let i = index;">{{ period.dayOfTheWeek }} : {{ period.startTime }} - {{ period.endTime }} <span (click)="removePeriod(i)">X</span></p>
   </ng-container>
 
   <button type="button" (click)="resetFormAndPeriod()">Reset form</button>

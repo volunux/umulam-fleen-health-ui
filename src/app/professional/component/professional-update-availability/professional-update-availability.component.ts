@@ -35,7 +35,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
 
   private initForm(): void {
     this.fleenHealthForm = this.formBuilder.group({
-      dayOfWeek: [DEFAULT_FORM_CONTROL_VALUE, [
+      dayOfTheWeek: [DEFAULT_FORM_CONTROL_VALUE, [
         Validators.required, enumTypeValidator(this.daysOfTheWeek)]
       ],
       startTime: [DEFAULT_FORM_CONTROL_VALUE, [
@@ -47,7 +47,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
     }, {
       validators: [
         endTimeGreaterThanStartTimeValidator('startTime', 'endTime'),
-        this.overlappingPeriodsValidator('dayOfWeek', 'startTime', 'endTime')
+        this.overlappingPeriodsValidator('dayOfTheWeek', 'startTime', 'endTime')
       ]
     });
     this.formReady();
@@ -57,10 +57,10 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
   /**
    * Custom validator for checking overlapping periods within a form group.
    *
-   * This validator checks if the specified period (dayOfWeek, startTime, endTime) in the form group
+   * This validator checks if the specified period (dayOfTheWeek, startTime, endTime) in the form group
    * overlaps with any existing periods in the 'periods' array.
    *
-   * @param dayOfWeekFieldName The name of the form control containing the day of the week.
+   * @param dayOfTheWeekFieldName The name of the form control containing the day of the week.
    * @param startTimeFieldName The name of the form control containing the start time.
    * @param endTimeFieldName The name of the form control containing the end time.
    *
@@ -69,30 +69,30 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
    * @example
    * // Example usage within a form group:
    * const formGroup = new FormGroup({
-   *   dayOfWeek: new FormControl('Monday'),
+   *   dayOfTheWeek: new FormControl('Monday'),
    *   startTime: new FormControl('08:00 AM'),
    *   endTime: new FormControl('09:00 AM')
    * });
    *
-   * const validator = overlappingPeriodsValidator('dayOfWeek', 'startTime', 'endTime');
+   * const validator = overlappingPeriodsValidator('dayOfTheWeek', 'startTime', 'endTime');
    * const validationResult = validator(formGroup);
    *
    * if (validationResult) {
    *   console.log('Validation Error:', validationResult); // Result: { overlappingPeriods: true }
    * }
    */
-  private overlappingPeriodsValidator(dayOfWeekFieldName: string, startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
+  private overlappingPeriodsValidator(dayOfTheWeekFieldName: string, startTimeFieldName: string, endTimeFieldName: string): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
-      const dayOfWeekCtrl: AbstractControl | any = formGroup.get(dayOfWeekFieldName);
+      const dayOfTheWeekCtrl: AbstractControl | any = formGroup.get(dayOfTheWeekFieldName);
       const startTimeCtrl: AbstractControl | any = formGroup.get(startTimeFieldName);
       const endTimeCtrl: AbstractControl | any = formGroup.get(endTimeFieldName);
 
-      if (nonNull(dayOfWeekCtrl) && nonNull(startTimeCtrl) && nonNull(endTimeCtrl)) {
-        const dayOfWeek: string = dayOfWeekCtrl.value;
+      if (nonNull(dayOfTheWeekCtrl) && nonNull(startTimeCtrl) && nonNull(endTimeCtrl)) {
+        const dayOfTheWeek: string = dayOfTheWeekCtrl.value;
         const startTime: string = startTimeCtrl.value;
         const endTime: string = endTimeCtrl.value;
 
-        const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
+        const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
         const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
         const errors: ValidationErrors = {};
@@ -111,7 +111,7 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
    * Add a new period to the 'periods' array if the form data is valid and does not overlap with existing periods.
    *
    * This method is called when the user attempts to add a new period to the schedule. It first checks if the form data
-   * (dayOfWeek, startTime, endTime) is valid and then checks for overlapping periods within the 'periods' array.
+   * (dayOfTheWeek, startTime, endTime) is valid and then checks for overlapping periods within the 'periods' array.
    * If there is no overlap, the new period is added to the 'periods' array, and the form is reset.
    *
    * @example
@@ -120,11 +120,11 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
    * // This method is typically called in response to user interaction, such as clicking an "Add" button.
    */
   public addToPeriods(): void {
-    if (this.timeForm.valid && nonNull(this.dayOfWeek) && nonNull(this.startTime) && nonNull(this.endTime)) {
-      const dayOfWeek: string = this.dayOfWeek?.value;
+    if (this.timeForm.valid && nonNull(this.dayOfTheWeek) && nonNull(this.startTime) && nonNull(this.endTime)) {
+      const dayOfTheWeek: string = this.dayOfTheWeek?.value;
       const startTime: string = this.startTime?.value;
       const endTime: string = this.endTime?.value;
-      const newPeriod: PeriodDto = { dayOfWeek, startTime, endTime };
+      const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
 
       const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
 
@@ -164,8 +164,8 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
     return this.timeForm?.get('endTime');
   }
 
-  get dayOfWeek(): AbstractControl | null | undefined {
-    return this.timeForm?.get('dayOfWeek');
+  get dayOfTheWeek(): AbstractControl | null | undefined {
+    return this.timeForm?.get('dayOfTheWeek');
   }
 
   get daysOfTheWeek(): string[] {

@@ -7,6 +7,7 @@ import {
   GetProfessionalUpdateVerificationDetailResponse
 } from "../response/get-professional-update-verification-detail.response";
 import {
+  UpdateProfessionalAvailabilityDto,
   UpdateProfessionalAvailabilityStatusDto,
   UpdateProfessionalDetailsDto,
   UploadProfessionalDocumentDto
@@ -126,6 +127,14 @@ export class ProfessionalService {
     return this.httpService.get(req)
       .pipe(
         map(data => new ProfessionalAvailabilityView(data))
+      );
+  }
+
+  public updateAvailabilityOrSchedule(body: UpdateProfessionalAvailabilityDto): Observable<FleenHealthResponse> {
+    const req: BaseRequest = this.httpService.toRequest([this.BASE_PATH, 'update-availability'], null, { ...body });
+    return this.httpService.update(req)
+      .pipe(
+        map(data => new FleenHealthResponse(data))
       );
   }
 
