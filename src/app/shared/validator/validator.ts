@@ -578,10 +578,10 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
       if (nonNull(parseTime(startTime)) && nonNull(parseTime(endTime))) {
         const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
         const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
-        let value: ValidationErrors | null = null;
-        if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
-          value = { endTimeGreaterThanStartTime: true };
-        }
+        const value: ValidationErrors | null = endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)
+          ? { endTimeGreaterThanStartTime: true }
+          : null;
+
         endTimeControl.setErrors(value);
         return value;
       }
