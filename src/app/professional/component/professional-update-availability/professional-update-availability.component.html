@@ -2,7 +2,7 @@
   <label for="dayOfWeek">Day of the Week</label>
   <select id="dayOfWeek" formControlName="dayOfWeek">
     <option value=""></option>
-    <option *ngFor="let dayOfWeek of daysOfTheWeek" [value]="{{ dayOfWeek }}">{{ dayOfWeek | titlecase }}</option>
+    <option *ngFor="let dayOfWeek of daysOfTheWeek" [value]="dayOfWeek">{{ dayOfWeek | titlecase }}</option>
   </select>
 
   <div [formGroup]="timeForm">
@@ -15,65 +15,19 @@
         formControlName="startTime"
         placeholder="HH:MM"
       />
-      <div
-        *ngIf="timeForm.get('startTime')?.hasError('required')"
-        class="error-message"
-      >
-        Start time is required.
-      </div>
-      <div
-        *ngIf="timeForm.get('startTime')?.hasError('formatError')"
-        class="error-message"
-      >
-        Invalid time format. Use HH:MM.
-      </div>
-      <div
-        *ngIf="timeForm.get('startTime')?.hasError('minTime')"
-        class="error-message"
-      >
-        Start time must be at or after 08:00.
-      </div>
+      <app-validation-error [control]="startTime" [control-label]="'Start Time'"></app-validation-error>
     </div>
 
     <!-- End Time Input -->
     <div class="form-group">
-      <label for="endTime">End Time:</label>
+      <label for="end_time">End Time:</label>
       <input
         type="text"
-        id="endTime"
+        id="end_time"
         formControlName="endTime"
         placeholder="HH:MM"
       />
-      <div
-        *ngIf="timeForm.get('endTime')?.hasError('required')"
-        class="error-message"
-      >
-        End time is required.
-      </div>
-      <div
-        *ngIf="timeForm.get('endTime')?.hasError('formatError')"
-        class="error-message"
-      >
-        Invalid time format. Use HH:MM.
-      </div>
-      <div
-        *ngIf="timeForm.get('endTime')?.hasError('maxTime')"
-        class="error-message"
-      >
-        End time must be at or before 18:00.
-      </div>
-      <div
-        *ngIf="timeForm.get('endTime')?.hasError('endTimeGreaterThanStartTime')"
-        class="error-message"
-      >
-        End time cannot be before the start time.
-      </div>
-      <div
-        *ngIf="timeForm.get('endTime')?.hasError('completeHourDifference')"
-        class="error-message"
-      >
-        The time difference must be in complete hours.
-      </div>
+      <app-validation-error [control]="endTime" [control-label]="'End Time'"></app-validation-error>
     </div>
   </div>
 

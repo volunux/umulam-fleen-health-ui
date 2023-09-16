@@ -375,7 +375,35 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
    *
    * @returns A two-element array containing the extracted hours and minutes as integers [hours, minutes], or null if the input is invalid.
    */
-  function parseTime(time: string, separator: string = ':'): TwoArray {
+
+
+
+  /**
+   * Parses a time string in the format "hh:mm" and returns it as an array containing hours and minutes.
+   *
+   * @param time - The time string to parse.
+   * @param replaceZeros - whether to replace leading zeros in the hour part of the time
+   * @param separator - The separator used between hours and minutes (default is ':').
+   * @returns An array with two elements: [hours, minutes], or null if the input is invalid.
+   *
+   * @summary
+   * This function takes a time string in the format "hh:mm" and validates it. It removes leading zeros from the hours
+   * portion, parses the hours and minutes as integers, and performs validation checks. If the input is not a valid time
+   * string, it returns null.
+   *
+   * @example
+   * // Valid time string
+   * const timeString = '12:30';
+   * const [hours, minutes] = parseTime(timeString);
+   * console.log(hours); // Output: 12
+   * console.log(minutes); // Output: 30
+   *
+   * // Invalid time string (leading zero in hours)
+   * const invalidTimeString = '09:45';
+   * const result = parseTime(invalidTimeString);
+   * console.log(result); // Output: null (Invalid time format)
+   */
+  function parseTime(time: string, replaceZeros: boolean = true, separator: string = ':'): TwoArray {
     if (isFalsy(time)) {
       return null;
     }
@@ -385,12 +413,20 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
       return null;
     }
 
-    const hours: number = parseInt(timeParts[0], 10);
+    let hours: string = timeParts[0];
     const minutes: number = parseInt(timeParts[1], 10);
 
-    return [hours, minutes];
-  }
+    if (replaceZeros) {
+      hours = hours.replace(/^0+/, '');
+    }
+    const parsedHours: number = parseInt(hours, 10);
 
+    if (isNaN(parsedHours) || isNaN(minutes) || parsedHours < 0 || parsedHours > 23 || minutes < 0 || minutes > 59 || timeParts[0].length !== hours.length || timeParts[1].length !== 2) {
+      return null;
+    }
+
+    return [parsedHours, minutes];
+  }
 
   /**
    * Validator function to check if the provided time is not earlier than a minimum allowed time.
@@ -408,7 +444,7 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
       if (nonNull(control) && nonNull(minTime)) {
         const inputTime: string = control.value;
         const inputTimeParsed: TwoArray | any = parseTime(inputTime);
-        const minTimeParsed: TwoArray | any = parseTime(minTime);
+        const minTimeParsed: TwoArray | any = parseTime(minTime, false);
 
         if (isFalsy(inputTimeParsed)) {
           return { timeFormatError: true, pattern };
@@ -478,7 +514,7 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
       if (nonNull(control) && (nonNull(maxTime))) {
         const inputTime: string = control.value;
         const inputTimeParsed: TwoArray | any = parseTime(inputTime);
-        const maxTimeParsed: TwoArray | any = parseTime(maxTime);
+        const maxTimeParsed: TwoArray | any = parseTime(maxTime, false);
 
         if (isFalsy(inputTimeParsed)) {
           return { timeFormatError: true, pattern };
@@ -503,7 +539,7 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
          */
         if (maxTimeParsed &&
             (chosenHour > requiredHour || (chosenHour === requiredHour && chosenMinute > requiredMinute))) {
-          return { maxTime: true };
+          return { maxTime: true, maxTimeValue: maxTime };
         }
       }
 
@@ -539,13 +575,16 @@ import {DATE, TIME_FORMAT, TWO_DATES} from "../util/format-pattern";
         return null;
       }
 
-      const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
-      const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
-
-      if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
-        return { endTimeGreaterThanStartTime: true };
+      if (nonNull(parseTime(startTime)) && nonNull(parseTime(endTime))) {
+        const [startHours, startMinutes]: TwoArray | any = parseTime(startTime);
+        const [endHours, endMinutes]: TwoArray | any = parseTime(endTime);
+        let value: ValidationErrors | null = null;
+        if (endHours < startHours || (endHours === startHours && endMinutes <= startMinutes)) {
+          value = { endTimeGreaterThanStartTime: true };
+        }
+        endTimeControl.setErrors(value);
+        return value;
       }
-
       return null;
     }
   }

@@ -7,7 +7,7 @@ import {MfaStatusResponse} from "../../response/mfa-status.response";
 import {MfaService} from "../../service/mfa.service";
 import {ErrorResponse} from "../../../base/response/error-response";
 import {DEFAULT_FORM_CONTROL_VALUE, MFA_SETUP_TYPE} from "../../../shared/constant/enum-constant";
-import {codeValidator, enumTypeValidator} from "../../../shared/validator/validator";
+import {codeOrOtpValidator, enumTypeValidator} from "../../../shared/validator/validator";
 import {VERIFICATION_CODE} from "../../../shared/util/format-pattern";
 import {isFalsy} from "../../../shared/util/helpers";
 import {MfaDetailResponse} from "../../response/mfa-detail.response";
