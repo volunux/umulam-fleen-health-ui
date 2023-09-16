@@ -25,7 +25,7 @@ import {FleenHealthResponse} from "../../../shared/response/fleen-health.respons
 export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplComponent implements OnInit {
   private readonly AVAILABILITY_MIN_TIME: string = '08:00';
   private readonly AVAILABILITY_MAX_TIME: string = '18:00';
-  public periods: PeriodDto[] | ProfessionalAvailabilityView[] = [];
+  public periods: PeriodDto[] | ProfessionalAvailabilityView[] | any[] = [];
 
   public constructor(protected professionalService: ProfessionalService,
                      protected override formBuilder: FormBuilder) {
@@ -118,15 +118,16 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       const startTimeCtrl: AbstractControl | any = formGroup.get(startTimeFieldName);
       const endTimeCtrl: AbstractControl | any = formGroup.get(endTimeFieldName);
 
+      console.log(startTimeCtrl.errors);
+
       if (nonNull(dayOfTheWeekCtrl) && nonNull(startTimeCtrl) && nonNull(endTimeCtrl)) {
         const dayOfTheWeek: string = dayOfTheWeekCtrl.value;
         const startTime: string = startTimeCtrl.value;
         const endTime: string = endTimeCtrl.value;
 
         const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
-        const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
-
-        const errors: ValidationErrors = {};
+        const hasOverlap: boolean = checkForOverlappingPeriods((<PeriodDto[]>this.periods), newPeriod);
+        const errors: ValidationErrors = { ...(startTimeCtrl.errors) };
         if (hasOverlap) {
           errors['overlappingPeriods'] = true;
         }
@@ -157,10 +158,10 @@ export class ProfessionalUpdateAvailabilityComponent extends BaseFormImplCompone
       const endTime: string = this.endTime?.value;
       const newPeriod: PeriodDto = { dayOfTheWeek, startTime, endTime };
 
-      const hasOverlap: boolean = checkForOverlappingPeriods(this.periods, newPeriod);
+      const hasOverlap: boolean = checkForOverlappingPeriods((<PeriodDto[]>this.periods), newPeriod);
 
       if (isFalsy(hasOverlap)) {
-        this.periods.push(newPeriod as any);
+        this.periods.push(newPeriod);
         this.timeForm.reset();
       }
     }

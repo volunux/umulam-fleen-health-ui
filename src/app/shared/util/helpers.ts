@@ -2,6 +2,7 @@ import {SearchResultView} from "../view/search-result.view";
 import {AnyProp} from "../type/base";
 import {Newable} from "../interface/base";
 import {DEFAULT_FORM_CONTROL_VALUE} from "../constant/enum-constant";
+import {PeriodDto} from "../../professional/dto/professional.dto";
 
 
 /**
@@ -636,16 +637,13 @@ export function nonNull(value: any): boolean {
    *
    * @returns A boolean value indicating whether there is an overlap with any existing period.
    */
-
-  export function checkForOverlappingPeriods(existingPeriods: any[], newPeriod: any): boolean {
-    const overlappingPeriod = existingPeriods.find((period) => {
-      return period.dayOfWeek === newPeriod.dayOfWeek &&
-        (
-          (newPeriod.startTime >= period.startTime && newPeriod.startTime < period.endTime) ||
-          (newPeriod.endTime > period.startTime && newPeriod.endTime <= period.endTime)
-        );
+  export function checkForOverlappingPeriods(existingPeriods: PeriodDto[], newPeriod: PeriodDto): boolean {
+    const overlappingPeriod: PeriodDto | undefined = existingPeriods.find((period: PeriodDto) => {
+      return period.dayOfTheWeek === newPeriod.dayOfTheWeek &&
+        !((newPeriod.startTime >= period.endTime) || (newPeriod.endTime <= period.startTime));
     });
 
     return !!overlappingPeriod;
   }
+
 
