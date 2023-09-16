@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'professional', loadChildren: () => import('./professional/professional.module').then(m => m.ProfessionalModule), canActivate: [AuthGuard] },
   { path: 'country', loadChildren: () => import('./country/country.module').then(m => m.CountryModule), canActivate: [AuthGuard] },
   { path: 'profile', loadChildren: () => import('./member/member.module').then(m => m.MemberModule), canActivate: [AuthGuard] },
+  { path: 'health', loadChildren: () => import('./health-session/health-session.module').then(m => m.HealthSessionModule), canActivate: [AuthGuard] },
   { path: "**", component: FleenHeatlhComponent }
 ];
 
